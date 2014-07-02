@@ -15,6 +15,7 @@ import subprocess
 import lx
 import lxu
 import lxifc
+import lxu.select
 
 import PySide
 from PySide.QtGui import *
@@ -27,6 +28,7 @@ import xml.etree.ElementTree as tree
 #----------------------------------------------------------------------------------------------------------------------
 # GET BASIC SERVICES
 fileServ = lx.service.File()
+logServ = lx.service.Log()
 
 
 
@@ -67,15 +69,82 @@ This kit offers a simple 3rd party solution for project management in Modo. See 
 '''
 
 
+#----------------------------------------------------------------------------------------------------------------------
+# LOGGING CLASS
+class Log:
+	'''
+	Provide an easy way for logging messages into choosen log subsystem.
+	Original class by Lukasz Pazera: https://gist.github.com/lukpazera/10017005
+	'''
+	def __init__ (self):
+
+	    self.log_service = lx.service.Log()
+	    self.log = lx.object.Log()
+
+	def set (self, log_name):
+		'''
+		This method has to be called before we can use the Log class instance.
+		'''
+
+		try:
+
+			self.log = lx.object.Log(self.log_service.SubSystemLookup(log_name))
+		except LookupError:
+			return False
+		return True
+
+	def Out (self, message_type, head_message, child_messages=None):
+		'''
+		Output a message comprising of:
+			- one head message,
+			- a set of child messages passed as a list.
+		Arguments:
+			- message_type --- one of message type symbols such as lx.symbol.e_INFO, e_WARNING or e_FAILED.
+			- head_message --- main message string.
+			- child_messages --- list of string messages that will be printed under the head one.
+		'''
+
+		if not self.log.test():
+			return False
+
+		head_entry = lx.object.LogEntry(self.log_service.CreateEntryMessage(message_type, head_message))
+
+		if not child_messages:
+			child_messages = []
+
+		if not isinstance(child_messages, list):
+			child_messages = [child_messages]
+
+		for child_message in child_messages:
+			child_entry = lx.object.LogEntry(self.log_service.CreateEntryMessage(message_type, child_message))
+			head_entry.AddEntry(child_entry)
+
+		self.log.AddEntry(head_entry)
+
+
 
 #----------------------------------------------------------------------------------------------------------------------
 # HELPERS
 
-def logInfo(title, content):
+def logMessage(type, child):
 	'''
-	Prints a simple message to Modo's event log. Takes two arguments: a title, and a message.
+	Convenience function for intercepting and logging messages
 	'''
-	lx.out('=== Project Manager ===\n%s:\n        %s\n=================' %( title, content ) )
+	log = Log()
+	if log.set('scripts'):
+		log.Out(type, '   === Project Manager ===', child)
+
+
+def infoDialog(title, text):
+	'''
+	Pop up a standard info dialog box
+	'''
+
+	lx.eval( "dialog.setup info" )
+	lx.eval( "dialog.title {%s}" %title )
+	lx.eval( "dialog.msg {%s}" %text )
+	#lx.eval( "dialog.result ok" )
+	lx.eval( "dialog.open" )
 
 
 def customStartFile(filename):
@@ -90,6 +159,9 @@ def customStartFile(filename):
 
 
 
+
+
+
 #----------------------------------------------------------------------------------------------------------------------
 class ShowProjectManager ( lxu.command.BasicCommand ):
 	'''
@@ -100,6 +172,7 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 		lxu.command.BasicCommand.__init__(self)
 
 	def cmd_Interact(self):
+		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
@@ -118,17 +191,19 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 		lxu.command.BasicCommand.__init__(self)
 
 	def cmd_Interact(self):
+		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
 		''' Explore the current project directory '''
-		lx.out("project.exploreProject called...")
 		try:
 			projDir = fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
 			customStartFile(projDir)
 		except:
-			logInfo('Trouble exploring project folder', 'No project has been set. Please set the active project.')
-
+			logMessage(lx.symbol.e_FAILED, ['Trouble exploring project folder.',
+											'No project has been set.',
+											'Please set the active project.'])
+			infoDialog( 'Explore Current Project...', 'No project has been set. Please set the active project first')
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -141,11 +216,20 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 		lxu.command.BasicCommand.__init__(self)
 
 	def cmd_Interact(self):
+		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
 		''' Explore the current project directory '''
-		lx.out("project.exploreScene called...")
+		
+		scene = lxu.select.SceneSelection().current().Filename()
+		
+		if scene == None:
+			logMessage(lx.symbol.e_WARNING, ['Failed to explore scene directory...', 'No scene file is currently open!'] )
+		else:
+			customStartFile( os.path.dirname( scene ) )
+			
+
 
 
 
@@ -157,6 +241,8 @@ class CleanXML():
 
 	Its one public method is cleanWriteXML(), which takes a single argument: the
 	path to an xml file. It opens the file, processes it, and rewrites it.
+
+	Original class by Eric Thivierge. http://www.ethivierge.com/
 	'''
 
 	def _indent(self, elem, level=0):
@@ -211,12 +297,11 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		# buttons
 		self.newProjectPathButton.released.connect( self.project_PickRoot )
 		self.createProjectButton.released.connect( self.project_Create )
-		self.newTemplateButton.released.connect( self.template_resetTree )
+		self.newTemplateButton.released.connect( self.template_new )
 		self.addFolderButton.released.connect( self.template_addFolder )
 		self.removeFolderButton.released.connect( self.template_removeFolder)
 		self.resetTreeButton.released.connect( self.template_resetTree )
 		self.saveTemplateButton.released.connect( self.template_save )
-		self.saveTemplateAsButton.released.connect( self.template_saveAs )
 
 		# widgets
 		self.projectTree.itemSelectionChanged.connect( self.get_scenes )
@@ -225,6 +310,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.fileTypeCombo.activated.connect( self.get_scenes )
 		self.folderTree.itemDoubleClicked.connect( self.template_beginItemEdit )
 		self.folderTree.itemChanged.connect( self.template_endItemEdit )
+		self.folderTree.itemSelectionChanged.connect( self.template_endItemEdit )
 		self.folderTemplateCombo.activated.connect( self.template_set)
 
 		# project actions
@@ -256,6 +342,11 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.sceneTree.setColumnWidth( 0, 150 )
 		self.template_resetTree()
 		self.get_templateList()
+		self.newTemplateButton.setIcon( QIcon( os.path.join( resrcPath, 'icons/newTemplate.png' ) ) )
+		self.addFolderButton.setIcon( QIcon( os.path.join( resrcPath, 'icons/addFolder.png' ) ) )
+		self.removeFolderButton.setIcon( QIcon( os.path.join( resrcPath, 'icons/removeFolder.png' ) ) )
+		self.resetTreeButton.setIcon( QIcon( os.path.join( resrcPath, 'icons/reset.png' ) ) )
+		self.saveTemplateButton.setIcon( QIcon( os.path.join( resrcPath, 'icons/save.png' ) ) )
 
 
 	def ui_clearTreeWidget(self, treewidget):
@@ -408,10 +499,13 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 		Return the path to the selected scene
 		'''
-		selection = self.sceneTree.selectedItems()[0]
-		sceneDir = str(selection.text(1))
-		return sceneDir.strip()
-
+		if self.sceneTree.selectedItems():
+			projectItem = self.projectTree.selectedItems()[0]
+			projDir = projectItem.text( 1 ).strip()
+			sceneItem = self.sceneTree.selectedItems()[0]
+			sceneRelativePath = sceneItem.text( 1 )
+			scenePath = projDir + sceneRelativePath
+			return scenePath
 
 #   -----------------------------------------------------------
 
@@ -452,58 +546,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 #   -----------------------------------------------------------
 
 
-	def template_beginItemEdit(self):
-		'''
-		Begin editing template Item
-		'''
-		self.folderTree.openPersistentEditor( self.folderTree.currentItem(), 0 )
-
-
-	def template_endItemEdit(self):
-		'''
-		Stop editing item name and sort the folder tree
-		'''
-		self.folderTree.closePersistentEditor( self.folderTree.currentItem(), 0 )
-		self.folderTree.sortItems( 0, Qt.AscendingOrder )
-
-
-	def template_save(self):
-		'''
-		Write the contents of the folder tree to an XML file.
-		'''
-
-		def build(item, root):
-			for row in range(item.childCount()):
-				child = item.child(row)
-				element = etree.SubElement( root, 'folder', text=child.text(0) )
-				build( child, element )
-
-
-		name, ok = QInputDialog.getText(self, "Save Template", "Template Name...", QLineEdit.Normal)
-
-		if ok:
-
-			from xml.etree import cElementTree as etree
-
-			root = etree.Element('root')
-			root.attrib['templateName'] = name
-			build( self.folderTree.invisibleRootItem(), root )
-
-			# Write the file.
-			templateFile = os.path.join( templatesDir, '%s.xml' %name )
-			tree = etree.ElementTree( root )
-			tree.write( templateFile )
-
-			# Clean it up
-			CleanXML().cleanWriteXML( templateFile )
-
-			# Update the UI
-			self.get_templateList()
-
-			# set the new template as the selected on
-			self.folderTemplateCombo.setCurrentIndex( self.folderTemplateCombo.findText(name) )
-
-
 	def template_set(self):
 		'''
 		Load the contents of a template into the folder tree.
@@ -537,20 +579,26 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 					build( self.folderTree.invisibleRootItem(), root )
 
 
-	def template_newTemplate(self):
+	def template_new(self):
 		'''
-		Create a new blank structure template.
+		Create a new blank  template.
 		'''
-		pass
+		# request a template name
+		name, ok = QInputDialog.getText(self, "Save Template", "Template Name...", QLineEdit.Normal)
 
+		if ok:
+			# clear the tree
+			self.template_resetTree()
 
-	def template_stylizeNewFolder(self, item):
-		'''
-		Customize the look of folder items in the folder tree
-		'''
-		item.setSizeHint( 0, QSize(100, 20) )
-		icon = os.path.join( resrcPath, 'icons/folder.png' ) 
-		item.setIcon( 0, QIcon(icon) )
+			# write an empty file
+			templateFile = os.path.join( templatesDir, '%s.xml' %name )
+			f = open(templateFile, 'w').close()
+
+			# Update the UI
+			self.get_templateList()
+
+			# set the new template as the selected one
+			self.folderTemplateCombo.setCurrentIndex( self.folderTemplateCombo.findText(name) )
 
 
 	def template_addFolder(self):
@@ -558,7 +606,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		Add a new item to the structure tree
 		'''
 		newItem = QTreeWidgetItem()
-		newItem.setText( 0,'New Folder' )
+		newItem.setText( 0,'__NEW FOLDER__' )
 		self.template_stylizeNewFolder( newItem )
 		self.folderTree.addTopLevelItem( newItem )
 
@@ -579,15 +627,64 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.ui_clearTreeWidget( self.folderTree )
 
 
-	def template_saveAs(self):
+	def template_save(self):
 		'''
-		Save the tree contents for the current template to a new file, and as a new template
+		Write the contents of the folder tree to an XML file.
 		'''
-		pass
+
+		def build(item, root):
+			for row in range(item.childCount()):
+				child = item.child(row)
+				element = etree.SubElement( root, 'folder', text=child.text(0) )
+				build( child, element )
+
+		template = self.folderTemplateCombo.currentText()
+		if template != '---  Choose a Template  ---':
+
+			from xml.etree import cElementTree as etree
+
+			root = etree.Element('root')
+			root.attrib['templateName'] = template
+			build( self.folderTree.invisibleRootItem(), root )
+
+			# Write the file.
+			templateFile = os.path.join( templatesDir, '%s.xml' %template )
+			tree = etree.ElementTree( root )
+			tree.write( templateFile )
+
+			# Clean it up
+			CleanXML().cleanWriteXML( templateFile )
+
+			# log
+			logMessage( lx.symbol.e_INFO, ['Structure Template saved:', template])
+
+
+	def template_beginItemEdit(self):
+		'''
+		Begin editing template Item
+		'''
+		self.folderTree.openPersistentEditor( self.folderTree.currentItem(), 0 )
+
+
+	def template_endItemEdit(self):
+		'''
+		Stop editing item name and sort the folder tree
+		'''
+		self.folderTree.closePersistentEditor( self.folderTree.currentItem(), 0 )
+		self.folderTree.sortItems( 0, Qt.AscendingOrder )
+
+
+	def template_stylizeNewFolder(self, item):
+		'''
+		Customize the look of folder items in the folder tree
+		'''
+		item.setSizeHint( 0, QSize(100, 20) )
+		icon = os.path.join( resrcPath, 'icons/folder.png' ) 
+		item.setIcon( 0, QIcon(icon) )
+
 
 
 #   -----------------------------------------------------------
-
 
 	def project_PickRoot(self):
 		'''
@@ -628,7 +725,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			self.get_projects()
 
 			# log
-			logInfo( 'The following project was created:', "'%s'" %inputPath )
+			logMessage( lx.symbol.e_INFO, ['The following project was created:', inputPath])
 
 
 #   -----------------------------------------------------------
@@ -638,16 +735,10 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 		Open or Import the target scene file
 		'''
-		if self.sceneTree.selectedItems():
-			projectItem = self.projectTree.selectedItems()[0]
-			projDir = projectItem.text( 1 ).strip()
-			sceneItem = self.sceneTree.selectedItems()[0]
-			sceneRelativePath = sceneItem.text( 1 )
-			scenePath = projDir + sceneRelativePath
-
+		scenePath = get_selectedScene()
+		if scenePath:
 			if type == 'ref':
 				lx.eval( "+scene.importReference {%s}" %scenePath )
-
 			else:
 				lx.eval( "scene.open %s %s" %( scenePath, type ) )
 
@@ -664,9 +755,10 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			if os.path.exists( projDir ):
 				customStartFile( projDir )
 			else:
-				logInfo( 'Trouble exploring project folder', 'Cannot find the specified path.' )
+				logMessage(lx.symbol.e_FAILED, ['Trouble exploring project folder...',
+												'Invalid project path.'] )
 
-
+	
 	def act_proj_setAsCurrent(self):
 		'''
 		Set the selected project as the current project in Modo
@@ -675,9 +767,11 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			projDir = self.get_selectedProject()
 			if os.path.exists( projDir ):
 				lx.eval( "projDir.chooseProject %s" %projDir )
-				logInfo( "Running projDir.chooseProject...", "Setting current project as '%s'" %projDir )
+				logMessage( lx.symbol.e_INFO, ['Successfully set current project:', projDir])
+
 			else:
-				logInfo( 'Trouble setting current project', 'Cannot find the specified path.' )
+				logMessage(lx.symbol.e_FAILED, ['Trouble setting current project...',
+												'Invalid project path.'] )
 
 
 	def act_proj_removeSelected(self):
