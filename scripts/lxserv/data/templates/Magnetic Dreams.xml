@@ -1,0 +1,16 @@
+<root templateName="Magnetic Dreams">
+  <folder text="admin" />
+  <folder text="assets" />
+  <folder text="dev">
+    <folder text="beta" />
+    <folder text="production" />
+  </folder>
+  <folder text="scratch" />
+  <folder text="sequences" />
+  <folder text="shots" />
+  <folder text="story">
+    <folder text="edit" />
+    <folder text="storyboards" />
+  </folder>
+  <folder text="system" />
+</root>

@@ -1,0 +1,1346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>projectManager</class>
+ <widget class="QMainWindow" name="projectManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>936</width>
+    <height>544</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Project Manager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+  dialogbuttonbox-buttons-have-icons: 0;
+  combobox-popup: 1;
+  tabbar-prefer-no-arrows: true;
+  color: #cccccc;
+  background-color: #303030;
+}
+
+
+QMenuBar{
+  background-color: QLinearGradient(
+      x1:0, y1:0,
+      x2:0, y2:1,
+      stop:1 #484848,
+      stop:0.4 #666666);
+}
+
+QMenu::separator{
+height: 1px;
+background-color: #303030;
+}
+
+QMenuBar::item{
+  background: transparent;
+}
+
+
+QMenuBar::item:selected{
+  background: transparent;
+}
+
+
+QMenuBar::item:pressed{
+  background: #545454;
+  border: 1px solid #000;
+  margin-bottom:-1px;
+  padding-bottom:1px;
+}
+
+
+QMenu{
+  border: 1px solid #000;
+background: #484848;
+padding:5px;
+}
+
+
+QMenu::item{
+  padding: 2px 20px 2px 20px;
+background: #484848;
+}
+
+
+QMenu::item:selected{
+  color: #f89a2b;
+ background: #545454;
+}
+
+
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <property name="margin">
+     <number>4</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget
+{
+  dialogbuttonbox-buttons-have-icons: 0;
+  combobox-popup: 1;
+  tabbar-prefer-no-arrows: true;
+  color: #cccccc;
+  background-color: #484848;
+}
+
+QGroupBox{
+border: 1px solid #696969;
+border-radius:6px;
+margin-top: 5px;
+}
+
+QGroupBox::title{
+margin-top: -12px;
+}
+
+
+QToolTip
+{
+  border: 1px solid black;
+  background-color: #f0f0b4;
+  color: #000000;
+  border-radius: 3px;
+  opacity: 220;
+}
+
+QLabel{
+background: none;
+color: #919191;
+}
+
+QLineEdit
+{
+  color: #000000;
+  background-color: #9098a0;
+  padding: 1px;
+  border-style: solid;
+  border: 1px solid #353535;
+  border-radius: 6px;
+}
+
+
+
+QPushButton
+{
+  icon-size: 12px;
+  background-color: #606060;
+  border-width: 1px;
+  border-color: #353535;
+  border-style: solid;
+  border-radius: 6px;
+  padding: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+QPushButton:flat {
+  border: none;
+  background-color: none;
+}
+
+QPushButton:hover
+{
+  background-color: #686868;
+}
+
+QPushButton:pressed,QPushButton:focus:pressed
+{
+  color: #000;
+  background-color: #f89a2b;
+}
+
+
+QComboBox
+{
+  combobox-popup: 1;
+  selection-background-color: #666666;
+  selection-color: #f89a2b;;
+  background-color: #606060;
+  border-style: solid;
+  border: 1px solid #1e1e1e;
+  border-radius: 6px;
+  padding-left: 6px;
+}
+
+  
+QComboBox:hover,QPushButton:hover
+{
+  background-color: #6c6c6c;
+}
+
+QComboBox QAbstractItemView
+{
+
+  background-color: #545454;
+  border-width: 0px;
+  border-radius: 0px;
+  selection-background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 2px;
+  padding-right: 2px;
+border: 1px solid #1e1e1e;
+}
+
+QComboBox::drop-down
+{
+  subcontrol-origin: padding;
+  subcontrol-position: top right;
+  width: 25px;
+  border-left-width: 0px;
+  border-left-color: darkgray;
+  border-left-style: solid;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+
+
+QScrollBar:horizontal {
+  background: #404040;
+  height: 16px;
+  margin: 0 -2px 0 -2px;
+  border: 1px solid #383838;
+}
+
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
+{
+  background: none;
+}
+
+QScrollBar::add-line:horizontal {
+  border-radius: 0px;
+  border: none;
+  width: 0px;
+  subcontrol-position: left;
+  subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+  border-radius: 0px;
+  border: none;
+  width: 0px;
+  subcontrol-position: left;
+  subcontrol-origin: margin;
+}
+
+/*
+QScrollBar::right-arrow:horizontal, QScrollBar::left-arrow:horizontal
+{
+  border: 1px solid black;
+  width: 1px;
+  height: 1px;
+  background: white;
+}
+*/
+
+
+
+
+QScrollBar:vertical
+{
+  background: #404040;
+  width: 16px;
+  margin: -2px 0 -2px 0;
+  border: 1px solid #383838;
+}
+
+
+QScrollBar::add-line:vertical
+{
+  border-radius: 2px;
+  border: 1px solid #383838;
+  height: 0px;
+  subcontrol-position: bottom;
+  subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical
+{
+  border-radius: 2px;
+  border: 1px solid #383838;
+  height: 0px;
+  subcontrol-position: top;
+  subcontrol-origin: margin;
+}
+
+/*
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+{
+  border: 1px solid black;
+  width: 1px;
+  height: 1px;
+  background: white;
+}
+*/
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+  background: none;
+}
+
+
+QTabWidget:pane{
+}
+
+
+QTabBar {
+background: none;
+}
+
+QTabBar::tab {
+min-width: 100px;
+max-width:100px;
+  color: #c0c0c0;
+  border-width: 1px;
+  border-color: #484848;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-top-style: solid;
+  border-bottom-style: none;
+  border-style: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 2px;
+  margin-left: 0px;
+  margin-right: 2px;
+  margin-top: 3px;
+  background-color: QLinearGradient(
+      x1:0, y1:0,
+      x2:0, y2:1,
+      stop:1 #484848,
+      stop:0.4 #565656);
+}
+
+
+QTabWidget::right-corner {
+  background-color: #28ff28;
+}
+
+QTabBar::tab:last
+{
+  margin-right: 0;
+}
+
+QTabBar::tab:first:!selected
+{
+  margin-left: 0px;
+}
+
+QTabBar::tab:!selected
+{
+margin-top: 5px;
+  color: #787878;
+  border-bottom-style: none;
+  background-color: QLinearGradient(
+      x1:0, y1:0,
+      x2:0, y2:1,
+      stop:1 #353535,
+      stop:0.4 #404040);
+}
+
+QTabBar::tab:selected
+{
+
+}
+
+
+QTreeView {
+  color: #000000;
+  background-color: #9098a0;
+  alternate-background-color: #9098a0;
+/*
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+*/
+  border-style: solid;
+  border-width: 1px;
+  border-color: #282828;
+border-radius: 6px;
+}
+
+ QTreeView::item:hover {
+background-color: #A2A9B0;
+ }
+
+ QTreeView::item:selected {
+background-color: #B5BCC4;
+color: black;
+ }
+
+
+
+
+
+QListView {
+border-radius: 6px;
+  color: #000000;
+  background-color: #949ca4;
+  alternate-background-color: #9098a0;
+/*
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+*/
+  border-style: solid;
+  border-width: 1px;
+  border-color: #282828;
+}
+
+QHeaderView:section {
+min-height: 18px;
+  background-color: #64707c;
+  color: #bbbbbb;
+  padding-left: 4px;
+  border: 1px solid #44505c;
+border-top: none;
+border-left: none;
+}
+
+QHeaderView::section:first{
+border-top-left-radius: 6px;
+}
+
+QHeaderView::section:last{
+border-top-right-radius: 6px;
+border-right:none;
+}
+
+/*
+QHeaderView::down-arrow {
+  image: url(down_arrow.png);
+}
+
+QHeaderView::up-arrow {
+  image: url(up_arrow.png);
+}
+*/
+
+</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="existingProjectsTab">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <attribute name="title">
+        <string>Existing Projects</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <property name="margin">
+         <number>3</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QSplitter" name="existingProjectsSplitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QGridLayout" name="projectTreeGridLayout">
+            <property name="verticalSpacing">
+             <number>1</number>
+            </property>
+            <item row="0" column="1">
+             <spacer name="spacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>178</width>
+                <height>21</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QTreeWidget" name="projectTree">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="indentation">
+               <number>5</number>
+              </property>
+              <property name="rootIsDecorated">
+               <bool>false</bool>
+              </property>
+              <property name="uniformRowHeights">
+               <bool>false</bool>
+              </property>
+              <property name="itemsExpandable">
+               <bool>false</bool>
+              </property>
+              <property name="expandsOnDoubleClick">
+               <bool>false</bool>
+              </property>
+              <attribute name="headerVisible">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="headerDefaultSectionSize">
+               <number>200</number>
+              </attribute>
+              <attribute name="headerMinimumSectionSize">
+               <number>25</number>
+              </attribute>
+              <attribute name="headerShowSortIndicator" stdset="0">
+               <bool>false</bool>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Project</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Path</string>
+               </property>
+              </column>
+              <item>
+               <property name="text">
+                <string>projectName</string>
+               </property>
+               <property name="text">
+                <string>path/to/this/project</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>projectName2</string>
+               </property>
+               <property name="text">
+                <string>path/to/this/project</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QGridLayout" name="gridLayout_4">
+            <property name="verticalSpacing">
+             <number>1</number>
+            </property>
+            <item row="0" column="1">
+             <spacer name="spacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>138</width>
+                <height>10</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="fileTypeLabel">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Scene Filter </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QComboBox" name="fileTypeCombo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>90</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">min-height: 18px;</string>
+              </property>
+              <property name="maxVisibleItems">
+               <number>15</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Modo (*.lxo)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Preset (*.lxl)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Lightwave (*.lwo)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Wavefront (*.obj)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Alembic (*.abc)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Filmbox (*.fbx)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Collada (*.dae)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Rhino (*.3dm)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autodesk DXF (.*dxf)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Adobe Illustrator (*.eps, *.ai)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Stereolithography (*.stl)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Videoscape (*.geo)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Solidworks (*.sldprt, *.sldasm)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Protein DB (*.pdb)</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="4">
+             <widget class="QTreeWidget" name="sceneTree">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
+              <property name="indentation">
+               <number>5</number>
+              </property>
+              <property name="rootIsDecorated">
+               <bool>false</bool>
+              </property>
+              <property name="expandsOnDoubleClick">
+               <bool>false</bool>
+              </property>
+              <attribute name="headerVisible">
+               <bool>false</bool>
+              </attribute>
+              <attribute name="headerDefaultSectionSize">
+               <number>200</number>
+              </attribute>
+              <column>
+               <property name="text">
+                <string>Scene</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Path</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="newProjectTab">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <attribute name="title">
+        <string>New Project</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="projectLocationGroup">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>45</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>45</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="title">
+           <string>Project Location</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="topMargin">
+            <number>4</number>
+           </property>
+           <property name="rightMargin">
+            <number>7</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="newProjectPathLabel">
+             <property name="minimumSize">
+              <size>
+               <width>85</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>85</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>Root Path</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QPushButton" name="newProjectPathButton">
+             <property name="minimumSize">
+              <size>
+               <width>51</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Browse for the location of your new project. The title of the project will be the directory you choose.</string>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">min-width: 45px;</string>
+             </property>
+             <property name="text">
+              <string>...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="newProjectPath">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>This is the path where your new project will be created. The title of the project will be the name of root directory. </string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGroupBox" name="rootFoldersGroup">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="title">
+           <string>Directory Structure</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>85</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="createFoldersCheckBox">
+             <property name="text">
+              <string>Create Folders (EXPERIMENTAL)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="folderTemplateLabel">
+             <property name="minimumSize">
+              <size>
+               <width>85</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>Template</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="folderTemplateCombo">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <item>
+              <property name="text">
+               <string>Modo Default</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="newTemplateButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>New</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="scenesRootLabel_2">
+             <property name="minimumSize">
+              <size>
+               <width>85</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>80</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="text">
+              <string>Structure</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="addFolderButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>+</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="removeFolderButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="resetTreeButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Reset</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="saveTemplateButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Save</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="saveTemplateAsButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>S. As</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="2" column="1">
+            <widget class="QTreeWidget" name="folderTree">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="dragEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::InternalMove</enum>
+             </property>
+             <property name="defaultDropAction">
+              <enum>Qt::MoveAction</enum>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::ExtendedSelection</enum>
+             </property>
+             <property name="autoExpandDelay">
+              <number>0</number>
+             </property>
+             <property name="indentation">
+              <number>30</number>
+             </property>
+             <property name="sortingEnabled">
+              <bool>false</bool>
+             </property>
+             <property name="animated">
+              <bool>true</bool>
+             </property>
+             <property name="headerHidden">
+              <bool>true</bool>
+             </property>
+             <property name="expandsOnDoubleClick">
+              <bool>false</bool>
+             </property>
+             <attribute name="headerVisible">
+              <bool>false</bool>
+             </attribute>
+             <column>
+              <property name="text">
+               <string>Folders</string>
+              </property>
+             </column>
+             <item>
+              <property name="text">
+               <string>New Item</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>New Item</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>New Item</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>New Subitem</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>New Subitem</string>
+                </property>
+               </item>
+              </item>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="spacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>223</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="createProjectButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Create Project</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="spacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>223</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>936</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Projects</string>
+    </property>
+    <addaction name="act_setAsCurrent"/>
+    <addaction name="act_exploreProject"/>
+    <addaction name="separator"/>
+    <addaction name="act_addExisting"/>
+    <addaction name="act_removeSelected"/>
+    <addaction name="act_exportList"/>
+    <addaction name="act_importList"/>
+   </widget>
+   <widget class="QMenu" name="menuScenes">
+    <property name="title">
+     <string>Scenes</string>
+    </property>
+    <addaction name="act_openSelectedScene"/>
+    <addaction name="act_importSelectedScene"/>
+    <addaction name="act_importSelectedAsRef"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="act_docs"/>
+    <addaction name="act_about"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuScenes"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="act_addExisting">
+   <property name="text">
+    <string>Add Existing Project To List</string>
+   </property>
+  </action>
+  <action name="act_removeSelected">
+   <property name="text">
+    <string>Remove Selected</string>
+   </property>
+  </action>
+  <action name="act_exportList">
+   <property name="text">
+    <string>Export List</string>
+   </property>
+  </action>
+  <action name="act_importList">
+   <property name="text">
+    <string>Import List</string>
+   </property>
+  </action>
+  <action name="act_setAsCurrent">
+   <property name="text">
+    <string>Set Selected As Current</string>
+   </property>
+  </action>
+  <action name="act_openSelectedScene">
+   <property name="text">
+    <string>Open Selected</string>
+   </property>
+  </action>
+  <action name="act_importSelectedScene">
+   <property name="text">
+    <string>Import Selected</string>
+   </property>
+  </action>
+  <action name="act_importSelectedAsRef">
+   <property name="text">
+    <string>Import Selected as Referenced</string>
+   </property>
+  </action>
+  <action name="act_about">
+   <property name="text">
+    <string>About...</string>
+   </property>
+  </action>
+  <action name="act_docs">
+   <property name="text">
+    <string>Documentation</string>
+   </property>
+  </action>
+  <action name="act_exploreProject">
+   <property name="text">
+    <string>Explore Project</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

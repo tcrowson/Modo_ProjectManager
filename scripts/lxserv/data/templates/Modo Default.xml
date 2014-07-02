@@ -1,0 +1,7 @@
+<root templateName="Modo Default">
+  <folder text="Images" />
+  <folder text="IrradianceCaches" />
+  <folder text="Movies" />
+  <folder text="Renders" />
+  <folder text="Scenes" />
+</root>
