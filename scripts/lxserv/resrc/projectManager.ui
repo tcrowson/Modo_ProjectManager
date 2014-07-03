@@ -587,7 +587,7 @@ QHeaderView::up-arrow {
              </widget>
             </item>
             <item row="0" column="3">
-             <widget class="QComboBox" name="fileTypeCombo">
+             <widget class="QComboBox" name="fileTypeCbx">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -813,7 +813,7 @@ QHeaderView::up-arrow {
             </widget>
            </item>
            <item row="0" column="2">
-            <widget class="QPushButton" name="newProjectPathButton">
+            <widget class="QPushButton" name="newProjectPathBtn">
              <property name="minimumSize">
               <size>
                <width>51</width>
@@ -929,7 +929,7 @@ QHeaderView::up-arrow {
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QComboBox" name="folderTemplateCombo">
+            <widget class="QComboBox" name="templateCbx">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -950,7 +950,7 @@ QHeaderView::up-arrow {
             </widget>
            </item>
            <item row="1" column="2">
-            <widget class="QPushButton" name="newTemplateButton">
+            <widget class="QPushButton" name="newTemplateBtn">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -1018,7 +1018,7 @@ QHeaderView::up-arrow {
               <number>2</number>
              </property>
              <item>
-              <widget class="QPushButton" name="addFolderButton">
+              <widget class="QPushButton" name="addFolderBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1050,7 +1050,7 @@ QHeaderView::up-arrow {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="removeFolderButton">
+              <widget class="QPushButton" name="delFolderBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1082,7 +1082,7 @@ QHeaderView::up-arrow {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="resetTreeButton">
+              <widget class="QPushButton" name="resetTreeBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1114,7 +1114,7 @@ QHeaderView::up-arrow {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="saveTemplateButton">
+              <widget class="QPushButton" name="saveTemplateBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -1255,7 +1255,7 @@ QHeaderView::up-arrow {
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="createProjectButton">
+           <widget class="QPushButton" name="createProjectBtn">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
