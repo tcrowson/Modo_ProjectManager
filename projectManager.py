@@ -1,11 +1,11 @@
-# PROJECT MANAGER, Tim Crowson, June 2014
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# PROJECT MANAGER, Tim Crowson, July 2014
+#------------------------------------------------------------------------------
 
 
 
 
-
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # IMPORTS
 
 import os
@@ -17,7 +17,6 @@ import lxu
 import lxifc
 import lxu.select
 
-import PySide
 from PySide.QtGui import *
 from PySide.QtCore import *
 
@@ -25,24 +24,19 @@ import xml.etree.ElementTree as tree
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
-# GET BASIC SERVICES
-fileServ = lx.service.File()
-logServ = lx.service.Log()
-
-
-#----------------------------------------------------------------------------------------------------------------------
-# ESTABLISH PATHS
+#------------------------------------------------------------------------------
+# PATHS
 
 # kit folder
+fileServ = lx.service.File()
 scriptsPath = fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_SCRIPTS )
 kitPath = os.path.join(scriptsPath,  'ProjectManager')
 
 # data folder
-dataPath = os.path.join(kitPath, 'scripts', 'lxserv', 'data')
+dataPath = os.path.join(kitPath, 'data')
 
 # resource folder
-resrcPath = os.path.join(kitPath, 'scripts', 'lxserv', 'resrc')
+resrcPath = os.path.join(kitPath, 'resrc')
 
 # project list file
 projectListFile = os.path.join(dataPath, 'projects.projlist')
@@ -52,27 +46,14 @@ templatesDir = os.path.join(dataPath, 'templates')
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # IMPORT THE UI
 sys.path.append( resrcPath )
-import projectManager_UI
+import projectManager_UI as pmUI
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
-# DIALOG STRING CONSTANTS
-aboutText = '''
-version 0.1  - Tim Crowson, July 2014 
-
-This kit offers a simple 3rd party solution for project management in Modo. See the documentation for details.
-'''
-
-notImpl = ['---------- Not yet Implemented ----------']
-
-
-
-#----------------------------------------------------------------------------------------------------------------------
-# LOGGING CLASS
+#------------------------------------------------------------------------------
 class Log:
 	'''
 	Provide an easy way for logging messages into choosen log subsystem.
@@ -125,156 +106,7 @@ class Log:
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
-# HELPERS
-
-def logMessage(type, child):
-	'''
-	Convenience function for intercepting and logging messages
-	'''
-	log = Log()
-	if log.set('scripts'):
-		log.Out(type, '   === Project Manager ===', child)
-
-
-def messageBox(title, text):
-	'''
-	Generic Qt info dialog
-	'''
-	box = QMessageBox()
-	box.setWindowTitle(title)
-	text = '\n'.join(text)
-	box.setContentsMargins( 10,10,30,10 )
-	box.setText(text)
-	box.exec_()
-
-
-def inputDialog(title, text):
-	'''
-	Gneeric Qt string input dialog
-	'''
-	dialog = QInputDialog()
-	dialog.setWindowTitle(title)
-	dialog.setLabelText(text)
-	dialog.exec_()
-	if dialog.textValue():
-		return dialog.textValue()
-	else:
-		return None
-
-
-def customStartFile(filename):
-	'''
-	Platform-respective function for opening a file
-	'''
-	if sys.platform == "win32":
-		os.startfile( filename )
-	else:
-		opener ="open" if sys.platform == "darwin" else "xdg-open"
-		subprocess.call( [opener, filename] )
-
-
-def getFiletypeLookup():
-	'''
-	Return a dictionary representing compatible scene filetypes
-	'''
-	fileTypeLookup = {
-					'Modo (*.lxo)': '.lxo',
-					'Preset (*.lxl)': '.lxl',
-					'Lightwave (*.lwo)': '.lwo',
-					'Wavefront (*.obj)': '.obj',
-					'Alembic (*.abc)':' .abc',
-					'Filmbox (*.fbx)': '.fbx',
-					'Collada (*.dae)': '.dae',
-					'Rhino (*.3dm)': '.3dm',
-					'Autodesk DXF (.*dxf)': '.dxf',
-					'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
-					'Stereolithography (*.stl)': '.stl',
-					'Videoscape (*.geo)': '.geo',
-					'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
-					'Protein DB (*.pdb)': '.pdb'
-					}
-	return fileTypeLookup
-
-
-#----------------------------------------------------------------------------------------------------------------------
-class ShowProjectManager ( lxu.command.BasicCommand ):
-	'''
-	Modo Command to display the Project Manager in a new window.
-	'''
-
-	def __init__(self):
-		lxu.command.BasicCommand.__init__(self)
-
-	def cmd_Interact(self):
-		''' '''
-		pass
-
-	def basic_Execute(self, msg, flags):
-		''' Show the Project Manager '''
-		lx.eval("layout.createOrClose viewCookie ProjectManagerLayout width:900 height:600 class:normal title:{Project Manager}")
-
-
-
-
-#----------------------------------------------------------------------------------------------------------------------
-class ExploreProjectFolder (lxu.command.BasicCommand):
-	'''
-	Modo Command to explore the current project directory.
-	Logs and displays a warning if no project is set.
-	'''
-
-	def __init__(self):
-		lxu.command.BasicCommand.__init__(self)
-
-	def cmd_Interact(self):
-		''' '''
-		pass
-
-	def basic_Execute(self, msg, flags):
-		''' Explore the current project directory '''
-		try:
-			projDir = fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
-			customStartFile(projDir)
-		except:
-			message = ['Trouble exploring project folder.',
-						'No project has been set.',
-						'Please set the active project.']
-			logMessage( lx.symbol.e_FAILED, message )
-			messageBox( 'Warning...', message )
-
-
-
-#----------------------------------------------------------------------------------------------------------------------
-class ExploreSceneFolder (lxu.command.BasicCommand):
-	'''
-	Modo Command to explore the current scene's directory.
-	Logs and displays a warning if no scene is open.
-	'''
-
-	def __init__(self):
-		lxu.command.BasicCommand.__init__(self)
-
-	def cmd_Interact(self):
-		''' '''
-		pass
-
-	def basic_Execute(self, msg, flags):
-		''' Explore the current project directory '''
-		
-		scene = lxu.select.SceneSelection().current().Filename()
-		
-		if scene == None:
-			message = ['Failed to explore scene directory...', 'No scene file is currently open!']
-			logMessage(lx.symbol.e_WARNING,  message)
-			messageBox( 'Warning...', message )
-		else:
-			customStartFile( os.path.dirname( scene ) )
-			
-
-
-
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class CleanXML():
 	'''
 	Tidies the formatting of an XML file to include carriage returns and
@@ -316,9 +148,25 @@ class CleanXML():
 		fWrite.close()
 
 
+#------------------------------------------------------------------------------
+class shiftSelectMenu(QObject):
+	'''
+	Class for creating a menu which allows you to select multiple actions
+	by using the Shift key. Original class by Jon Swindells.
+	'''
+	def eventFilter(self, obj, event):
+		mods = QApplication.keyboardModifiers()
+		if mods == Qt.ShiftModifier:
+			if event.type() in [QEvent.MouseButtonRelease] and isinstance(obj, QMenu):
+				if obj.activeAction() and not obj.activeAction().menu():
+					obj.activeAction().trigger()
+					return True
+		return super(shiftSelectMenu, self).eventFilter(obj, event)
 
-#----------------------------------------------------------------------------------------------------------------------
-class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
+
+#------------------------------------------------------------------------------
+
+class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 	'''
 	Project Manager Class
 	'''
@@ -328,6 +176,9 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.setupUi(self) # boilerplate for pre-converted PySide UIs
 		self.ui_setConnections()
 		self.ui_customize()
+
+		# define a common not-implemented message
+		self.notImpl = ['---------- Not yet Implemented ----------']
 
 
 	def ui_setConnections(self):
@@ -390,7 +241,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.ui_filtersMenu()
 
 
-
 	def ui_clearTreeWidget(self, treewidget):
 		'''
 		Remove all items from the specified QTreeWidget
@@ -409,27 +259,118 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 		Display info about Project Manager in a modal window
 		'''
-		box = QMessageBox()
-		box.setWindowTitle( 'About Project Manager...' )
-		box.setContentsMargins( 0,5,5,5 )
-		box.setText( aboutText )
-		box.exec_()
+		message = [	'version 0.1  - Tim Crowson, July 2014 ',
+					'',
+					'This kit offers a simple 3rd party solution for project management in Modo.',
+					'See the documentation for details.'
+					]
+		self.msg_box( 'About', message)
 
 
 	def ui_filtersMenu(self):
 		'''
-		Build and display the filetype filter menu
+		Build and display the filetype filter menu.
+
+		This menu will have a unique behavior: If the Shift key is
+		held down while clicking on an item, the menu will remain
+		open to allow the user to click on more items. As the user
+		clicks on other items, the contents of the scene list
+		will update.
 		'''
-		fileTypes = getFiletypeLookup()
-		self.filtersMenu = QMenu(self)
-		for i in fileTypes:
-			action = self.filtersMenu.addAction( i )
+		fileTypes = self.ui_getFileTypes()
+
+		self.filtersMenu = QMenu()
+		self.evFilter = shiftSelectMenu()
+		self.filtersMenu.installEventFilter(self.evFilter)
+
+		for i in sorted( fileTypes ):
+			action = self.filtersMenu.addAction( i , self.scenes_getAll)
 			action.setCheckable( True )
-			self.filtersBtn.setMenu(self.filtersMenu)
-			self.filtersBtn.setPopupMode(QToolButton.InstantPopup)
+			if i == 'Modo (*.lxo)':
+				action.setChecked( True )
+
+		self.filtersBtn.setMenu(self.filtersMenu)
 
 
-#   -----------------------------------------------------------
+	def ui_getFileTypes(self):
+		'''
+		Return compatible scene filetypes as a dictionary.
+		'''
+		fileTypeLookup = {
+						'Modo (*.lxo)': '.lxo',
+						'Preset (*.lxl)': '.lxl',
+						'Lightwave (*.lwo)': '.lwo',
+						'Wavefront (*.obj)': '.obj',
+						'Alembic (*.abc)':' .abc',
+						'Filmbox (*.fbx)': '.fbx',
+						'Collada (*.dae)': '.dae',
+						'Rhino (*.3dm)': '.3dm',
+						'Autodesk DXF (.*dxf)': '.dxf',
+						'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
+						'Stereolithography (*.stl)': '.stl',
+						'Videoscape (*.geo)': '.geo',
+						'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
+						'Protein DB (*.pdb)': '.pdb'
+						}
+		return fileTypeLookup
+
+
+ 	#-----------------------------------------------------------
+
+
+	def input_StringDialog(self, title, text):
+		'''
+		Generic string input dialog
+		'''
+		dialog = QInputDialog()
+		dialog.setWindowTitle(title)
+		dialog.setLabelText(text)
+		dialog.exec_()
+		if dialog.textValue():
+			return dialog.textValue()
+		else:
+			return None
+
+
+ 	#-----------------------------------------------------------
+
+
+	def explore(self, filename):
+		'''
+		Platform-respective function for opening a file
+		'''
+		if sys.platform == "win32":
+			os.startfile( filename )
+		else:
+			opener ="open" if sys.platform == "darwin" else "xdg-open"
+			subprocess.call( [opener, filename] )
+
+
+   #-----------------------------------------------------------
+
+
+	def msg_log(self, type, child):
+		'''
+		Convenience function for intercepting and logging messages
+		'''
+		log = Log()
+		if log.set('scripts'):
+			log.Out(type, '   === Project Manager ===', child)
+
+
+	def msg_box(self, title, text):
+		'''
+		Generic Qt info dialog
+		'''
+		box = QMessageBox()
+		box.setWindowTitle(title)
+		text = '\n'.join(text)
+		box.setContentsMargins( 10,10,30,10 )
+		box.setText(text)
+		box.exec_()
+
+
+   #-----------------------------------------------------------
 
 
 	def write_genericSysFile(self, path):
@@ -468,7 +409,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 				f.close()
 
 
-#   -----------------------------------------------------------
+   #-----------------------------------------------------------
 
 
 	def templates_getExisting(self):
@@ -532,7 +473,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 
 		# request a template name
-		name = inputDialog('New Template', 'Template name?')
+		name = self.input_StringDialog('New Template', 'Template name?')
 
 		if name:
 			# clear the tree
@@ -612,7 +553,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			self.template_load()
 
 			# log
-			logMessage( lx.symbol.e_INFO, ['Structure Template saved:', template])
+			self.msg_log( lx.symbol.e_INFO, ['Structure Template saved:', template])
 
 
 	def template_beginItemEdit(self):
@@ -639,7 +580,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		item.setIcon( 0, QIcon(icon) )
 
 
-#   -----------------------------------------------------------
+   #-----------------------------------------------------------
 
 
 	def projects_getExisting(self):
@@ -727,16 +668,15 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 
 			# log and inform
 			message = ['The following project was created:', str(inputPath)]
-			logMessage( lx.symbol.e_INFO, message)
-			messageBox( 'Project Manager', message )
+			self.msg_log( lx.symbol.e_INFO, message)
+			self.msg_box( 'Project Manager', message )
 
 			# Set this new project as the current project in Modo.
-			# If this not done AFTER displaying the message box above, Modo will crash.
+			# If this not done AFTER displaying the message box above, Modo will crash (on Ubuntu 12.0.4)
 			lx.eval( "projDir.chooseProject %s" %inputPath )
 
 
-
-#   -----------------------------------------------------------
+   #-----------------------------------------------------------
 
 
 	def scenes_getAll(self):
@@ -752,14 +692,15 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			# get a clean project path
 			projectItem = self.projectTree.selectedItems()[0]
 			projDir = projectItem.text( 1 ).strip()
-			
-			# get the selected filter
-			typeFilter = self.fileTypeCbx.currentText()
+
+			fileTypes = self.ui_getFileTypes()			
+			selectedTypes = [ fileTypes[action.text()] for action in self.filtersMenu.actions() if action.isChecked() ]
 
 			# walk the project and display all files of the filtered type
 			for root, dirs, files in os.walk( projDir ):
 				for file in files:
-					if file.endswith( fileTypeLookup[typeFilter] ):
+					filename, ext = os.path.splitext(file)
+					if ext in selectedTypes:
 						filePath = os.path.join( root, file )
 						fileName = os.path.basename( filePath )
 						relativePath = filePath.replace( projDir, '' )
@@ -802,7 +743,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 				lx.eval( "scene.open %s %s" %( scenePath, type ) )
 
 
-#   -----------------------------------------------------------
+   #-----------------------------------------------------------
 
 
 	def act_proj_explore(self):
@@ -812,10 +753,10 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		if self.projectTree.selectedItems():
 			projDir = self.projects_getSelected()
 			if os.path.exists( projDir ):
-				customStartFile( projDir )
+				self.explore( projDir )
 			else:
-				logMessage(lx.symbol.e_FAILED, ['Trouble exploring project folder...',
-												'Invalid project path.'] )
+				self.msg_log(lx.symbol.e_FAILED, [	'Trouble exploring project folder...',
+													'Invalid project path.'] )
 
 	
 	def act_proj_setAsCurrent(self):
@@ -826,11 +767,11 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			projDir = self.projects_getSelected()
 			if os.path.exists( projDir ):
 				lx.eval( "projDir.chooseProject %s" %projDir )
-				logMessage( lx.symbol.e_INFO, ['Successfully set current project:', projDir])
+				self.msg_log( lx.symbol.e_INFO, [	'Successfully set current project:', projDir])
 
 			else:
-				logMessage(lx.symbol.e_FAILED, ['Trouble setting current project...',
-												'Invalid project path.'] )
+				self.msg_log(lx.symbol.e_FAILED, [	'Trouble setting current project...',
+													'Invalid project path.'] )
 
 
 	def act_proj_removeSelected(self):
@@ -863,21 +804,21 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 		Add an existing project to the project list
 		'''
-		messageBox('Add Existing Project', notImpl)
+		self.msg_box('Add Existing Project', self.notImpl)
 
 
 	def act_proj_exportList(self):
 		'''
 		Export the project list to a file
 		'''
-		messageBox('Export Project List', notImpl)
+		self.msg_box('Export Project List', self.notImpl)
 
 
 	def act_proj_importList(self):
 		'''
 		Import a project list from a file
 		'''
-		messageBox('Import Project List', notImpl)
+		self.msg_box('Import Project List', self.notImpl)
 
 
 	def act_scn_openSelected(self):
@@ -895,7 +836,7 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.scenes_openOrImport( 'ref')
 
 
-#   -----------------------------------------------------------
+   #-----------------------------------------------------------
 
 
 	def contextMenu_projectList(self):
@@ -934,43 +875,3 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		action = menu.exec_( QCursor.pos() )
 
 
-
-
-#----------------------------------------------------------------------------------------------------------------------
-class ProjectManager_CustomView(lxifc.CustomView):
-	''' '''
-	def __init__ (self):
-		self.form = None
-
-	def customview_Init(self, pane):
-		# Get the pane
-		if pane == None:
-			return False
-
-		custPane = lx.object.CustomPane( pane )
-
-		if custPane.test() == False:
-			return False
-
-		# Get the parent QWidget
-		parent = custPane.GetParent()
-		parentWidget = lx.getQWidget( parent )
-
-		# Check that it suceeds
-		if parentWidget != None:
-			layout = QGridLayout()
-			layout.setContentsMargins( 2,2,2,2 )
-			self.form = ProjectManager_Actual()
-			layout.addWidget( self.form )
-			parentWidget.setLayout( layout )
-			return True
-
-		return False
-
-
-#----------------------------------------------------------------------------------------------------------------------
-# BLESS THIS MESS!
-lx.bless( ShowProjectManager, "project.manager" )
-lx.bless( ExploreProjectFolder, "project.exploreCurrent" )
-lx.bless( ExploreSceneFolder, "project.ExploreSceneFolder" )
-lx.bless( ProjectManager_CustomView, "ProjectManager" )

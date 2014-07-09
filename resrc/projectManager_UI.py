@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'projectManager.ui'
 #
-# Created: Tue Jul  8 19:07:04 2014
+# Created: Wed Jul  9 09:43:39 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,7 +130,7 @@ class Ui_projectManager(object):
 "\n"
 "\n"
 "\n"
-"QPushButton, QToolButton\n"
+"QPushButton\n"
 "{\n"
 "  icon-size: 12px;\n"
 "  background-color: #606060;\n"
@@ -143,17 +143,17 @@ class Ui_projectManager(object):
 "  padding-right: 2px;\n"
 "}\n"
 "\n"
-"QPushButton, QToolButton:flat {\n"
+"QPushButton:flat {\n"
 "  border: none;\n"
 "  background-color: none;\n"
 "}\n"
 "\n"
-"QPushButton, QToolButton:hover\n"
+"QPushButton:hover\n"
 "{\n"
 "  background-color: #686868;\n"
 "}\n"
 "\n"
-"QPushButton, QToolButton:pressed,QPushButton, QToolButton:focus:pressed\n"
+"QPushButton:pressed,QPushButton:focus:pressed\n"
 "{\n"
 "  color: #000;\n"
 "  background-color: #f89a2b;\n"
@@ -497,8 +497,38 @@ class Ui_projectManager(object):
         self.filtersBtn = QtGui.QToolButton(self.layoutWidget1)
         self.filtersBtn.setMinimumSize(QtCore.QSize(100, 20))
         self.filtersBtn.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.filtersBtn.setStyleSheet("QToolButton\n"
+"{\n"
+"  icon-size: 12px;\n"
+"  background-color: #606060;\n"
+"  border-width: 1px;\n"
+"  border-color: #353535;\n"
+"  border-style: solid;\n"
+"  border-radius: 6px;\n"
+"  padding: 2px;\n"
+"  padding-left: 2px;\n"
+"  padding-right: 2px;\n"
+"}\n"
+"\n"
+"QToolButton:flat {\n"
+"  border: none;\n"
+"  background-color: none;\n"
+"}\n"
+"\n"
+"QToolButton:hover\n"
+"{\n"
+"  background-color: #686868;\n"
+"}\n"
+"\n"
+"QToolButton:pressed,QToolButton:focus:pressed\n"
+"{\n"
+"  color: #000;\n"
+"  background-color: #f89a2b;\n"
+"}\n"
+"")
         self.filtersBtn.setCheckable(False)
         self.filtersBtn.setPopupMode(QtGui.QToolButton.InstantPopup)
+        self.filtersBtn.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
         self.filtersBtn.setObjectName("filtersBtn")
         self.gridLayout_4.addWidget(self.filtersBtn, 0, 2, 1, 1)
         self.gridLayout_5.addWidget(self.existingProjectsSplitter, 0, 0, 1, 1)
@@ -536,7 +566,7 @@ class Ui_projectManager(object):
         self.newProjectPathLabel.setObjectName("newProjectPathLabel")
         self.gridLayout_2.addWidget(self.newProjectPathLabel, 0, 0, 1, 1)
         self.newProjectPathBtn = QtGui.QPushButton(self.projectLocationGroup)
-        self.newProjectPathBtn.setMinimumSize(QtCore.QSize(49, 20))
+        self.newProjectPathBtn.setMinimumSize(QtCore.QSize(51, 20))
         self.newProjectPathBtn.setMaximumSize(QtCore.QSize(30, 20))
         self.newProjectPathBtn.setStyleSheet("min-width: 45px;")
         self.newProjectPathBtn.setObjectName("newProjectPathBtn")

@@ -138,7 +138,7 @@ QLineEdit
 
 
 
-QPushButton, QToolButton
+QPushButton
 {
   icon-size: 12px;
   background-color: #606060;
@@ -151,17 +151,17 @@ QPushButton, QToolButton
   padding-right: 2px;
 }
 
-QPushButton, QToolButton:flat {
+QPushButton:flat {
   border: none;
   background-color: none;
 }
 
-QPushButton, QToolButton:hover
+QPushButton:hover
 {
   background-color: #686868;
 }
 
-QPushButton, QToolButton:pressed,QPushButton, QToolButton:focus:pressed
+QPushButton:pressed,QPushButton:focus:pressed
 {
   color: #000;
   background-color: #f89a2b;
@@ -634,6 +634,37 @@ QHeaderView::up-arrow {
                 <height>20</height>
                </size>
               </property>
+              <property name="styleSheet">
+               <string notr="true">QToolButton
+{
+  icon-size: 12px;
+  background-color: #606060;
+  border-width: 1px;
+  border-color: #353535;
+  border-style: solid;
+  border-radius: 6px;
+  padding: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+QToolButton:flat {
+  border: none;
+  background-color: none;
+}
+
+QToolButton:hover
+{
+  background-color: #686868;
+}
+
+QToolButton:pressed,QToolButton:focus:pressed
+{
+  color: #000;
+  background-color: #f89a2b;
+}
+</string>
+              </property>
               <property name="text">
                <string>Select Filters...</string>
               </property>
@@ -733,7 +764,7 @@ QHeaderView::up-arrow {
             <widget class="QPushButton" name="newProjectPathBtn">
              <property name="minimumSize">
               <size>
-               <width>49</width>
+               <width>51</width>
                <height>20</height>
               </size>
              </property>
