@@ -60,7 +60,7 @@ import projectManager_UI
 
 
 #----------------------------------------------------------------------------------------------------------------------
-# DIALOG CONSTANTS
+# DIALOG STRING CONSTANTS
 aboutText = '''
 version 0.1  - Tim Crowson, July 2014 
 
@@ -68,6 +68,8 @@ This kit offers a simple 3rd party solution for project management in Modo. See 
 '''
 
 notImpl = ['---------- Not yet Implemented ----------']
+
+
 
 #----------------------------------------------------------------------------------------------------------------------
 # LOGGING CLASS
@@ -135,18 +137,6 @@ def logMessage(type, child):
 		log.Out(type, '   === Project Manager ===', child)
 
 
-# def infoDialog(title, text):
-# 	'''
-# 	Pop up a standard Modo info dialog box. Currently broken on Linux.
-# 	'''
-
-# 	lx.eval( "dialog.setup info" )
-# 	lx.eval( "dialog.title {%s}" %title )
-# 	lx.eval( "dialog.msg {%s}" %text )
-# 	lx.eval( "dialog.result ok" )
-# 	lx.eval( "dialog.open" )
-
-
 def messageBox(title, text):
 	'''
 	Generic Qt info dialog
@@ -172,6 +162,7 @@ def inputDialog(title, text):
 	else:
 		return None
 
+
 def customStartFile(filename):
 	'''
 	Platform-respective function for opening a file
@@ -183,6 +174,27 @@ def customStartFile(filename):
 		subprocess.call( [opener, filename] )
 
 
+def getFiletypeLookup():
+	'''
+	Return a dictionary representing compatible scene filetypes
+	'''
+	fileTypeLookup = {
+					'Modo (*.lxo)': '.lxo',
+					'Preset (*.lxl)': '.lxl',
+					'Lightwave (*.lwo)': '.lwo',
+					'Wavefront (*.obj)': '.obj',
+					'Alembic (*.abc)':' .abc',
+					'Filmbox (*.fbx)': '.fbx',
+					'Collada (*.dae)': '.dae',
+					'Rhino (*.3dm)': '.3dm',
+					'Autodesk DXF (.*dxf)': '.dxf',
+					'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
+					'Stereolithography (*.stl)': '.stl',
+					'Videoscape (*.geo)': '.geo',
+					'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
+					'Protein DB (*.pdb)': '.pdb'
+					}
+	return fileTypeLookup
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -209,6 +221,7 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 class ExploreProjectFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current project directory.
+	Logs and displays a warning if no project is set.
 	'''
 
 	def __init__(self):
@@ -236,6 +249,7 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 class ExploreSceneFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current scene's directory.
+	Logs and displays a warning if no scene is open.
 	'''
 
 	def __init__(self):
@@ -264,7 +278,7 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 class CleanXML():
 	'''
 	Tidies the formatting of an XML file to include carriage returns and
-	indentations, facilitating readbility.
+	indentations, facilitating readability.
 
 	Its one public method is cleanWriteXML(), which takes a single argument: the
 	path to an xml file. It opens the file, processes it, and rewrites it.
@@ -334,7 +348,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.projectTree.itemClicked.connect( self.scenes_getAll )
 		self.projectTree.itemDoubleClicked.connect( self.act_proj_setAsCurrent )
 		self.sceneTree.itemDoubleClicked.connect( self.act_scn_openSelected )
-		self.fileTypeCbx.activated.connect( self.scenes_getAll )
 		self.folderTree.itemDoubleClicked.connect( self.template_beginItemEdit )
 		self.folderTree.itemChanged.connect( self.template_endItemEdit )
 		self.folderTree.itemSelectionChanged.connect( self.template_endItemEdit )
@@ -374,6 +387,8 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		self.delFolderBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/removeFolder.png' ) ) )
 		self.resetTreeBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/reset.png' ) ) )
 		self.saveTemplateBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/save.png' ) ) )
+		self.ui_filtersMenu()
+
 
 
 	def ui_clearTreeWidget(self, treewidget):
@@ -399,6 +414,19 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		box.setContentsMargins( 0,5,5,5 )
 		box.setText( aboutText )
 		box.exec_()
+
+
+	def ui_filtersMenu(self):
+		'''
+		Build and display the filetype filter menu
+		'''
+		fileTypes = getFiletypeLookup()
+		self.filtersMenu = QMenu(self)
+		for i in fileTypes:
+			action = self.filtersMenu.addAction( i )
+			action.setCheckable( True )
+			self.filtersBtn.setMenu(self.filtersMenu)
+			self.filtersBtn.setPopupMode(QToolButton.InstantPopup)
 
 
 #   -----------------------------------------------------------
@@ -679,9 +707,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 		'''
 		Create a Modo project at the destination specified by the user
 		'''
-
-		#messageBox( 'Project Manager', 'test' ) # this does NOT crash Modo!
-
 		inputPath = self.newProjectPath.text()
 
 		if os.path.exists( inputPath ):
@@ -693,8 +718,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			if self.createFoldersCheckBox.isChecked():
 				self.write_subdirectories( inputPath )
 
-			# set this new project as the current project in Modo
-			lx.eval( "projDir.chooseProject %s" %inputPath )
 
 			# update the project list file
 			self.write_projectListFile( inputPath )
@@ -702,11 +725,15 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			# update the project list in the UI
 			self.projects_getExisting()
 
-			# log
+			# log and inform
 			message = ['The following project was created:', str(inputPath)]
 			logMessage( lx.symbol.e_INFO, message)
+			messageBox( 'Project Manager', message )
 
-			#messageBox( 'Project Manager', 'test' ) # this crashes Modo!
+			# Set this new project as the current project in Modo.
+			# If this not done AFTER displaying the message box above, Modo will crash.
+			lx.eval( "projDir.chooseProject %s" %inputPath )
+
 
 
 #   -----------------------------------------------------------
@@ -726,24 +753,6 @@ class ProjectManager_Actual( QMainWindow, projectManager_UI.Ui_projectManager ):
 			projectItem = self.projectTree.selectedItems()[0]
 			projDir = projectItem.text( 1 ).strip()
 			
-			# define a filetype lookup table
-			fileTypeLookup = {
-							'Modo (*.lxo)': '.lxo',
-							'Preset (*.lxl)': '.lxl',
-							'Lightwave (*.lwo)': '.lwo',
-							'Wavefront (*.obj)': '.obj',
-							'Alembic (*.abc)':' .abc',
-							'Filmbox (*.fbx)': '.fbx',
-							'Collada (*.dae)': '.dae',
-							'Rhino (*.3dm)': '.3dm',
-							'Autodesk DXF (.*dxf)': '.dxf',
-							'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
-							'Stereolithography (*.stl)': '.stl',
-							'Videoscape (*.geo)': '.geo',
-							'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
-							'Protein DB (*.pdb)': '.pdb'
-							}
-
 			# get the selected filter
 			typeFilter = self.fileTypeCbx.currentText()
 

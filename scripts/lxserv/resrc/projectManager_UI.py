@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'projectManager.ui'
 #
-# Created: Thu Jul  3 13:20:10 2014
+# Created: Tue Jul  8 19:07:04 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,7 +130,7 @@ class Ui_projectManager(object):
 "\n"
 "\n"
 "\n"
-"QPushButton\n"
+"QPushButton, QToolButton\n"
 "{\n"
 "  icon-size: 12px;\n"
 "  background-color: #606060;\n"
@@ -143,17 +143,17 @@ class Ui_projectManager(object):
 "  padding-right: 2px;\n"
 "}\n"
 "\n"
-"QPushButton:flat {\n"
+"QPushButton, QToolButton:flat {\n"
 "  border: none;\n"
 "  background-color: none;\n"
 "}\n"
 "\n"
-"QPushButton:hover\n"
+"QPushButton, QToolButton:hover\n"
 "{\n"
 "  background-color: #686868;\n"
 "}\n"
 "\n"
-"QPushButton:pressed,QPushButton:focus:pressed\n"
+"QPushButton, QToolButton:pressed,QPushButton, QToolButton:focus:pressed\n"
 "{\n"
 "  color: #000;\n"
 "  background-color: #f89a2b;\n"
@@ -478,44 +478,13 @@ class Ui_projectManager(object):
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.gridLayout_4 = QtGui.QGridLayout(self.layoutWidget1)
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_4.setHorizontalSpacing(0)
         self.gridLayout_4.setVerticalSpacing(1)
         self.gridLayout_4.setObjectName("gridLayout_4")
         spacerItem1 = QtGui.QSpacerItem(138, 10, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_4.addItem(spacerItem1, 0, 1, 1, 1)
-        self.fileTypeLabel = QtGui.QLabel(self.layoutWidget1)
-        self.fileTypeLabel.setStyleSheet("")
-        self.fileTypeLabel.setObjectName("fileTypeLabel")
-        self.gridLayout_4.addWidget(self.fileTypeLabel, 0, 2, 1, 1)
-        self.fileTypeCbx = QtGui.QComboBox(self.layoutWidget1)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.fileTypeCbx.sizePolicy().hasHeightForWidth())
-        self.fileTypeCbx.setSizePolicy(sizePolicy)
-        self.fileTypeCbx.setMinimumSize(QtCore.QSize(100, 20))
-        self.fileTypeCbx.setMaximumSize(QtCore.QSize(16777215, 90))
-        self.fileTypeCbx.setMouseTracking(False)
-        self.fileTypeCbx.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.fileTypeCbx.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.fileTypeCbx.setStyleSheet("min-height: 18px;")
-        self.fileTypeCbx.setMaxVisibleItems(15)
-        self.fileTypeCbx.setObjectName("fileTypeCbx")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.fileTypeCbx.addItem("")
-        self.gridLayout_4.addWidget(self.fileTypeCbx, 0, 3, 1, 1)
         self.sceneTree = QtGui.QTreeWidget(self.layoutWidget1)
+        self.sceneTree.setMinimumSize(QtCore.QSize(0, 0))
         self.sceneTree.setFocusPolicy(QtCore.Qt.NoFocus)
         self.sceneTree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.sceneTree.setIndentation(5)
@@ -525,6 +494,13 @@ class Ui_projectManager(object):
         self.sceneTree.header().setVisible(False)
         self.sceneTree.header().setDefaultSectionSize(200)
         self.gridLayout_4.addWidget(self.sceneTree, 1, 0, 1, 4)
+        self.filtersBtn = QtGui.QToolButton(self.layoutWidget1)
+        self.filtersBtn.setMinimumSize(QtCore.QSize(100, 20))
+        self.filtersBtn.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.filtersBtn.setCheckable(False)
+        self.filtersBtn.setPopupMode(QtGui.QToolButton.InstantPopup)
+        self.filtersBtn.setObjectName("filtersBtn")
+        self.gridLayout_4.addWidget(self.filtersBtn, 0, 2, 1, 1)
         self.gridLayout_5.addWidget(self.existingProjectsSplitter, 0, 0, 1, 1)
         self.tabWidget.addTab(self.existingProjectsTab, "")
         self.newProjectTab = QtGui.QWidget()
@@ -560,7 +536,7 @@ class Ui_projectManager(object):
         self.newProjectPathLabel.setObjectName("newProjectPathLabel")
         self.gridLayout_2.addWidget(self.newProjectPathLabel, 0, 0, 1, 1)
         self.newProjectPathBtn = QtGui.QPushButton(self.projectLocationGroup)
-        self.newProjectPathBtn.setMinimumSize(QtCore.QSize(51, 20))
+        self.newProjectPathBtn.setMinimumSize(QtCore.QSize(49, 20))
         self.newProjectPathBtn.setMaximumSize(QtCore.QSize(30, 20))
         self.newProjectPathBtn.setStyleSheet("min-width: 45px;")
         self.newProjectPathBtn.setObjectName("newProjectPathBtn")
@@ -788,24 +764,9 @@ class Ui_projectManager(object):
         self.projectTree.topLevelItem(1).setText(0, QtGui.QApplication.translate("projectManager", "projectName2", None, QtGui.QApplication.UnicodeUTF8))
         self.projectTree.topLevelItem(1).setText(1, QtGui.QApplication.translate("projectManager", "path/to/this/project", None, QtGui.QApplication.UnicodeUTF8))
         self.projectTree.setSortingEnabled(__sortingEnabled)
-        self.fileTypeLabel.setText(QtGui.QApplication.translate("projectManager", "Scene Filter ", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setToolTip(QtGui.QApplication.translate("projectManager", "Choose which file type will be displayed in the Scenes list", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(0, QtGui.QApplication.translate("projectManager", "Modo (*.lxo)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(1, QtGui.QApplication.translate("projectManager", "Preset (*.lxl)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(2, QtGui.QApplication.translate("projectManager", "Lightwave (*.lwo)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(3, QtGui.QApplication.translate("projectManager", "Wavefront (*.obj)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(4, QtGui.QApplication.translate("projectManager", "Alembic (*.abc)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(5, QtGui.QApplication.translate("projectManager", "Filmbox (*.fbx)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(6, QtGui.QApplication.translate("projectManager", "Collada (*.dae)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(7, QtGui.QApplication.translate("projectManager", "Rhino (*.3dm)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(8, QtGui.QApplication.translate("projectManager", "Autodesk DXF (.*dxf)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(9, QtGui.QApplication.translate("projectManager", "Adobe Illustrator (*.eps, *.ai)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(10, QtGui.QApplication.translate("projectManager", "Stereolithography (*.stl)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(11, QtGui.QApplication.translate("projectManager", "Videoscape (*.geo)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(12, QtGui.QApplication.translate("projectManager", "Solidworks (*.sldprt, *.sldasm)", None, QtGui.QApplication.UnicodeUTF8))
-        self.fileTypeCbx.setItemText(13, QtGui.QApplication.translate("projectManager", "Protein DB (*.pdb)", None, QtGui.QApplication.UnicodeUTF8))
         self.sceneTree.headerItem().setText(0, QtGui.QApplication.translate("projectManager", "Scene", None, QtGui.QApplication.UnicodeUTF8))
         self.sceneTree.headerItem().setText(1, QtGui.QApplication.translate("projectManager", "Path", None, QtGui.QApplication.UnicodeUTF8))
+        self.filtersBtn.setText(QtGui.QApplication.translate("projectManager", "Select Filters...", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.existingProjectsTab), QtGui.QApplication.translate("projectManager", "Existing Projects", None, QtGui.QApplication.UnicodeUTF8))
         self.projectLocationGroup.setTitle(QtGui.QApplication.translate("projectManager", "Project Location", None, QtGui.QApplication.UnicodeUTF8))
         self.newProjectPathLabel.setText(QtGui.QApplication.translate("projectManager", "Root Path", None, QtGui.QApplication.UnicodeUTF8))

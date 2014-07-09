@@ -138,7 +138,7 @@ QLineEdit
 
 
 
-QPushButton
+QPushButton, QToolButton
 {
   icon-size: 12px;
   background-color: #606060;
@@ -151,17 +151,17 @@ QPushButton
   padding-right: 2px;
 }
 
-QPushButton:flat {
+QPushButton, QToolButton:flat {
   border: none;
   background-color: none;
 }
 
-QPushButton:hover
+QPushButton, QToolButton:hover
 {
   background-color: #686868;
 }
 
-QPushButton:pressed,QPushButton:focus:pressed
+QPushButton, QToolButton:pressed,QPushButton, QToolButton:focus:pressed
 {
   color: #000;
   background-color: #f89a2b;
@@ -560,6 +560,9 @@ QHeaderView::up-arrow {
           </widget>
           <widget class="QWidget" name="layoutWidget">
            <layout class="QGridLayout" name="gridLayout_4">
+            <property name="horizontalSpacing">
+             <number>0</number>
+            </property>
             <property name="verticalSpacing">
              <number>1</number>
             </property>
@@ -576,128 +579,14 @@ QHeaderView::up-arrow {
               </property>
              </spacer>
             </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="fileTypeLabel">
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-              <property name="text">
-               <string>Scene Filter </string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QComboBox" name="fileTypeCbx">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>20</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>90</height>
-               </size>
-              </property>
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Choose which file type will be displayed in the Scenes list</string>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">min-height: 18px;</string>
-              </property>
-              <property name="maxVisibleItems">
-               <number>15</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>Modo (*.lxo)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Preset (*.lxl)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Lightwave (*.lwo)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Wavefront (*.obj)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Alembic (*.abc)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Filmbox (*.fbx)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Collada (*.dae)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Rhino (*.3dm)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Autodesk DXF (.*dxf)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Adobe Illustrator (*.eps, *.ai)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Stereolithography (*.stl)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Videoscape (*.geo)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Solidworks (*.sldprt, *.sldasm)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Protein DB (*.pdb)</string>
-               </property>
-              </item>
-             </widget>
-            </item>
             <item row="1" column="0" colspan="4">
              <widget class="QTreeWidget" name="sceneTree">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="focusPolicy">
                <enum>Qt::NoFocus</enum>
               </property>
@@ -729,6 +618,34 @@ QHeaderView::up-arrow {
                 <string>Path</string>
                </property>
               </column>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QToolButton" name="filtersBtn">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Select Filters...</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+              <property name="popupMode">
+               <enum>QToolButton::InstantPopup</enum>
+              </property>
+              <property name="toolButtonStyle">
+               <enum>Qt::ToolButtonTextOnly</enum>
+              </property>
              </widget>
             </item>
            </layout>
@@ -816,7 +733,7 @@ QHeaderView::up-arrow {
             <widget class="QPushButton" name="newProjectPathBtn">
              <property name="minimumSize">
               <size>
-               <width>51</width>
+               <width>49</width>
                <height>20</height>
               </size>
              </property>
