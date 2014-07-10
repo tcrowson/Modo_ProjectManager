@@ -2,7 +2,12 @@
 # PROJECT MANAGER, Tim Crowson, July 2014
 #------------------------------------------------------------------------------
 
-
+# TODO LIST:
+# - Implement some sort of dirty system to indicate when a template has changed
+# - Implement filetype associations within the .luxproject file
+#
+#
+#
 
 
 #------------------------------------------------------------------------------
@@ -149,6 +154,7 @@ class CleanXML():
 		fWrite.close()
 
 
+
 #------------------------------------------------------------------------------
 class shiftSelectMenu(QObject):
 	'''
@@ -167,6 +173,7 @@ class shiftSelectMenu(QObject):
 		return super(shiftSelectMenu, self).eventFilter(obj, event)
 
 
+
 #------------------------------------------------------------------------------
 
 class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
@@ -176,19 +183,15 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 	def __init__(self, parent=None, selected=[], flag=0, *args):
 		QMainWindow.__init__(self, parent)
-		self.setupUi(self) # boilerplate for pre-converted PySide UIs
+		self.setupUi(self) # boilerplate
 		self.ui_setConnections()
 		self.ui_customize()
-
-		# define a common not-implemented message
-		self.notImpl = ['---------- Not yet Implemented ----------']
 
 
 	def ui_setConnections(self):
 		'''
 		Connect signals and slots.
 		'''
-
 		# buttons
 		self.newProjectPathBtn.released.connect( self.project_pickRoot )
 		self.createProjectBtn.released.connect( self.project_create )
@@ -212,8 +215,6 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.act_about.triggered.connect(self.ui_showAbout )
 		self.act_addExisting.triggered.connect( self.act_proj_addExisting )
 		self.act_removeSelected.triggered.connect( self.act_proj_removeSelected )
-		self.act_exportList.triggered.connect( self.act_proj_exportList )
-		self.act_importList.triggered.connect( self.act_proj_importList )
 		self.act_setAsCurrent.triggered.connect( self.act_proj_setAsCurrent )
 		self.act_exploreProject.triggered.connect( self.act_proj_explore )
 
@@ -267,7 +268,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		message = [	'version 0.1  - Tim Crowson, July 2014 ',
 					'',
-					'This kit offers a simple 3rd party solution for project management in Modo.',
+					'This kit is designed to streamline project creation and basic high-level management.',
 					'See the documentation for details.'
 					]
 		self.msg_box( 'About', message)
@@ -415,15 +416,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		if os.path.exists(path):
 			sysFile = os.path.join( path, '.luxproject' )
 			f = open( sysFile, 'w' ) 
-			f.write( r'#LXProject#\n' ) # bare bones definition
+			f.write( '#LXProject#\n' ) # bare bones definition
 			f.close()
-
-
-	def write_subdirectories(self, path):
-		'''
-		Create subdirectories matching the contents of the folder tree.
-		'''
-		pass
 
 
 	def write_projectListFile(self, path):
@@ -444,6 +438,19 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				f.write( path + '\n')
 				f.close()
 
+
+	def write_directory( self, item, root ):
+		'''
+		Walk the template and create the corresponding folder structure on disk.
+		Arg 1: the root item <invisibleRootItem>
+		Arg 2: the root path <string>
+		'''
+		for row in range( item.childCount() ):
+			child = item.child( row )
+			folderPath = os.path.join( root, str(child.text(0)) )
+			if not os.path.exists( folderPath ):
+				os.mkdir( folderPath )
+			self.write_directory( child, folderPath )
 
    #-----------------------------------------------------------
 
@@ -480,12 +487,12 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			# start by clearing the current tree
 			self.template_resetTree()
 
-			def build(item, root):
+			def __build(item, root):
 				for element in root.getchildren():
 					child = QTreeWidgetItem( item, [element.attrib['text']] )
 					child.setFlags( child.flags() | Qt.ItemIsEditable )
 					self.template_stylizeNewFolder( child )
-					build( child, element )
+					__build( child, element )
 				item.setExpanded( True )
 
 
@@ -498,7 +505,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				if name == templateName and ext == '.xml':
 					xmlTree = tree.parse(templateFile)
 					root = xmlTree.getroot()
-					build( self.folderTree.invisibleRootItem(), root )
+					__build( self.folderTree.invisibleRootItem(), root )
 
 
 	def template_new(self):
@@ -567,11 +574,11 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Write the contents of the folder tree to an XML file.
 		'''
 
-		def build(item, root):
+		def __buildTemplate(item, root):
 			for row in range(item.childCount()):
 				child = item.child(row)
 				element = etree.SubElement( root, 'folder', text=child.text(0) )
-				build( child, element )
+				__buildTemplate( child, element )
 
 		template = self.templateCbx.currentText()
 
@@ -584,7 +591,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			from xml.etree import cElementTree as etree
 			root = etree.Element('root')
 			root.attrib['templateName'] = template
-			build( self.folderTree.invisibleRootItem(), root )
+			__buildTemplate( self.folderTree.invisibleRootItem(), root )
 
 			# Write the file.
 			templateFile = os.path.join( templatesDir, '%s.xml' %template )
@@ -697,7 +704,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 	def project_create(self):
 		'''
 		Create a Modo project at the destination specified by the user.
+		Optionally create the directory structure defined in the Folder Tree.
 		'''
+
 		inputPath = self.newProjectPath.text()
 
 		if os.path.exists( inputPath ):
@@ -707,7 +716,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 			# create any subdirectories
 			if self.createFoldersCheckBox.isChecked():
-				self.write_subdirectories( inputPath )
+				self.write_directory( self.folderTree.invisibleRootItem(), str(inputPath) )
 
 			# update the project list file
 			self.write_projectListFile( inputPath )
@@ -832,43 +841,42 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		project = self.projects_getSelectedPath()
 
 		if project:
-			# start by reading the current list
-			with open(projectListFile, 'r') as f:
-				lines = [line.strip() for line in f if line.strip()]
-				f.close()
-
-			# if the path is in the list, remove it
-			if project in lines:
-				lines.remove(project)
-				# and write the updated list
-				with open(projectListFile, 'w') as f:
-					for line in lines:
-					    f.write( line + '\n')
+			confirm = self.input_confirmDialog( 'Remove Project', ['Remove the selected project from the list?'] )
+			if confirm == QMessageBox.Yes:
+				# start by reading the current list
+				with open(projectListFile, 'r') as f:
+					lines = [line.strip() for line in f if line.strip()]
 					f.close()
 
-			# update the UI
-			self.projects_getExisting()
+				# if the path is in the list, remove it
+				if project in lines:
+					lines.remove(project)
+					# and write the updated list
+					with open(projectListFile, 'w') as f:
+						for line in lines:
+						    f.write( line + '\n')
+						f.close()
+
+				# update the UI
+				self.projects_getExisting()
 
 
 	def act_proj_addExisting(self):
 		'''
 		Add an existing project to the project list.
 		'''
-		self.msg_box('Add Existing Project', self.notImpl)
+		inputPath = QFileDialog.getExistingDirectory( self, 'Select a project...', '/home' )
 
+		if '.luxproject' in [file for file in os.listdir(inputPath)]:
+			f = open(os.path.join( inputPath, '.luxproject') )
+			lines = f.readlines()
+			if lines[0].strip() == '#LXProject#':
+				self.write_projectListFile( inputPath )
+				self.projects_getExisting()
+				return
 
-	def act_proj_exportList(self):
-		'''
-		Export the project list to a file.
-		'''
-		self.msg_box('Export Project List', self.notImpl)
-
-
-	def act_proj_importList(self):
-		'''
-		Import a project list from a file.
-		'''
-		self.msg_box('Import Project List', self.notImpl)
+		message = [ 'The specified directory is not a valid Modo project.']
+		self.msg_box( 'Add Existing Project...', message) 
 
 
 	def act_scn_openSelected(self):
@@ -900,12 +908,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		explore = menu.addAction( 'Explore Project',  self.act_proj_explore)
 		setAsCurrent = menu.addAction( 'Set Selected As Current', self.act_proj_setAsCurrent )
 		remove = menu.addAction( 'Remove Project From List', self.act_proj_removeSelected )
-
-		menu.addSeparator()
-
 		addExisting = menu.addAction( 'Add Existing Project to List...', self.act_proj_addExisting )
-		exportList = menu.addAction( 'Export List', self.act_proj_exportList )
-		importList = menu.addAction( 'Import List', self.act_proj_importList )
 
 		# Show the menu.
 		action = menu.exec_( QCursor.pos() )

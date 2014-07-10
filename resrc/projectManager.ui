@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>698</width>
+    <width>936</width>
     <height>505</height>
    </rect>
   </property>
@@ -382,6 +382,7 @@ QTreeView {
 border-radius: 6px;
 }
 
+
  QTreeView::item:hover {
 background-color: #A2A9B0;
  }
@@ -390,6 +391,8 @@ background-color: #A2A9B0;
 background-color: #B5BCC4;
 color: black;
  }
+
+
 
 
 
@@ -624,19 +627,20 @@ QHeaderView::up-arrow {
              <widget class="QToolButton" name="filtersBtn">
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>106</width>
                 <height>20</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>16777215</width>
+                <width>100</width>
                 <height>20</height>
                </size>
               </property>
               <property name="styleSheet">
                <string notr="true">QToolButton
 {
+min-width: 100px;
   icon-size: 12px;
   background-color: #606060;
   border-width: 1px;
@@ -649,24 +653,27 @@ QHeaderView::up-arrow {
 }
 
 QToolButton:flat {
+min-width: 100px;
   border: none;
   background-color: none;
 }
 
 QToolButton:hover
 {
+min-width: 100px;
   background-color: #686868;
 }
 
 QToolButton:pressed,QToolButton:focus:pressed
 {
+min-width: 100px;
   color: #000;
   background-color: #f89a2b;
 }
 </string>
               </property>
               <property name="text">
-               <string>Select Filters...</string>
+               <string>Filetypes...</string>
               </property>
               <property name="checkable">
                <bool>false</bool>
@@ -1206,17 +1213,10 @@ QToolButton:pressed,QToolButton:focus:pressed
                </layout>
               </item>
              </layout>
-             <zorder></zorder>
-             <zorder>templateCbx</zorder>
-             <zorder>folderTree</zorder>
-             <zorder>scenesRootLabel_2</zorder>
-             <zorder>folderTemplateLabel</zorder>
-             <zorder>newTemplateBtn</zorder>
              <zorder>newTemplateBtn</zorder>
              <zorder>templateCbx</zorder>
              <zorder>folderTree</zorder>
              <zorder>scenesRootLabel_2</zorder>
-             <zorder></zorder>
              <zorder>folderTemplateLabel</zorder>
             </widget>
            </item>
@@ -1282,7 +1282,7 @@ QToolButton:pressed,QToolButton:focus:pressed
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>698</width>
+     <width>936</width>
      <height>21</height>
     </rect>
    </property>
@@ -1298,8 +1298,6 @@ QToolButton:pressed,QToolButton:focus:pressed
     <addaction name="separator"/>
     <addaction name="act_addExisting"/>
     <addaction name="act_removeSelected"/>
-    <addaction name="act_exportList"/>
-    <addaction name="act_importList"/>
    </widget>
    <widget class="QMenu" name="menuScenes">
     <property name="title">
@@ -1328,16 +1326,6 @@ QToolButton:pressed,QToolButton:focus:pressed
   <action name="act_removeSelected">
    <property name="text">
     <string>Remove Selected</string>
-   </property>
-  </action>
-  <action name="act_exportList">
-   <property name="text">
-    <string>Export List</string>
-   </property>
-  </action>
-  <action name="act_importList">
-   <property name="text">
-    <string>Import List</string>
    </property>
   </action>
   <action name="act_setAsCurrent">

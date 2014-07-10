@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'projectManager.ui'
 #
-# Created: Wed Jul  9 21:56:33 2014
+# Created: Thu Jul 10 12:36:28 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_projectManager(object):
     def setupUi(self, projectManager):
         projectManager.setObjectName("projectManager")
-        projectManager.resize(698, 505)
+        projectManager.resize(936, 505)
         projectManager.setStyleSheet("QWidget{\n"
 "  dialogbuttonbox-buttons-have-icons: 0;\n"
 "  combobox-popup: 1;\n"
@@ -374,6 +374,7 @@ class Ui_projectManager(object):
 "border-radius: 6px;\n"
 "}\n"
 "\n"
+"\n"
 " QTreeView::item:hover {\n"
 "background-color: #A2A9B0;\n"
 " }\n"
@@ -382,6 +383,8 @@ class Ui_projectManager(object):
 "background-color: #B5BCC4;\n"
 "color: black;\n"
 " }\n"
+"\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -495,10 +498,11 @@ class Ui_projectManager(object):
         self.sceneTree.header().setDefaultSectionSize(200)
         self.gridLayout_4.addWidget(self.sceneTree, 1, 0, 1, 4)
         self.filtersBtn = QtGui.QToolButton(self.layoutWidget1)
-        self.filtersBtn.setMinimumSize(QtCore.QSize(100, 20))
-        self.filtersBtn.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.filtersBtn.setMinimumSize(QtCore.QSize(106, 20))
+        self.filtersBtn.setMaximumSize(QtCore.QSize(100, 20))
         self.filtersBtn.setStyleSheet("QToolButton\n"
 "{\n"
+"min-width: 100px;\n"
 "  icon-size: 12px;\n"
 "  background-color: #606060;\n"
 "  border-width: 1px;\n"
@@ -511,17 +515,20 @@ class Ui_projectManager(object):
 "}\n"
 "\n"
 "QToolButton:flat {\n"
+"min-width: 100px;\n"
 "  border: none;\n"
 "  background-color: none;\n"
 "}\n"
 "\n"
 "QToolButton:hover\n"
 "{\n"
+"min-width: 100px;\n"
 "  background-color: #686868;\n"
 "}\n"
 "\n"
 "QToolButton:pressed,QToolButton:focus:pressed\n"
 "{\n"
+"min-width: 100px;\n"
 "  color: #000;\n"
 "  background-color: #f89a2b;\n"
 "}\n"
@@ -737,7 +744,7 @@ class Ui_projectManager(object):
         self.gridLayout_7.addWidget(self.tabWidget, 0, 0, 1, 1)
         projectManager.setCentralWidget(self.centralwidget)
         self.menuBar = QtGui.QMenuBar(projectManager)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 698, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 936, 21))
         self.menuBar.setNativeMenuBar(True)
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QtGui.QMenu(self.menuBar)
@@ -751,10 +758,6 @@ class Ui_projectManager(object):
         self.act_addExisting.setObjectName("act_addExisting")
         self.act_removeSelected = QtGui.QAction(projectManager)
         self.act_removeSelected.setObjectName("act_removeSelected")
-        self.act_exportList = QtGui.QAction(projectManager)
-        self.act_exportList.setObjectName("act_exportList")
-        self.act_importList = QtGui.QAction(projectManager)
-        self.act_importList.setObjectName("act_importList")
         self.act_setAsCurrent = QtGui.QAction(projectManager)
         self.act_setAsCurrent.setObjectName("act_setAsCurrent")
         self.act_openSelectedScene = QtGui.QAction(projectManager)
@@ -774,8 +777,6 @@ class Ui_projectManager(object):
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.act_addExisting)
         self.menuFile.addAction(self.act_removeSelected)
-        self.menuFile.addAction(self.act_exportList)
-        self.menuFile.addAction(self.act_importList)
         self.menuScenes.addAction(self.act_openSelectedScene)
         self.menuScenes.addAction(self.act_importSelectedScene)
         self.menuScenes.addAction(self.act_importSelectedAsRef)
@@ -802,7 +803,7 @@ class Ui_projectManager(object):
         self.projectTree.setSortingEnabled(__sortingEnabled)
         self.sceneTree.headerItem().setText(0, QtGui.QApplication.translate("projectManager", "Scene", None, QtGui.QApplication.UnicodeUTF8))
         self.sceneTree.headerItem().setText(1, QtGui.QApplication.translate("projectManager", "Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.filtersBtn.setText(QtGui.QApplication.translate("projectManager", "Select Filters...", None, QtGui.QApplication.UnicodeUTF8))
+        self.filtersBtn.setText(QtGui.QApplication.translate("projectManager", "Filetypes...", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.existingProjectsTab), QtGui.QApplication.translate("projectManager", "Existing Projects", None, QtGui.QApplication.UnicodeUTF8))
         self.projectLocationGroup.setTitle(QtGui.QApplication.translate("projectManager", "Project Location", None, QtGui.QApplication.UnicodeUTF8))
         self.newProjectPathLabel.setText(QtGui.QApplication.translate("projectManager", "Root Path", None, QtGui.QApplication.UnicodeUTF8))
@@ -838,8 +839,6 @@ class Ui_projectManager(object):
         self.menuHelp.setTitle(QtGui.QApplication.translate("projectManager", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.act_addExisting.setText(QtGui.QApplication.translate("projectManager", "Add Existing Project To List", None, QtGui.QApplication.UnicodeUTF8))
         self.act_removeSelected.setText(QtGui.QApplication.translate("projectManager", "Remove Selected", None, QtGui.QApplication.UnicodeUTF8))
-        self.act_exportList.setText(QtGui.QApplication.translate("projectManager", "Export List", None, QtGui.QApplication.UnicodeUTF8))
-        self.act_importList.setText(QtGui.QApplication.translate("projectManager", "Import List", None, QtGui.QApplication.UnicodeUTF8))
         self.act_setAsCurrent.setText(QtGui.QApplication.translate("projectManager", "Set Selected As Current", None, QtGui.QApplication.UnicodeUTF8))
         self.act_openSelectedScene.setText(QtGui.QApplication.translate("projectManager", "Open Selected", None, QtGui.QApplication.UnicodeUTF8))
         self.act_importSelectedScene.setText(QtGui.QApplication.translate("projectManager", "Import Selected", None, QtGui.QApplication.UnicodeUTF8))
