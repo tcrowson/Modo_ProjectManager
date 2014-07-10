@@ -3,10 +3,13 @@
 #------------------------------------------------------------------------------
 
 # TODO LIST:
-# - Implement some sort of dirty system to indicate when a template has changed
-# - Implement filetype associations within the .luxproject file
-#
-#
+# - Implement some sort of dirty system to indicate when a template has changed.
+# - Implement filetype associations within the .luxproject file.
+# - Refine logic when switching between templates.
+# - Implement a feedback system for informing the user when blessed commands fail...
+#	Currently the two dialog options available cause problems:
+#		- The standard Modo dialog system causes a focus problem, effectively locking Modo out
+#		- The QMessageBox class causes Modo to crash when run more than once from inside a blessed cmd
 #
 
 
@@ -202,8 +205,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.saveTemplateBtn.released.connect( self.template_save )
 
 		# widgets
+		self.togglePathsCheckBox.stateChanged.connect( self.ui_togglePaths )
 		self.projectTree.itemClicked.connect( self.scenes_getAll )
-		self.projectTree.itemDoubleClicked.connect( self.act_proj_setAsCurrent )
+		self.projectTree.itemDoubleClicked.connect( self.act_proj_explore )
 		self.sceneTree.itemDoubleClicked.connect( self.act_scn_openSelected )
 		self.folderTree.itemDoubleClicked.connect( self.template_beginItemEdit )
 		self.folderTree.itemChanged.connect( self.template_endItemEdit )
@@ -217,6 +221,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.act_removeSelected.triggered.connect( self.act_proj_removeSelected )
 		self.act_setAsCurrent.triggered.connect( self.act_proj_setAsCurrent )
 		self.act_exploreProject.triggered.connect( self.act_proj_explore )
+		self.act_exploreSceneFolder.triggered.connect( self.act_scn_openFolder )
 
 		# scene actions
 		self.act_openSelectedScene.triggered.connect( self.act_scn_openSelected )
@@ -234,8 +239,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		self.existingProjectsSplitter.setSizes( [450,450] )
 		self.projects_getExisting()
-		self.projectTree.setColumnWidth( 0, 150 )
-		self.sceneTree.setColumnWidth( 0, 150 )
+		self.projectTree.setColumnWidth( 0, 200 )
+		self.sceneTree.setColumnWidth( 0, 200 )
 		self.ui_clearTreeWidget( self.folderTree )
 		self.templates_getExisting()
 		self.newTemplateBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/newTemplate.png' ) ) )
@@ -245,6 +250,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.saveTemplateBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/save.png' ) ) )
 		self.ui_fileTypeFiltersMenu()
 		self.ui_toggleTemplates()
+		self.projectTree.setColumnHidden( 1, True )
+		self.sceneTree.setColumnHidden( 1, True )
 
 
 	def ui_clearTreeWidget(self, treewidget):
@@ -268,9 +275,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		message = [	'version 0.1  - Tim Crowson, July 2014 ',
 					'',
-					'This kit is designed to streamline project creation and basic high-level management.',
-					'See the documentation for details.'
-					]
+					'This kit is designed to streamline project creation and basic high-level management. See the documentation for details.']
 		self.msg_box( 'About', message)
 
 
@@ -284,13 +289,14 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		clicks off the menu, the scene list will update.
 		'''
 		self.filtersMenu = QMenu()
-		self.filtersMenu.aboutToHide.connect( self.scenes_getAll )
+		#self.filtersMenu.aboutToHide.connect( self.scenes_getAll )
 		self.evFilter = shiftSelectMenu()
 		self.filtersMenu.installEventFilter( self.evFilter )
 
 		fileTypes = self.ui_getFileTypes()
 		for i in sorted( fileTypes ):
 			action = self.filtersMenu.addAction( i )
+			action.triggered.connect( self.scenes_getAll )
 			action.setCheckable( True )
 			if i == 'Modo (*.lxo)':
 				action.setChecked( True )
@@ -331,7 +337,18 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			self.templateOptions.setEnabled(False)
 
 
- 	#-----------------------------------------------------------
+	def ui_togglePaths(self):
+		'''
+		Show or hide the path columns for the projects and scenes lists
+		'''
+		state = self.togglePathsCheckBox.isChecked()
+		self.projectTree.setColumnHidden( 1,  not state )
+		self.sceneTree.setColumnHidden( 1, not state )
+		self.projectTree.setColumnWidth( 0, 200 )
+		self.sceneTree.setColumnWidth( 0, 200 )
+
+
+	#-----------------------------------------------------------
 
 
 	def input_stringDialog(self, title, text):
@@ -363,7 +380,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		box.setDefaultButton(QMessageBox.No)
 		return box.exec_()
 
- 	#-----------------------------------------------------------
+
+	#-----------------------------------------------------------
 
 
 	def explore(self, filename):
@@ -378,7 +396,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			subprocess.call( [opener, filename] )
 
 
-   #-----------------------------------------------------------
+	#-----------------------------------------------------------
 
 
 	def msg_log(self, type, child):
@@ -405,7 +423,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		box.exec_()
 
 
-   #-----------------------------------------------------------
+	#-----------------------------------------------------------
 
 
 	def write_genericSysFile(self, path):
@@ -452,7 +470,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				os.mkdir( folderPath )
 			self.write_directory( child, folderPath )
 
-   #-----------------------------------------------------------
+
+	#-----------------------------------------------------------
 
 
 	def templates_getExisting(self):
@@ -637,7 +656,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		item.setIcon( 0, QIcon(icon) )
 
 
-   #-----------------------------------------------------------
+	#-----------------------------------------------------------
 
 
 	def projects_getExisting(self):
@@ -662,6 +681,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				projectItem.setSizeHint( 0, QSize(200, 25) )
 				projectItem.setText( 0, projectTitle )
 				projectItem.setText( 1, cleanLine )
+				projectItem.setForeground(1 , QBrush( QColor('#575757') ) )
 
 				# designate invalid project based on whether the path exists or not
 				if not os.path.exists(cleanLine):
@@ -734,7 +754,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			lx.eval( "projDir.chooseProject %s" %inputPath )
 
 
-   #-----------------------------------------------------------
+	#-----------------------------------------------------------
 
 
 	def scenes_getAll(self):
@@ -769,6 +789,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 						item.setText( 0, fileName )
 						item.setText( 1, relativePath )
 						item.setSizeHint( 0, QSize(200, 25) )
+						item.setForeground(1 , QBrush( QColor('#575757') ) )
 
 						# add the item to the scene tree
 						self.sceneTree.addTopLevelItem( item )
@@ -788,6 +809,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			sceneRelativePath = sceneItem.text( 1 )
 			scenePath = projDir + sceneRelativePath
 			return scenePath
+		
+		return None
 
 
 	def scenes_openOrImport(self, type):
@@ -803,7 +826,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				lx.eval( "scene.open %s %s" %( scenePath, type ) )
 
 
-   #-----------------------------------------------------------
+	#-----------------------------------------------------------
 
 
 	def act_proj_explore(self):
@@ -818,7 +841,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				self.msg_log(lx.symbol.e_WARNING, [	'Trouble exploring project folder...',
 													'Invalid project path.'] )
 
-	
+
 	def act_proj_setAsCurrent(self):
 		'''
 		Set the selected project as the current project in Modo.
@@ -894,7 +917,16 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.scenes_openOrImport( 'ref')
 
 
-   #-----------------------------------------------------------
+	def act_scn_openFolder(self):
+		'''
+		Open the folder containing the selected scene
+		'''
+		scenePath = self.scenes_getSelectedPath()
+		if scenePath:
+			self.explore( os.path.dirname( scenePath ) )
+
+
+	#-----------------------------------------------------------
 
 
 	def contextMenu_projectList(self):
@@ -904,12 +936,15 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		# Create the menu object.
 		menu = QMenu()
 
-		# Add items
-		explore = menu.addAction( 'Explore Project',  self.act_proj_explore)
-		setAsCurrent = menu.addAction( 'Set Selected As Current', self.act_proj_setAsCurrent )
-		remove = menu.addAction( 'Remove Project From List', self.act_proj_removeSelected )
-		addExisting = menu.addAction( 'Add Existing Project to List...', self.act_proj_addExisting )
+		# The CSS from Designer isn't being respect, so we'll force it
+		menu.setStyleSheet('QMenu::item:selected{color: #f89a2b;background: #545454;}')
 
+		# Add items
+		setAsCurrent = menu.addAction( 'Set Selected As Current', self.act_proj_setAsCurrent )
+		explore = menu.addAction( 'Open Project Folder',  self.act_proj_explore)
+		addExisting = menu.addAction( 'Add Existing Project to List...', self.act_proj_addExisting )
+		remove = menu.addAction( 'Remove Selected', self.act_proj_removeSelected )
+		
 		# Show the menu.
 		action = menu.exec_( QCursor.pos() )
 
@@ -921,10 +956,14 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		# Create the menu object.
 		menu = QMenu()
 
+		# The CSS from Designer isn't being respect, so we'll force it
+		menu.setStyleSheet('QMenu::item:selected{color: #f89a2b;background: #545454;}')
+
 		# Add items
-		openScene = menu.addAction( 'Open Selected Scene', self.act_scn_openSelected )
-		importScene = menu.addAction( 'Import Selected Scene', self.act_scn_importSelected )
-		importAsRef = menu.addAction('Import Selected Scene As Referenced', self.act_scn_importSelectedAsRef )
+		openScene = menu.addAction( 'Open Selected', self.act_scn_openSelected )
+		importScene = menu.addAction( 'Import Selected', self.act_scn_importSelected )
+		importAsRef = menu.addAction('Import Selected As Referenced', self.act_scn_importSelectedAsRef )
+		explore = menu.addAction( 'Open Scene Folder', self.act_scn_openFolder)
 
 		# Show the menu.
 		action = menu.exec_( QCursor.pos() )

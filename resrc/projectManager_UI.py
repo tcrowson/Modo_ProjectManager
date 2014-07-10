@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'projectManager.ui'
 #
-# Created: Thu Jul 10 12:36:28 2014
+# Created: Thu Jul 10 16:07:47 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -148,6 +148,12 @@ class Ui_projectManager(object):
 "  background-color: none;\n"
 "}\n"
 "\n"
+"QPushButton:disabled\n"
+"{\n"
+"border: 1px solid #4A4A4A;\n"
+"}\n"
+"\n"
+"\n"
 "QPushButton:hover\n"
 "{\n"
 "  background-color: #686868;\n"
@@ -172,6 +178,11 @@ class Ui_projectManager(object):
 "  padding-left: 6px;\n"
 "}\n"
 "\n"
+"QComboBox:disabled\n"
+"{\n"
+"color: #7D7D7D;\n"
+"border: 1px solid #4A4A4A;\n"
+"}\n"
 "  \n"
 "QComboBox:hover,QPushButton:hover\n"
 "{\n"
@@ -371,7 +382,6 @@ class Ui_projectManager(object):
 "  border-style: solid;\n"
 "  border-width: 1px;\n"
 "  border-color: #282828;\n"
-"border-radius: 6px;\n"
 "}\n"
 "\n"
 "\n"
@@ -415,12 +425,10 @@ class Ui_projectManager(object):
 "border-left: none;\n"
 "}\n"
 "\n"
-"QHeaderView::section:first{\n"
-"border-top-left-radius: 6px;\n"
-"}\n"
+"\n"
 "\n"
 "QHeaderView::section:last{\n"
-"border-top-right-radius: 6px;\n"
+"\n"
 "border-right:none;\n"
 "}\n"
 "\n"
@@ -457,7 +465,7 @@ class Ui_projectManager(object):
         self.projectTreeGridLayout.setContentsMargins(0, 0, 0, 0)
         self.projectTreeGridLayout.setVerticalSpacing(1)
         self.projectTreeGridLayout.setObjectName("projectTreeGridLayout")
-        spacerItem = QtGui.QSpacerItem(178, 21, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(178, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.projectTreeGridLayout.addItem(spacerItem, 0, 1, 1, 1)
         self.projectTree = QtGui.QTreeWidget(self.layoutWidget)
         self.projectTree.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -468,15 +476,21 @@ class Ui_projectManager(object):
         self.projectTree.setRootIsDecorated(False)
         self.projectTree.setUniformRowHeights(False)
         self.projectTree.setItemsExpandable(False)
+        self.projectTree.setHeaderHidden(False)
         self.projectTree.setExpandsOnDoubleClick(False)
         self.projectTree.setObjectName("projectTree")
         item_0 = QtGui.QTreeWidgetItem(self.projectTree)
         item_0 = QtGui.QTreeWidgetItem(self.projectTree)
-        self.projectTree.header().setVisible(False)
+        self.projectTree.header().setVisible(True)
         self.projectTree.header().setDefaultSectionSize(200)
         self.projectTree.header().setMinimumSectionSize(25)
         self.projectTree.header().setSortIndicatorShown(False)
         self.projectTreeGridLayout.addWidget(self.projectTree, 1, 0, 1, 2)
+        self.togglePathsCheckBox = QtGui.QCheckBox(self.layoutWidget)
+        self.togglePathsCheckBox.setMinimumSize(QtCore.QSize(0, 20))
+        self.togglePathsCheckBox.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.togglePathsCheckBox.setObjectName("togglePathsCheckBox")
+        self.projectTreeGridLayout.addWidget(self.togglePathsCheckBox, 0, 0, 1, 1)
         self.layoutWidget1 = QtGui.QWidget(self.existingProjectsSplitter)
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.gridLayout_4 = QtGui.QGridLayout(self.layoutWidget1)
@@ -492,9 +506,10 @@ class Ui_projectManager(object):
         self.sceneTree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.sceneTree.setIndentation(5)
         self.sceneTree.setRootIsDecorated(False)
+        self.sceneTree.setHeaderHidden(False)
         self.sceneTree.setExpandsOnDoubleClick(False)
         self.sceneTree.setObjectName("sceneTree")
-        self.sceneTree.header().setVisible(False)
+        self.sceneTree.header().setVisible(True)
         self.sceneTree.header().setDefaultSectionSize(200)
         self.gridLayout_4.addWidget(self.sceneTree, 1, 0, 1, 4)
         self.filtersBtn = QtGui.QToolButton(self.layoutWidget1)
@@ -586,6 +601,11 @@ class Ui_projectManager(object):
         self.gridLayout_2.addWidget(self.newProjectPath, 0, 1, 1, 1)
         self.gridLayout_6.addWidget(self.projectLocationGroup, 0, 0, 1, 3)
         self.rootFoldersGroup = QtGui.QGroupBox(self.newProjectTab)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.rootFoldersGroup.sizePolicy().hasHeightForWidth())
+        self.rootFoldersGroup.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setWeight(75)
         font.setBold(True)
@@ -594,33 +614,23 @@ class Ui_projectManager(object):
         self.rootFoldersGroup.setStyleSheet("")
         self.rootFoldersGroup.setObjectName("rootFoldersGroup")
         self.gridLayout_3 = QtGui.QGridLayout(self.rootFoldersGroup)
-        self.gridLayout_3.setContentsMargins(4, 9, 6, 6)
+        self.gridLayout_3.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        spacerItem2 = QtGui.QSpacerItem(85, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_3.addItem(spacerItem2, 0, 0, 1, 1)
         self.createFoldersCheckBox = QtGui.QCheckBox(self.rootFoldersGroup)
+        self.createFoldersCheckBox.setMinimumSize(QtCore.QSize(0, 20))
+        self.createFoldersCheckBox.setMaximumSize(QtCore.QSize(16777215, 20))
         self.createFoldersCheckBox.setObjectName("createFoldersCheckBox")
         self.gridLayout_3.addWidget(self.createFoldersCheckBox, 0, 1, 1, 1)
+        spacerItem2 = QtGui.QSpacerItem(85, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_3.addItem(spacerItem2, 0, 0, 1, 1)
         self.templateOptions = QtGui.QWidget(self.rootFoldersGroup)
+        self.templateOptions.setEnabled(True)
         self.templateOptions.setObjectName("templateOptions")
         self.gridLayout = QtGui.QGridLayout(self.templateOptions)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setSpacing(4)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-        self.folderTemplateLabel = QtGui.QLabel(self.templateOptions)
-        self.folderTemplateLabel.setMinimumSize(QtCore.QSize(85, 0))
-        self.folderTemplateLabel.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.folderTemplateLabel.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.folderTemplateLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.folderTemplateLabel.setObjectName("folderTemplateLabel")
-        self.gridLayout.addWidget(self.folderTemplateLabel, 0, 0, 1, 1)
-        self.templateCbx = QtGui.QComboBox(self.templateOptions)
-        self.templateCbx.setMinimumSize(QtCore.QSize(0, 20))
-        self.templateCbx.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.templateCbx.setObjectName("templateCbx")
-        self.templateCbx.addItem("")
-        self.gridLayout.addWidget(self.templateCbx, 0, 1, 1, 1)
         self.newTemplateBtn = QtGui.QPushButton(self.templateOptions)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -636,13 +646,12 @@ class Ui_projectManager(object):
         self.newTemplateBtn.setIconSize(QtCore.QSize(24, 24))
         self.newTemplateBtn.setObjectName("newTemplateBtn")
         self.gridLayout.addWidget(self.newTemplateBtn, 0, 2, 1, 1)
-        self.scenesRootLabel_2 = QtGui.QLabel(self.templateOptions)
-        self.scenesRootLabel_2.setMinimumSize(QtCore.QSize(85, 0))
-        self.scenesRootLabel_2.setMaximumSize(QtCore.QSize(80, 16777215))
-        self.scenesRootLabel_2.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.scenesRootLabel_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.scenesRootLabel_2.setObjectName("scenesRootLabel_2")
-        self.gridLayout.addWidget(self.scenesRootLabel_2, 1, 0, 1, 1)
+        self.templateCbx = QtGui.QComboBox(self.templateOptions)
+        self.templateCbx.setMinimumSize(QtCore.QSize(0, 20))
+        self.templateCbx.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.templateCbx.setObjectName("templateCbx")
+        self.templateCbx.addItem("")
+        self.gridLayout.addWidget(self.templateCbx, 0, 1, 1, 1)
         self.folderTree = QtGui.QTreeWidget(self.templateOptions)
         self.folderTree.setFocusPolicy(QtCore.Qt.NoFocus)
         self.folderTree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -725,7 +734,21 @@ class Ui_projectManager(object):
         spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem3)
         self.gridLayout.addLayout(self.verticalLayout, 1, 2, 1, 1)
-        self.gridLayout_3.addWidget(self.templateOptions, 1, 0, 1, 2)
+        self.folderTemplateLabel = QtGui.QLabel(self.templateOptions)
+        self.folderTemplateLabel.setMinimumSize(QtCore.QSize(85, 0))
+        self.folderTemplateLabel.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.folderTemplateLabel.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.folderTemplateLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.folderTemplateLabel.setObjectName("folderTemplateLabel")
+        self.gridLayout.addWidget(self.folderTemplateLabel, 0, 0, 1, 1)
+        self.scenesRootLabel_2 = QtGui.QLabel(self.templateOptions)
+        self.scenesRootLabel_2.setMinimumSize(QtCore.QSize(85, 0))
+        self.scenesRootLabel_2.setMaximumSize(QtCore.QSize(80, 16777215))
+        self.scenesRootLabel_2.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.scenesRootLabel_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.scenesRootLabel_2.setObjectName("scenesRootLabel_2")
+        self.gridLayout.addWidget(self.scenesRootLabel_2, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.templateOptions, 1, 0, 1, 3)
         self.gridLayout_6.addWidget(self.rootFoldersGroup, 1, 0, 1, 3)
         spacerItem4 = QtGui.QSpacerItem(371, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_6.addItem(spacerItem4, 2, 0, 1, 1)
@@ -772,14 +795,16 @@ class Ui_projectManager(object):
         self.act_docs.setObjectName("act_docs")
         self.act_exploreProject = QtGui.QAction(projectManager)
         self.act_exploreProject.setObjectName("act_exploreProject")
+        self.act_exploreSceneFolder = QtGui.QAction(projectManager)
+        self.act_exploreSceneFolder.setObjectName("act_exploreSceneFolder")
         self.menuFile.addAction(self.act_setAsCurrent)
         self.menuFile.addAction(self.act_exploreProject)
-        self.menuFile.addSeparator()
         self.menuFile.addAction(self.act_addExisting)
         self.menuFile.addAction(self.act_removeSelected)
         self.menuScenes.addAction(self.act_openSelectedScene)
         self.menuScenes.addAction(self.act_importSelectedScene)
         self.menuScenes.addAction(self.act_importSelectedAsRef)
+        self.menuScenes.addAction(self.act_exploreSceneFolder)
         self.menuHelp.addAction(self.act_docs)
         self.menuHelp.addAction(self.act_about)
         self.menuBar.addAction(self.menuFile.menuAction())
@@ -801,6 +826,7 @@ class Ui_projectManager(object):
         self.projectTree.topLevelItem(1).setText(0, QtGui.QApplication.translate("projectManager", "projectName2", None, QtGui.QApplication.UnicodeUTF8))
         self.projectTree.topLevelItem(1).setText(1, QtGui.QApplication.translate("projectManager", "path/to/this/project", None, QtGui.QApplication.UnicodeUTF8))
         self.projectTree.setSortingEnabled(__sortingEnabled)
+        self.togglePathsCheckBox.setText(QtGui.QApplication.translate("projectManager", "Show Paths", None, QtGui.QApplication.UnicodeUTF8))
         self.sceneTree.headerItem().setText(0, QtGui.QApplication.translate("projectManager", "Scene", None, QtGui.QApplication.UnicodeUTF8))
         self.sceneTree.headerItem().setText(1, QtGui.QApplication.translate("projectManager", "Path", None, QtGui.QApplication.UnicodeUTF8))
         self.filtersBtn.setText(QtGui.QApplication.translate("projectManager", "Filetypes...", None, QtGui.QApplication.UnicodeUTF8))
@@ -811,11 +837,9 @@ class Ui_projectManager(object):
         self.newProjectPathBtn.setText(QtGui.QApplication.translate("projectManager", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.newProjectPath.setToolTip(QtGui.QApplication.translate("projectManager", "This is the path where your new project will be created. The title of the project will be the name of root directory. ", None, QtGui.QApplication.UnicodeUTF8))
         self.rootFoldersGroup.setTitle(QtGui.QApplication.translate("projectManager", "Directory Structure", None, QtGui.QApplication.UnicodeUTF8))
-        self.createFoldersCheckBox.setText(QtGui.QApplication.translate("projectManager", "Create Folders (EXPERIMENTAL)", None, QtGui.QApplication.UnicodeUTF8))
-        self.folderTemplateLabel.setText(QtGui.QApplication.translate("projectManager", "Template", None, QtGui.QApplication.UnicodeUTF8))
-        self.templateCbx.setItemText(0, QtGui.QApplication.translate("projectManager", "Modo Default", None, QtGui.QApplication.UnicodeUTF8))
+        self.createFoldersCheckBox.setText(QtGui.QApplication.translate("projectManager", "Create Folders", None, QtGui.QApplication.UnicodeUTF8))
         self.newTemplateBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Create a new template", None, QtGui.QApplication.UnicodeUTF8))
-        self.scenesRootLabel_2.setText(QtGui.QApplication.translate("projectManager", "Structure", None, QtGui.QApplication.UnicodeUTF8))
+        self.templateCbx.setItemText(0, QtGui.QApplication.translate("projectManager", "Modo Default", None, QtGui.QApplication.UnicodeUTF8))
         self.folderTree.setSortingEnabled(False)
         self.folderTree.headerItem().setText(0, QtGui.QApplication.translate("projectManager", "Folders", None, QtGui.QApplication.UnicodeUTF8))
         __sortingEnabled = self.folderTree.isSortingEnabled()
@@ -831,6 +855,8 @@ class Ui_projectManager(object):
         self.resetTreeBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Erase the structure tree", None, QtGui.QApplication.UnicodeUTF8))
         self.saveTemplateBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Save the template", None, QtGui.QApplication.UnicodeUTF8))
         self.saveTemplateBtn.setShortcut(QtGui.QApplication.translate("projectManager", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
+        self.folderTemplateLabel.setText(QtGui.QApplication.translate("projectManager", "Template", None, QtGui.QApplication.UnicodeUTF8))
+        self.scenesRootLabel_2.setText(QtGui.QApplication.translate("projectManager", "Structure", None, QtGui.QApplication.UnicodeUTF8))
         self.createProjectBtn.setToolTip(QtGui.QApplication.translate("projectManager", "If you need a tooltip for this...", None, QtGui.QApplication.UnicodeUTF8))
         self.createProjectBtn.setText(QtGui.QApplication.translate("projectManager", "Create Project", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.newProjectTab), QtGui.QApplication.translate("projectManager", "New Project", None, QtGui.QApplication.UnicodeUTF8))
@@ -845,5 +871,8 @@ class Ui_projectManager(object):
         self.act_importSelectedAsRef.setText(QtGui.QApplication.translate("projectManager", "Import Selected as Referenced", None, QtGui.QApplication.UnicodeUTF8))
         self.act_about.setText(QtGui.QApplication.translate("projectManager", "About...", None, QtGui.QApplication.UnicodeUTF8))
         self.act_docs.setText(QtGui.QApplication.translate("projectManager", "Documentation", None, QtGui.QApplication.UnicodeUTF8))
-        self.act_exploreProject.setText(QtGui.QApplication.translate("projectManager", "Explore Project", None, QtGui.QApplication.UnicodeUTF8))
+        self.act_exploreProject.setText(QtGui.QApplication.translate("projectManager", "Open Project Folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.act_exploreProject.setToolTip(QtGui.QApplication.translate("projectManager", "Open Project Folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.act_exploreSceneFolder.setText(QtGui.QApplication.translate("projectManager", "Open Scene Folder", None, QtGui.QApplication.UnicodeUTF8))
+        self.act_exploreSceneFolder.setToolTip(QtGui.QApplication.translate("projectManager", "Open Containing Folder", None, QtGui.QApplication.UnicodeUTF8))
 

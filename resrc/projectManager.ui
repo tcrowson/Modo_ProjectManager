@@ -156,6 +156,12 @@ QPushButton:flat {
   background-color: none;
 }
 
+QPushButton:disabled
+{
+border: 1px solid #4A4A4A;
+}
+
+
 QPushButton:hover
 {
   background-color: #686868;
@@ -180,6 +186,11 @@ QComboBox
   padding-left: 6px;
 }
 
+QComboBox:disabled
+{
+color: #7D7D7D;
+border: 1px solid #4A4A4A;
+}
   
 QComboBox:hover,QPushButton:hover
 {
@@ -379,7 +390,6 @@ QTreeView {
   border-style: solid;
   border-width: 1px;
   border-color: #282828;
-border-radius: 6px;
 }
 
 
@@ -423,12 +433,10 @@ border-top: none;
 border-left: none;
 }
 
-QHeaderView::section:first{
-border-top-left-radius: 6px;
-}
+
 
 QHeaderView::section:last{
-border-top-right-radius: 6px;
+
 border-right:none;
 }
 
@@ -485,7 +493,7 @@ QHeaderView::up-arrow {
               <property name="sizeHint" stdset="0">
                <size>
                 <width>178</width>
-                <height>21</height>
+                <height>20</height>
                </size>
               </property>
              </spacer>
@@ -516,11 +524,14 @@ QHeaderView::up-arrow {
               <property name="itemsExpandable">
                <bool>false</bool>
               </property>
+              <property name="headerHidden">
+               <bool>false</bool>
+              </property>
               <property name="expandsOnDoubleClick">
                <bool>false</bool>
               </property>
               <attribute name="headerVisible">
-               <bool>false</bool>
+               <bool>true</bool>
               </attribute>
               <attribute name="headerDefaultSectionSize">
                <number>200</number>
@@ -557,6 +568,25 @@ QHeaderView::up-arrow {
                 <string>path/to/this/project</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="togglePathsCheckBox">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Show Paths</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -602,11 +632,14 @@ QHeaderView::up-arrow {
               <property name="rootIsDecorated">
                <bool>false</bool>
               </property>
+              <property name="headerHidden">
+               <bool>false</bool>
+              </property>
               <property name="expandsOnDoubleClick">
                <bool>false</bool>
               </property>
               <attribute name="headerVisible">
-               <bool>false</bool>
+               <bool>true</bool>
               </attribute>
               <attribute name="headerDefaultSectionSize">
                <number>200</number>
@@ -819,6 +852,12 @@ min-width: 100px;
         </item>
         <item row="1" column="0" colspan="3">
          <widget class="QGroupBox" name="rootFoldersGroup">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="font">
            <font>
             <weight>75</weight>
@@ -835,18 +874,28 @@ min-width: 100px;
            <string>Directory Structure</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
-           <property name="leftMargin">
-            <number>4</number>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinimumSize</enum>
            </property>
-           <property name="topMargin">
-            <number>9</number>
-           </property>
-           <property name="rightMargin">
-            <number>6</number>
-           </property>
-           <property name="bottomMargin">
-            <number>6</number>
-           </property>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="createFoldersCheckBox">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Create Folders</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <spacer name="horizontalSpacer">
              <property name="orientation">
@@ -863,15 +912,11 @@ min-width: 100px;
              </property>
             </spacer>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="createFoldersCheckBox">
-             <property name="text">
-              <string>Create Folders (EXPERIMENTAL)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
+           <item row="1" column="0" colspan="3">
             <widget class="QWidget" name="templateOptions" native="true">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
              <layout class="QGridLayout" name="gridLayout">
               <property name="margin">
                <number>0</number>
@@ -879,52 +924,6 @@ min-width: 100px;
               <property name="spacing">
                <number>4</number>
               </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="folderTemplateLabel">
-                <property name="minimumSize">
-                 <size>
-                  <width>85</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>80</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::LeftToRight</enum>
-                </property>
-                <property name="text">
-                 <string>Template</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="templateCbx">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>Modo Default</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
               <item row="0" column="2">
                <widget class="QPushButton" name="newTemplateBtn">
                 <property name="sizePolicy">
@@ -963,29 +962,25 @@ min-width: 100px;
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="scenesRootLabel_2">
+              <item row="0" column="1">
+               <widget class="QComboBox" name="templateCbx">
                 <property name="minimumSize">
                  <size>
-                  <width>85</width>
-                  <height>0</height>
+                  <width>0</width>
+                  <height>20</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>80</width>
-                  <height>16777215</height>
+                  <width>16777215</width>
+                  <height>20</height>
                  </size>
                 </property>
-                <property name="layoutDirection">
-                 <enum>Qt::LeftToRight</enum>
-                </property>
-                <property name="text">
-                 <string>Structure</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
+                <item>
+                 <property name="text">
+                  <string>Modo Default</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item row="1" column="1">
@@ -1212,6 +1207,56 @@ min-width: 100px;
                 </item>
                </layout>
               </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="folderTemplateLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>85</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>80</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Template</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="scenesRootLabel_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>85</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>80</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Structure</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
              </layout>
              <zorder>newTemplateBtn</zorder>
              <zorder>templateCbx</zorder>
@@ -1295,7 +1340,6 @@ min-width: 100px;
     </property>
     <addaction name="act_setAsCurrent"/>
     <addaction name="act_exploreProject"/>
-    <addaction name="separator"/>
     <addaction name="act_addExisting"/>
     <addaction name="act_removeSelected"/>
    </widget>
@@ -1306,6 +1350,7 @@ min-width: 100px;
     <addaction name="act_openSelectedScene"/>
     <addaction name="act_importSelectedScene"/>
     <addaction name="act_importSelectedAsRef"/>
+    <addaction name="act_exploreSceneFolder"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1360,7 +1405,18 @@ min-width: 100px;
   </action>
   <action name="act_exploreProject">
    <property name="text">
-    <string>Explore Project</string>
+    <string>Open Project Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Project Folder</string>
+   </property>
+  </action>
+  <action name="act_exploreSceneFolder">
+   <property name="text">
+    <string>Open Scene Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Containing Folder</string>
    </property>
   </action>
  </widget>
