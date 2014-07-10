@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
-    <height>544</height>
+    <width>698</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -695,8 +695,8 @@ QToolButton:pressed,QToolButton:focus:pressed
        <attribute name="title">
         <string>New Project</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0" colspan="3">
          <widget class="QGroupBox" name="projectLocationGroup">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -810,7 +810,7 @@ QToolButton:pressed,QToolButton:focus:pressed
           </layout>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="1" column="0" colspan="3">
          <widget class="QGroupBox" name="rootFoldersGroup">
           <property name="font">
            <font>
@@ -827,7 +827,19 @@ QToolButton:pressed,QToolButton:focus:pressed
           <property name="title">
            <string>Directory Structure</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout">
+          <layout class="QGridLayout" name="gridLayout_3">
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
            <item row="0" column="0">
             <spacer name="horizontalSpacer">
              <property name="orientation">
@@ -851,393 +863,413 @@ QToolButton:pressed,QToolButton:focus:pressed
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="folderTemplateLabel">
-             <property name="minimumSize">
-              <size>
-               <width>85</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>80</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="text">
-              <string>Template</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="templateCbx">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <item>
-              <property name="text">
-               <string>Modo Default</string>
+           <item row="1" column="0" colspan="2">
+            <widget class="QWidget" name="templateOptions" native="true">
+             <layout class="QGridLayout" name="gridLayout">
+              <property name="margin">
+               <number>0</number>
               </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="newTemplateBtn">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>32</width>
-               <height>24</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Create a new template</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>icons/newTemplate.png</normaloff>icons/newTemplate.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>24</width>
-               <height>24</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="scenesRootLabel_2">
-             <property name="minimumSize">
-              <size>
-               <width>85</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>80</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
-             </property>
-             <property name="text">
-              <string>Structure</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <property name="spacing">
-              <number>2</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="addFolderBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Add a new folder to the structure tree</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>icons/addFolder.png</normaloff>icons/addFolder.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>26</width>
-                 <height>26</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="delFolderBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Remove the selected folder from the structure tree</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>icons/removeFolder.png</normaloff>icons/removeFolder.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>26</width>
-                 <height>26</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="resetTreeBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Erase the structure tree</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>icons/reset.png</normaloff>icons/reset.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>26</width>
-                 <height>26</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="saveTemplateBtn">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Save the template</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>icons/save.png</normaloff>icons/save.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>26</width>
-                 <height>26</height>
-                </size>
-               </property>
-               <property name="shortcut">
-                <string>Ctrl+R</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item row="2" column="1">
-            <widget class="QTreeWidget" name="folderTree">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::CustomContextMenu</enum>
-             </property>
-             <property name="dragEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="dragDropMode">
-              <enum>QAbstractItemView::InternalMove</enum>
-             </property>
-             <property name="defaultDropAction">
-              <enum>Qt::MoveAction</enum>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::ExtendedSelection</enum>
-             </property>
-             <property name="autoExpandDelay">
-              <number>0</number>
-             </property>
-             <property name="indentation">
-              <number>30</number>
-             </property>
-             <property name="sortingEnabled">
-              <bool>false</bool>
-             </property>
-             <property name="animated">
-              <bool>true</bool>
-             </property>
-             <property name="headerHidden">
-              <bool>true</bool>
-             </property>
-             <property name="expandsOnDoubleClick">
-              <bool>false</bool>
-             </property>
-             <attribute name="headerVisible">
-              <bool>false</bool>
-             </attribute>
-             <column>
-              <property name="text">
-               <string>Folders</string>
+              <property name="spacing">
+               <number>4</number>
               </property>
-             </column>
-             <item>
-              <property name="text">
-               <string>New Item</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>New Item</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>New Item</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>New Subitem</string>
-               </property>
-               <item>
-                <property name="text">
-                 <string>New Subitem</string>
+              <item row="0" column="0">
+               <widget class="QLabel" name="folderTemplateLabel">
+                <property name="minimumSize">
+                 <size>
+                  <width>85</width>
+                  <height>0</height>
+                 </size>
                 </property>
-               </item>
+                <property name="maximumSize">
+                 <size>
+                  <width>80</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Template</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
               </item>
-             </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="templateCbx">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Modo Default</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="newTemplateBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>32</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Create a new template</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>icons/newTemplate.png</normaloff>icons/newTemplate.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="scenesRootLabel_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>85</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>80</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Structure</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QTreeWidget" name="folderTree">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <property name="contextMenuPolicy">
+                 <enum>Qt::CustomContextMenu</enum>
+                </property>
+                <property name="dragEnabled">
+                 <bool>true</bool>
+                </property>
+                <property name="dragDropMode">
+                 <enum>QAbstractItemView::InternalMove</enum>
+                </property>
+                <property name="defaultDropAction">
+                 <enum>Qt::MoveAction</enum>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::ExtendedSelection</enum>
+                </property>
+                <property name="autoExpandDelay">
+                 <number>0</number>
+                </property>
+                <property name="indentation">
+                 <number>30</number>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <property name="animated">
+                 <bool>true</bool>
+                </property>
+                <property name="headerHidden">
+                 <bool>true</bool>
+                </property>
+                <property name="expandsOnDoubleClick">
+                 <bool>false</bool>
+                </property>
+                <attribute name="headerVisible">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>Folders</string>
+                 </property>
+                </column>
+                <item>
+                 <property name="text">
+                  <string>New Item</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>New Item</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>New Item</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>New Subitem</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>New Subitem</string>
+                   </property>
+                  </item>
+                 </item>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="addFolderBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Add a new folder to the structure tree</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>icons/addFolder.png</normaloff>icons/addFolder.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>26</width>
+                    <height>26</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="delFolderBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Remove the selected folder from the structure tree</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>icons/removeFolder.png</normaloff>icons/removeFolder.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>26</width>
+                    <height>26</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="resetTreeBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Erase the structure tree</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>icons/reset.png</normaloff>icons/reset.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>26</width>
+                    <height>26</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="saveTemplateBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Save the template</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>icons/save.png</normaloff>icons/save.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>26</width>
+                    <height>26</height>
+                   </size>
+                  </property>
+                  <property name="shortcut">
+                   <string>Ctrl+R</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+             <zorder></zorder>
+             <zorder>templateCbx</zorder>
+             <zorder>folderTree</zorder>
+             <zorder>scenesRootLabel_2</zorder>
+             <zorder>folderTemplateLabel</zorder>
+             <zorder>newTemplateBtn</zorder>
+             <zorder>newTemplateBtn</zorder>
+             <zorder>templateCbx</zorder>
+             <zorder>folderTree</zorder>
+             <zorder>scenesRootLabel_2</zorder>
+             <zorder></zorder>
+             <zorder>folderTemplateLabel</zorder>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
         <item row="2" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <spacer name="spacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>223</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="createProjectBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>150</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>If you need a tooltip for this...</string>
-            </property>
-            <property name="text">
-             <string>Create Project</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="spacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>223</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
+         <spacer name="spacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>371</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="createProjectBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>If you need a tooltip for this...</string>
+          </property>
+          <property name="text">
+           <string>Create Project</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <spacer name="spacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>371</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -1250,7 +1282,7 @@ QToolButton:pressed,QToolButton:focus:pressed
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>936</width>
+     <width>698</width>
      <height>21</height>
     </rect>
    </property>
