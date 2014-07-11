@@ -1,12 +1,9 @@
 #------------------------------------------------------------------------------
 # PROJECT MANAGER, Tim Crowson, July 2014
 #------------------------------------------------------------------------------
-
 #
 # WORK IN PROGRESS
 #
-
-
 # 
 # Currently the two dialog options available cause problems:
 # - The standard Modo dialog system causes a focus problem, effectively locking Modo out (On Ubuntu).
