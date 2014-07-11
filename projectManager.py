@@ -431,10 +431,22 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Write a generic '.luxproject' system file to the specified path.
 		Arg 1: the path to the file <string>.
 		'''
+		contents = [ 	'#LXProject#',
+						'Associate image ',
+						'Associate irrad ',
+						'Associate movie ',
+						'Associate image@renderframes ',
+						'Associate movie@rendermovies ',
+						'Associate movie_st@rendermovies ',
+						'Associate movie_nost@rendermovies ',
+						'Associate scene ',
+						'Associate scene.saveAs '
+					]
+
 		if os.path.exists(path):
 			sysFile = os.path.join( path, '.luxproject' )
 			f = open( sysFile, 'w' ) 
-			f.write( '#LXProject#\n' ) # bare bones definition
+			f.write( '\n'.join(contents) )
 			f.close()
 
 
