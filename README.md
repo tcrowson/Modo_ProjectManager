@@ -1,7 +1,7 @@
 ProjectManager 
 ==============
 
-***CAUTION: THIS IS A WIP AND IS ONLY PUBLIC FOR PREVIEW PURPOSES***
+***CAUTION: THIS IS A WIP***
 
 
 ***For Modo 801 Linux only, as Modo does not support Qt on Windows and Mac.***
