@@ -1,4 +1,4 @@
-ProjectManager for Modo 801
+Project Manager Kit for Modo 801
 ==============
 
 ***CAUTION: THIS IS A WIP***
