@@ -280,9 +280,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Display info about Project Manager in a modal window.
 		'''
 		message = [	'version 0.1  - Tim Crowson, July 2014 ',
-					'',
-					'This kit is designed to streamline project creation and basic high-level management. See the documentation for details.']
-		self.msg_box( 'About', message)
+				'',
+				'This kit is designed to streamline project creation and basic high-level management. See the documentation for details.']
+		self.msg_box( 	'About', message)
 
 
 	def ui_fileTypeFiltersMenu(self):
@@ -582,7 +582,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		Remove the selected items from the tree.
 		'''
-		confirm = self.input_confirmDialog( 'Remove Folder(s)', ['Are you sure you want to remove the selected folders?'] )
+		confirm = self.input_confirmDialog( 	'Remove Folder(s)',
+							['Are you sure you want to remove the selected folders?'] )
 		if confirm == QMessageBox.Yes:
 			root = self.folderTree.invisibleRootItem()
 			for item in self.folderTree.selectedItems():
@@ -600,7 +601,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		User-driven method for explicitly resetting the structure tree.
 		'''
-		confirm = self.input_confirmDialog( 'Reset Structure Tree', ["Are you sure you want to reset the structure tree?",
+		confirm = self.input_confirmDialog( 	'Reset Structure Tree',
+							["Are you sure you want to reset the structure tree?",
 																	 "This will erase the the tree's contents..."] )
 		if confirm == QMessageBox.Yes:
 			self.ui_clearTreeWidget( self.folderTree )
@@ -857,7 +859,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				self.explore( projDir )
 			else:
 				self.msg_log(lx.symbol.e_WARNING, [	'Trouble exploring project folder...',
-													'Invalid project path.'] )
+									'Invalid project path.'] )
 
 
 	def act_proj_setAsCurrent(self):
@@ -872,7 +874,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 			else:
 				self.msg_log(lx.symbol.e_WARNING, [	'Trouble setting current project...',
-													'Invalid project path.'] )
+									'Invalid project path.'] )
 
 
 	def act_proj_removeSelected(self):
@@ -882,7 +884,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		project = self.projects_getSelectedPath()
 
 		if project:
-			confirm = self.input_confirmDialog( 'Remove Project', ['Remove the selected project from the list?'] )
+			confirm = self.input_confirmDialog( 	'Remove Project',
+								['Remove the selected project from the list?'] )
 			if confirm == QMessageBox.Yes:
 				# start by reading the current list
 				with open(projectListFile, 'r') as f:
