@@ -315,21 +315,21 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Return compatible scene filetypes as a dictionary.
 		'''
 		fileTypeLookup = {
-						'Modo (*.lxo)': '.lxo',
-						'Preset (*.lxl)': '.lxl',
-						'Lightwave (*.lwo)': '.lwo',
-						'Wavefront (*.obj)': '.obj',
-						'Alembic (*.abc)':' .abc',
-						'Filmbox (*.fbx)': '.fbx',
-						'Collada (*.dae)': '.dae',
-						'Rhino (*.3dm)': '.3dm',
-						'Autodesk DXF (.*dxf)': '.dxf',
-						'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
-						'Stereolithography (*.stl)': '.stl',
-						'Videoscape (*.geo)': '.geo',
-						'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
-						'Protein DB (*.pdb)': '.pdb'
-						}
+				'Modo (*.lxo)': '.lxo',
+				'Preset (*.lxl)': '.lxl',
+				'Lightwave (*.lwo)': '.lwo',
+				'Wavefront (*.obj)': '.obj',
+				'Alembic (*.abc)':' .abc',
+				'Filmbox (*.fbx)': '.fbx',
+				'Collada (*.dae)': '.dae',
+				'Rhino (*.3dm)': '.3dm',
+				'Autodesk DXF (.*dxf)': '.dxf',
+				'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
+				'Stereolithography (*.stl)': '.stl',
+				'Videoscape (*.geo)': '.geo',
+				'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
+				'Protein DB (*.pdb)': '.pdb'
+				}
 		return fileTypeLookup
 
 
@@ -437,17 +437,18 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Write a generic '.luxproject' system file to the specified path.
 		Arg 1: the path to the file <string>.
 		'''
-		contents = [ 	'#LXProject#',
-						'Associate image ',
-						'Associate irrad ',
-						'Associate movie ',
-						'Associate image@renderframes ',
-						'Associate movie@rendermovies ',
-						'Associate movie_st@rendermovies ',
-						'Associate movie_nost@rendermovies ',
-						'Associate scene ',
-						'Associate scene.saveAs '
-					]
+		contents = 	[ 	
+				'#LXProject#',
+				'Associate image ',
+				'Associate irrad ',
+				'Associate movie ',
+				'Associate image@renderframes ',
+				'Associate movie@rendermovies ',
+				'Associate movie_st@rendermovies ',
+				'Associate movie_nost@rendermovies ',
+				'Associate scene ',
+				'Associate scene.saveAs '
+				]
 
 		if os.path.exists(path):
 			sysFile = os.path.join( path, '.luxproject' )
