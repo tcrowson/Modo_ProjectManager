@@ -167,8 +167,8 @@ class CleanXML():
 #------------------------------------------------------------------------------
 class shiftSelectMenu(QObject):
 	'''
-	Class for creating a menu which allows you to select multiple actions
-	by using the Shift key.
+	Enables a menu behavior whereby holding down the Shift key allows interaction
+	with multiple actions without closing the menu.
 
 	Original class by Jon Swindells.
 	'''
