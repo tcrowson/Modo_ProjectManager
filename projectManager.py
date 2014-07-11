@@ -8,8 +8,10 @@
 # - Refine logic when switching between templates.
 # - Implement a feedback system for informing the user when blessed commands fail...
 #	Currently the two dialog options available cause problems:
-#		- The standard Modo dialog system causes a focus problem, effectively locking Modo out
-#		- The QMessageBox class causes Modo to crash when run more than once from inside a blessed cmd
+#		- The standard Modo dialog system causes a focus problem,
+#			effectively locking Modo out.
+#		- The QMessageBox class causes Modo to crash when run more than
+#		  	once from inside a blessed cmd.
 #
 
 
