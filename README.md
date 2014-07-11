@@ -1,6 +1,9 @@
 ProjectManager 
 ==============
 
+***CAUTION: THIS IS A WIP AND IS ONLY PUBLIC FOR PREVIEW PURPOSES***
+
+
 ***For Modo 801 Linux***
 
 
