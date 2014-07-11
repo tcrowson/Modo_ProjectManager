@@ -1,4 +1,4 @@
-ProjectManager 
+ProjectManager for Modo 801
 ==============
 
 ***CAUTION: THIS IS A WIP***
