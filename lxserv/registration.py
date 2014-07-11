@@ -1,8 +1,22 @@
-# PROJECT MANAGER, Tim Crowson, June 2014
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# PROJECT MANAGER, Tim Crowson, July 2014
+#------------------------------------------------------------------------------
+
+#
+# WORK IN PROGRESS
+#
 
 
-#----------------------------------------------------------------------------------------------------------------------
+# 
+# Currently the two dialog options available cause problems:
+# - The standard Modo dialog system causes a focus problem,
+#			effectively locking Modo out (On Ubuntu)
+# - The QMessageBox class causes Modo to crash when run more than
+#		  	once from inside a blessed cmd (see registration.py)
+#
+
+
+#------------------------------------------------------------------------------
 # IMPORTS
 
 import os
@@ -20,7 +34,7 @@ import projectManager as PM
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # HELPERS
 
 
@@ -50,7 +64,7 @@ def explore(filename):
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class ShowProjectManager ( lxu.command.BasicCommand ):
 	'''
 	Modo Command to display the Project Manager in a new window.
@@ -69,7 +83,7 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class ExploreProjectFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current project directory.
@@ -100,7 +114,7 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class ExploreSceneFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current scene's directory.
@@ -129,7 +143,7 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 			
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 class ProjectManager_CustomView(lxifc.CustomView):
 	''' '''
 	def __init__ (self):
@@ -161,7 +175,7 @@ class ProjectManager_CustomView(lxifc.CustomView):
 		return False
 
 
-#----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # BLESS THIS MESS!
 lx.bless( ShowProjectManager, "project.manager" )
 lx.bless( ExploreProjectFolder, "project.exploreCurrent" )
