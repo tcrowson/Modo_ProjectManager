@@ -9,10 +9,8 @@
 
 # 
 # Currently the two dialog options available cause problems:
-# - The standard Modo dialog system causes a focus problem,
-#			effectively locking Modo out (On Ubuntu)
-# - The QMessageBox class causes Modo to crash when run more than
-#		  	once from inside a blessed cmd (see registration.py)
+# - The standard Modo dialog system causes a focus problem, effectively locking Modo out (On Ubuntu).
+# - The QMessageBox class causes Modo to crash when run more than once from inside a blessed cmd.
 #
 
 
