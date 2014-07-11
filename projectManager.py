@@ -2,6 +2,10 @@
 # PROJECT MANAGER, Tim Crowson, July 2014
 #------------------------------------------------------------------------------
 
+#
+# WORK IN PROGRESS
+#
+
 # TODO LIST:
 # - Implement some sort of dirty system to indicate when a template has changed.
 # - Implement filetype associations within the .luxproject file.
