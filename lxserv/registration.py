@@ -83,6 +83,8 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current project directory.
 	Logs and displays a warning if no project is set.
+	
+	Modo already has a native command for this, so this custom one may be retired soon.
 	'''
 
 	def __init__(self):
