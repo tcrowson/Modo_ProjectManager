@@ -42,28 +42,28 @@ import xml.etree.ElementTree as tree
 # PATHS
 
 # kit folder
-fileServ = lx.service.File()
-scriptsPath = fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_SCRIPTS )
-kitPath = os.path.join(scriptsPath,  'ProjectManager')
+FILESERVICE = lx.service.File()
+SCRIPTSPATH = FILESERVICE.FileSystemPath(lx.symbol.sSYSTEM_PATH_SCRIPTS)
+KITPATH = os.path.join(SCRIPTSPATH,  'ProjectManager')
 
 # data folder
-dataPath = os.path.join(kitPath, 'data')
+DATAPATH = os.path.join(KITPATH, 'data')
 
 # resource folder
-resrcPath = os.path.join(kitPath, 'resrc')
+RESRCPATH = os.path.join(KITPATH, 'resrc')
 
 # project list file
-projectListFile = os.path.join(dataPath, 'projects.projlist')
+PROJECTLISTFILE = os.path.join(DATAPATH, 'projects.projlist')
 
 # templates folder
-templatesDir = os.path.join(dataPath, 'templates')
+TEMPLATESPATH = os.path.join(DATAPATH, 'templates')
 
 
 
 #------------------------------------------------------------------------------
 # IMPORT THE UI
-sys.path.append( resrcPath )
-import projectManager_UI as pmUI
+sys.path.append(RESRCPATH)
+import projectmanager_UI as pmUI
 
 
 
@@ -165,7 +165,7 @@ class CleanXML():
 
 
 #------------------------------------------------------------------------------
-class shiftSelectMenu(QObject):
+class ShiftSelectMenu(QObject):
 	'''
 	Enables a menu behavior whereby holding down the Shift key allows interaction
 	with multiple actions without closing the menu.
@@ -179,13 +179,13 @@ class shiftSelectMenu(QObject):
 				if obj.activeAction() and not obj.activeAction().menu():
 					obj.activeAction().trigger()
 					return True
-		return super(shiftSelectMenu, self).eventFilter(obj, event)
+		return super(ShiftSelectMenu, self).eventFilter(obj, event)
 
 
 
 #------------------------------------------------------------------------------
 
-class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
+class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 	'''
 	Project Manager Class.
 	'''
@@ -202,70 +202,70 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Connect signals and slots.
 		'''
 		# buttons
-		self.newProjectPathBtn.released.connect( self.project_pickRoot )
-		self.createProjectBtn.released.connect( self.project_create )
-		self.newTemplateBtn.released.connect( self.template_new )
-		self.addFolderBtn.released.connect( self.template_addFolder )
-		self.delFolderBtn.released.connect( self.template_removeFolder)
-		self.resetTreeBtn.released.connect( self.template_forceResetTree )
-		self.saveTemplateBtn.released.connect( self.template_save )
+		self.newProjectPathBtn.released.connect(self.project_pickRoot)
+		self.createProjectBtn.released.connect(self.project_create)
+		self.newTemplateBtn.released.connect(self.template_new)
+		self.addFolderBtn.released.connect(self.template_addFolder)
+		self.delFolderBtn.released.connect(self.template_removeFolder)
+		self.resetTreeBtn.released.connect(self.template_forceResetTree)
+		self.saveTemplateBtn.released.connect(self.template_save)
 
 		# widgets
-		self.togglePathsCheckBox.stateChanged.connect( self.ui_togglePaths )
-		self.projectTree.itemClicked.connect( self.scenes_getAll )
-		self.projectTree.itemDoubleClicked.connect( self.act_proj_explore )
-		self.sceneTree.itemDoubleClicked.connect( self.act_scn_openSelected )
-		self.folderTree.itemDoubleClicked.connect( self.template_beginItemEdit )
-		self.folderTree.itemChanged.connect( self.template_endItemEdit )
-		self.folderTree.itemSelectionChanged.connect( self.template_endItemEdit )
-		self.templateCbx.activated.connect( self.template_load)
-		self.createFoldersCheckBox.stateChanged.connect( self.ui_toggleTemplates )
+		self.togglePathsCheckBox.stateChanged.connect(self.ui_togglePaths)
+		self.projectTree.itemClicked.connect(self.scenes_getAll)
+		self.projectTree.itemDoubleClicked.connect(self.act_proj_explore)
+		self.sceneTree.itemDoubleClicked.connect(self.act_scn_openSelected)
+		self.folderTree.itemDoubleClicked.connect(self.template_beginItemEdit)
+		self.folderTree.itemChanged.connect(self.template_endItemEdit)
+		self.folderTree.itemSelectionChanged.connect(self.template_endItemEdit)
+		self.templateCbx.activated.connect(self.template_load)
+		self.createFoldersCheckBox.stateChanged.connect(self.ui_toggleTemplates)
 
 		# project actions
-		self.act_about.triggered.connect(self.ui_showAbout )
-		self.act_addExisting.triggered.connect( self.act_proj_addExisting )
-		self.act_removeSelected.triggered.connect( self.act_proj_removeSelected )
-		self.act_setAsCurrent.triggered.connect( self.act_proj_setAsCurrent )
-		self.act_exploreProject.triggered.connect( self.act_proj_explore )
-		self.act_exploreSceneFolder.triggered.connect( self.act_scn_openFolder )
+		self.act_addExisting.triggered.connect(self.act_proj_addExisting)
+		self.act_removeSelected.triggered.connect(self.act_proj_removeSelected)
+		self.act_setAsCurrent.triggered.connect(self.act_proj_setAsCurrent)
+		self.act_exploreProject.triggered.connect(self.act_proj_explore)
+		self.act_exploreSceneFolder.triggered.connect(self.act_scn_openFolder)
+		self.act_docs.triggered.connect(self.act_launchDocs)
 
 		# scene actions
-		self.act_openSelectedScene.triggered.connect( self.act_scn_openSelected )
-		self.act_importSelectedScene.triggered.connect( self.act_scn_importSelected )
-		self.act_importSelectedAsRef.triggered.connect( self.act_scn_importSelectedAsRef )
+		self.act_openSelectedScene.triggered.connect(self.act_scn_openSelected)
+		self.act_importSelectedScene.triggered.connect(self.act_scn_importSelected)
+		self.act_importSelectedAsRef.triggered.connect(self.act_scn_importSelectedAsRef)
 
 		# context menus
-		self.projectTree.customContextMenuRequested.connect( self.contextMenu_projectList )
-		self.sceneTree.customContextMenuRequested.connect( self.contextMenu_sceneList )
+		self.projectTree.customContextMenuRequested.connect(self.contextMenu_projectList)
+		self.sceneTree.customContextMenuRequested.connect(self.contextMenu_sceneList)
 
 
 	def ui_customize(self):
 		'''
 		Configure some initial UI states.
 		'''
-		self.existingProjectsSplitter.setSizes( [450,450] )
+		self.existingProjectsSplitter.setSizes([450,450])
 		self.projects_getExisting()
-		self.projectTree.setColumnWidth( 0, 200 )
-		self.sceneTree.setColumnWidth( 0, 200 )
-		self.ui_clearTreeWidget( self.folderTree )
+		self.projectTree.setColumnWidth(0, 200)
+		self.sceneTree.setColumnWidth(0, 200)
+		self.ui_clearTreeWidget(self.folderTree)
 		self.templates_getExisting()
-		self.newTemplateBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/newTemplate.png' ) ) )
-		self.addFolderBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/addFolder.png' ) ) )
-		self.delFolderBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/removeFolder.png' ) ) )
-		self.resetTreeBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/reset.png' ) ) )
-		self.saveTemplateBtn.setIcon( QIcon( os.path.join( resrcPath, 'icons/save.png' ) ) )
+		self.newTemplateBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/newTemplate.png')))
+		self.addFolderBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/addFolder.png')))
+		self.delFolderBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/removeFolder.png')))
+		self.resetTreeBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/reset.png')))
+		self.saveTemplateBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/save.png')))
 		self.ui_fileTypeFiltersMenu()
 		self.ui_toggleTemplates()
-		self.projectTree.setColumnHidden( 1, True )
-		self.sceneTree.setColumnHidden( 1, True )
+		self.projectTree.setColumnHidden(1, True)
+		self.sceneTree.setColumnHidden(1, True)
 
 
 	def ui_clearTreeWidget(self, treewidget):
 		'''
 		Remove all items from the specified QTreeWidget.
-		Arg 1: the target item <QTreeWidgetItem>
+		Arg 1: the target widget <QTreeWidget>
 		'''
-		iterator = QTreeWidgetItemIterator( treewidget, QTreeWidgetItemIterator.All )
+		iterator = QTreeWidgetItemIterator(treewidget, QTreeWidgetItemIterator.All)
 		while iterator.value():
 			iterator.value().takeChildren()
 			iterator +=1
@@ -273,16 +273,6 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		while i > -1:
 			treewidget.takeTopLevelItem(i)
 			i -= 1
-
-
-	def ui_showAbout(self):
-		'''
-		Display info about Project Manager in a modal window.
-		'''
-		message = [	'version 0.1  - Tim Crowson, July 2014 ',
-				'',
-				'This kit is designed to streamline project creation and basic high-level management. See the documentation for details.']
-		self.msg_box( 	'About', message)
 
 
 	def ui_fileTypeFiltersMenu(self):
@@ -295,17 +285,16 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		clicks off the menu, the scene list will update.
 		'''
 		self.filtersMenu = QMenu()
-		#self.filtersMenu.aboutToHide.connect( self.scenes_getAll )
-		self.evFilter = shiftSelectMenu()
-		self.filtersMenu.installEventFilter( self.evFilter )
+		self.evFilter = ShiftSelectMenu()
+		self.filtersMenu.installEventFilter(self.evFilter)
 
 		fileTypes = self.ui_getFileTypes()
-		for i in sorted( fileTypes ):
-			action = self.filtersMenu.addAction( i )
-			action.triggered.connect( self.scenes_getAll )
-			action.setCheckable( True )
+		for i in sorted(fileTypes):
+			action = self.filtersMenu.addAction(i)
+			action.triggered.connect(self.scenes_getAll)
+			action.setCheckable(True)
 			if i == 'Modo (*.lxo)':
-				action.setChecked( True )
+				action.setChecked(True)
 
 		self.filtersBtn.setMenu(self.filtersMenu)
 
@@ -315,21 +304,21 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Return compatible scene filetypes as a dictionary.
 		'''
 		fileTypeLookup = {
-				'Modo (*.lxo)': '.lxo',
-				'Preset (*.lxl)': '.lxl',
-				'Lightwave (*.lwo)': '.lwo',
-				'Wavefront (*.obj)': '.obj',
-				'Alembic (*.abc)':' .abc',
-				'Filmbox (*.fbx)': '.fbx',
-				'Collada (*.dae)': '.dae',
-				'Rhino (*.3dm)': '.3dm',
-				'Autodesk DXF (.*dxf)': '.dxf',
-				'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
-				'Stereolithography (*.stl)': '.stl',
-				'Videoscape (*.geo)': '.geo',
-				'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
-				'Protein DB (*.pdb)': '.pdb'
-				}
+			'Modo (*.lxo)': '.lxo',
+			'Preset (*.lxl)': '.lxl',
+			'Lightwave (*.lwo)': '.lwo',
+			'Wavefront (*.obj)': '.obj',
+			'Alembic (*.abc)':' .abc',
+			'Filmbox (*.fbx)': '.fbx',
+			'Collada (*.dae)': '.dae',
+			'Rhino (*.3dm)': '.3dm',
+			'Autodesk DXF (.*dxf)': '.dxf',
+			'Adobe Illustrator (*.eps, *.ai)': '.eps|.ai',
+			'Stereolithography (*.stl)': '.stl',
+			'Videoscape (*.geo)': '.geo',
+			'Solidworks (*.sldprt, *.sldasm)': '.sldprt|.sldasm',
+			'Protein DB (*.pdb)': '.pdb'
+			}
 		return fileTypeLookup
 
 
@@ -348,10 +337,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Show or hide the path columns for the projects and scenes lists
 		'''
 		state = self.togglePathsCheckBox.isChecked()
-		self.projectTree.setColumnHidden( 1,  not state )
-		self.sceneTree.setColumnHidden( 1, not state )
-		self.projectTree.setColumnWidth( 0, 200 )
-		self.sceneTree.setColumnWidth( 0, 200 )
+		self.projectTree.setColumnHidden(1,  not state)
+		self.sceneTree.setColumnHidden(1, not state)
+		self.projectTree.setColumnWidth(0, 200)
+		self.sceneTree.setColumnWidth(0, 200)
 
 
 	#-----------------------------------------------------------
@@ -381,7 +370,7 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		box = QMessageBox()
 		box.setWindowTitle(title)
-		box.setText('\n'.join(text) )
+		box.setText('\n'.join(text))
 		box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
 		box.setDefaultButton(QMessageBox.No)
 		return box.exec_()
@@ -396,10 +385,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Arg 1: the path to the file/folder <string>
 		'''
 		if sys.platform == "win32":
-			os.startfile( filename )
+			os.startfile(filename)
 		else:
 			opener ="open" if sys.platform == "darwin" else "xdg-open"
-			subprocess.call( [opener, filename] )
+			subprocess.call([opener, filename])
 
 
 	#-----------------------------------------------------------
@@ -424,8 +413,8 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		box = QMessageBox()
 		box.setWindowTitle(title)
-		box.setContentsMargins( 10,10,30,10 )
-		box.setText( '\n'.join(text) )
+		box.setContentsMargins(10,10,30,10)
+		box.setText('\n'.join(text))
 		box.exec_()
 
 
@@ -438,22 +427,22 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Arg 1: the path to the file <string>.
 		'''
 		contents = 	[ 	
-				'#LXProject#',
-				'Associate image ',
-				'Associate irrad ',
-				'Associate movie ',
-				'Associate image@renderframes ',
-				'Associate movie@rendermovies ',
-				'Associate movie_st@rendermovies ',
-				'Associate movie_nost@rendermovies ',
-				'Associate scene ',
-				'Associate scene.saveAs '
-				]
+			'#LXProject#',
+			'Associate image ',
+			'Associate irrad ',
+			'Associate movie ',
+			'Associate image@renderframes ',
+			'Associate movie@rendermovies ',
+			'Associate movie_st@rendermovies ',
+			'Associate movie_nost@rendermovies ',
+			'Associate scene ',
+			'Associate scene.saveAs '
+			]
 
 		if os.path.exists(path):
-			sysFile = os.path.join( path, '.luxproject' )
-			f = open( sysFile, 'w' ) 
-			f.write( '\n'.join(contents) )
+			sysFile = os.path.join(path, '.luxproject')
+			f = open(sysFile, 'w') 
+			f.write('\n'.join(contents))
 			f.close()
 
 
@@ -463,31 +452,31 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Arg 1: the path to the file <string>.
 		'''
 		# read the lines
-		with open(projectListFile, 'r') as f:
+		with open(PROJECTLISTFILE, 'r') as f:
 			lines = [line.strip() for line in f if line.strip()]
 			f.close()
 
 		# if the path isn't already in the list, add it
 		if not path in lines:
-			with open(projectListFile, 'w') as f:
+			with open(PROJECTLISTFILE, 'w') as f:
 				for line in lines:
-				    f.write( line + '\n')
-				f.write( path + '\n')
+				    f.write(line + '\n')
+				f.write(path + '\n')
 				f.close()
 
 
-	def write_directory( self, item, root ):
+	def write_directory(self, item, root):
 		'''
 		Walk the template and create the corresponding folder structure on disk.
 		Arg 1: the root item <invisibleRootItem>
 		Arg 2: the root path <string>
 		'''
-		for row in range( item.childCount() ):
-			child = item.child( row )
-			folderPath = os.path.join( root, str(child.text(0)) )
-			if not os.path.exists( folderPath ):
-				os.mkdir( folderPath )
-			self.write_directory( child, folderPath )
+		for row in range(item.childCount()):
+			child = item.child(row)
+			folderPath = os.path.join(root, str(child.text(0)))
+			if not os.path.exists(folderPath):
+				os.mkdir(folderPath)
+			self.write_directory(child, folderPath)
 
 
 	#-----------------------------------------------------------
@@ -501,25 +490,24 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		self.templateCbx.clear()
 
 		# add an instruction entry
-		self.templateCbx.addItem( "---  Choose a Template  ---" )
+		self.templateCbx.addItem("---  Choose a Template  ---")
 
 		# repopulate based on contents of the templates directory
 		templateList = []
-		for file in os.listdir( templatesDir ):
-			basename = os.path.basename( file )
-			name, ext = os.path.splitext ( basename )
+		for file in os.listdir(TEMPLATESPATH):
+			basename = os.path.basename(file)
+			name, ext = os.path.splitext (basename)
 			if ext == '.xml':
-				templateList.append( name )
+				templateList.append(name)
 		
 		# add the sorted list of template names to the combobox
-		self.templateCbx.addItems( sorted(templateList) )
+		self.templateCbx.addItems(sorted(templateList))
 
 
 	def template_load(self):
 		'''
 		Load the contents of a template into the folder tree.
 		'''
-
 		if self.templateCbx.currentText() != "---  Choose a Template  ---":
 			
 			# start by clearing the current tree
@@ -527,30 +515,28 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 			def __build(item, root):
 				for element in root.getchildren():
-					child = QTreeWidgetItem( item, [element.attrib['text']] )
-					child.setFlags( child.flags() | Qt.ItemIsEditable )
-					self.template_stylizeNewFolder( child )
-					__build( child, element )
-				item.setExpanded( True )
+					child = QTreeWidgetItem(item, [element.attrib['text']])
+					child.setFlags(child.flags() | Qt.ItemIsEditable)
+					self.template_stylizeNewFolder(child)
+					__build(child, element)
+				item.setExpanded(True)
 
 
 			templateName = self.templateCbx.currentText()
 
-			for file in os.listdir( templatesDir ):
-				name, ext = os.path.splitext ( file )
-				templateFile = os.path.join( templatesDir, file )
-
+			for file in os.listdir(TEMPLATESPATH):
+				name, ext = os.path.splitext (file)
+				templateFile = os.path.join(TEMPLATESPATH, file)
 				if name == templateName and ext == '.xml':
 					xmlTree = tree.parse(templateFile)
 					root = xmlTree.getroot()
-					__build( self.folderTree.invisibleRootItem(), root )
+					__build(self.folderTree.invisibleRootItem(), root)
 
 
 	def template_new(self):
 		'''
 		Create a new blank template, but don't write anything to disk.
 		'''
-
 		# request a template name
 		name = self.input_stringDialog('New Template', 'Template name?')
 
@@ -560,10 +546,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 			# Update the UI
 			tempName = '%s *' %name
-			self.templateCbx.addItem( tempName )
+			self.templateCbx.addItem(tempName)
 
 			# set the new template as the selected one
-			self.templateCbx.setCurrentIndex( self.templateCbx.findText(tempName) )
+			self.templateCbx.setCurrentIndex(self.templateCbx.findText(tempName))
 
 
 	def template_addFolder(self):
@@ -574,39 +560,41 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			self.template_new()
 		else:
 			newItem = QTreeWidgetItem()
-			newItem.setText( 0,'__NEW FOLDER__' )
-			self.template_stylizeNewFolder( newItem )
-			self.folderTree.addTopLevelItem( newItem )
+			newItem.setText(0,'__NEW FOLDER__')
+			self.template_stylizeNewFolder(newItem)
+			self.folderTree.addTopLevelItem(newItem)
 
 
 	def template_removeFolder(self):
 		'''
 		Remove the selected items from the tree.
 		'''
-		confirm = self.input_confirmDialog( 	'Remove Folder(s)',
-							['Are you sure you want to remove the selected folders?'] )
+		message = ['Are you sure you want to remove the selected folders?']
+		confirm = self.input_confirmDialog('Remove Folders', message)
 		if confirm == QMessageBox.Yes:
 			root = self.folderTree.invisibleRootItem()
 			for item in self.folderTree.selectedItems():
-				(item.parent() or root).removeChild( item )
+				(item.parent() or root).removeChild(item)
 
 
 	def template_resetTree(self):
 		'''
 		Remove all items from the tree.
 		'''
-		self.ui_clearTreeWidget( self.folderTree )
+		self.ui_clearTreeWidget(self.folderTree)
 
 
 	def template_forceResetTree(self):
 		'''
 		User-driven method for explicitly resetting the structure tree.
 		'''
-		confirm = self.input_confirmDialog( 	'Reset Structure Tree',
-							["Are you sure you want to reset the structure tree?",
-																	 "This will erase the the tree's contents..."] )
+		message = [
+			"Are you sure you want to reset the structure tree?",
+			"This will erase the the tree's contents..."
+			]
+		confirm = self.input_confirmDialog(	'Reset Structure Tree', message)
 		if confirm == QMessageBox.Yes:
-			self.ui_clearTreeWidget( self.folderTree )
+			self.ui_clearTreeWidget(self.folderTree)
 
 
 	def template_save(self):
@@ -617,9 +605,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		def __buildTemplate(item, root):
 			for row in range(item.childCount()):
 				child = item.child(row)
-				element = etree.SubElement( root, 'folder', text=child.text(0) )
-				__buildTemplate( child, element )
+				element = etree.SubElement(root, 'folder', text=child.text(0))
+				__buildTemplate(child, element)
 
+		# get the current template
 		template = self.templateCbx.currentText()
 
 		if template != '---  Choose a Template  ---':
@@ -628,43 +617,44 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 			if template.endswith(' *'):
 				template = template[:-2]
 
+			# serialize the template to XML
 			from xml.etree import cElementTree as etree
 			root = etree.Element('root')
 			root.attrib['templateName'] = template
-			__buildTemplate( self.folderTree.invisibleRootItem(), root )
+			__buildTemplate(self.folderTree.invisibleRootItem(), root)
 
 			# Write the file.
-			templateFile = os.path.join( templatesDir, '%s.xml' %template )
-			tree = etree.ElementTree( root )
-			tree.write( templateFile )
+			templateFile = os.path.join(TEMPLATESPATH, '%s.xml' %template)
+			tree = etree.ElementTree(root)
+			tree.write(templateFile)
 
 			# clean it up
-			CleanXML().cleanWriteXML( templateFile )
+			CleanXML().cleanWriteXML(templateFile)
 
 			# refresh the template list
 			self.templates_getExisting()
 
 			# select and reload the saved template
-			self.templateCbx.setCurrentIndex( self.templateCbx.findText(template) )
+			self.templateCbx.setCurrentIndex(self.templateCbx.findText(template))
 			self.template_load()
 
-			# log
-			self.msg_log( lx.symbol.e_INFO, ['Structure Template saved:', template])
+			# report a success to the log
+			self.msg_log(lx.symbol.e_INFO, ['Structure Template saved:', template])
 
 
 	def template_beginItemEdit(self):
 		'''
-		Begin editing template Item.
+		Begin editing a template folder's name.
 		'''
-		self.folderTree.openPersistentEditor( self.folderTree.currentItem(), 0 )
+		self.folderTree.openPersistentEditor(self.folderTree.currentItem(), 0)
 
 
 	def template_endItemEdit(self):
 		'''
-		Stop editing item name and sort the folder tree.
+		Stop editing a folder's name and sort the folder tree.
 		'''
-		self.folderTree.closePersistentEditor( self.folderTree.currentItem(), 0 )
-		self.folderTree.sortItems( 0, Qt.AscendingOrder )
+		self.folderTree.closePersistentEditor(self.folderTree.currentItem(), 0)
+		self.folderTree.sortItems(0, Qt.AscendingOrder)
 
 
 	def template_stylizeNewFolder(self, item):
@@ -672,9 +662,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Customize the look of folder items in the folder tree.
 		Arg 1: the target item <QTreeWidgetItem>
 		'''
-		item.setSizeHint( 0, QSize(100, 20) )
-		icon = os.path.join( resrcPath, 'icons/folder.png' ) 
-		item.setIcon( 0, QIcon(icon) )
+		item.setSizeHint(0, QSize(100, 20))
+		icon = os.path.join(RESRCPATH, 'icons/folder.png') 
+		item.setIcon(0, QIcon(icon))
 
 
 	#-----------------------------------------------------------
@@ -685,10 +675,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Populate the Existing Projects list, via the projects.projlist file.
 		'''
 		# clear the list
-		self.ui_clearTreeWidget( self.projectTree )
+		self.ui_clearTreeWidget(self.projectTree)
 
 		# read the contents of the projects.projlist and add them to the list
-		with open( projectListFile ) as fileList:
+		with open(PROJECTLISTFILE) as fileList:
 
 			lines = [line for line in fileList if line.strip()]
 
@@ -699,21 +689,21 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 
 				# create the projectItem
 				projectItem = QTreeWidgetItem()
-				projectItem.setSizeHint( 0, QSize(200, 25) )
-				projectItem.setText( 0, projectTitle )
-				projectItem.setText( 1, cleanLine )
-				projectItem.setForeground(1 , QBrush( QColor('#575757') ) )
+				projectItem.setSizeHint(0, QSize(200, 25))
+				projectItem.setText(0, projectTitle)
+				projectItem.setText(1, cleanLine)
+				projectItem.setForeground(1 , QBrush(QColor('#575757')))
 
 				# designate invalid project based on whether the path exists or not
 				if not os.path.exists(cleanLine):
-					projectItem.setForeground( 0, QBrush( QColor('#8C2727') ) )
-					projectItem.setForeground( 1, QBrush( QColor('#8C2727') ) )
+					projectItem.setForeground(0, QBrush(QColor('#8C2727')))
+					projectItem.setForeground(1, QBrush(QColor('#8C2727')))
 
 				# add the item to the tree
-				self.projectTree.addTopLevelItem( projectItem )
+				self.projectTree.addTopLevelItem(projectItem)
 
 				# sort the tree
-				self.projectTree.sortItems( 0, Qt.AscendingOrder )
+				self.projectTree.sortItems(0, Qt.AscendingOrder)
 
 
 	def projects_getSelectedPath(self):
@@ -733,13 +723,10 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Open a file dialog and let the user choose a project root directory.
 		'''
 		currentPath = self.newProjectPath.text()
-
 		startDir = currentPath if os.path.exists(currentPath) else '/home'
-
-		inputPath = QFileDialog.getExistingDirectory( self, 'Set a location for your new project...', startDir )
-
-		if os.path.exists( inputPath ):
-			self.newProjectPath.setText( inputPath )
+		inputPath = QFileDialog.getExistingDirectory(self, 'Set a location for your new project...', startDir)
+		if os.path.exists(inputPath):
+			self.newProjectPath.setText(inputPath)
 
 
 	def project_create(self):
@@ -747,32 +734,30 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		Create a Modo project at the destination specified by the user.
 		Optionally create the directory structure defined in the Folder Tree.
 		'''
-
 		inputPath = self.newProjectPath.text()
-
-		if os.path.exists( inputPath ):
+		if os.path.exists(inputPath):
 
 			# write the system file
-			self.write_genericSysFile( inputPath )
+			self.write_genericSysFile(inputPath)
 
 			# create any subdirectories
 			if self.createFoldersCheckBox.isChecked():
-				self.write_directory( self.folderTree.invisibleRootItem(), str(inputPath) )
+				self.write_directory(self.folderTree.invisibleRootItem(), str(inputPath))
 
 			# update the project list file
-			self.write_projectListFile( inputPath )
+			self.write_projectListFile(inputPath)
 
 			# update the project list in the UI
 			self.projects_getExisting()
 
 			# log and inform
 			message = ['The following project was created:', str(inputPath)]
-			self.msg_log( lx.symbol.e_INFO, message)
-			self.msg_box( 'Project Manager', message )
+			self.msg_log(lx.symbol.e_INFO, message)
+			self.msg_box('Project Manager', message)
 
 			# Set this new project as the current project in Modo.
-			# If this not done AFTER displaying the message box above, Modo will crash (on Ubuntu 12.0.4)
-			lx.eval( "projDir.chooseProject %s" %inputPath )
+			# If this not done AFTER displaying the message box above, Modo will crash (on Ubuntu 12.0.4).
+			lx.eval("projDir.chooseProject %s" %inputPath)
 
 
 	#-----------------------------------------------------------
@@ -782,41 +767,40 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		Search the selected project for 3D scenes or files and display them in the scene list.
 		'''
-
 		if self.projectTree.selectedItems():
 
 			# start by clearing the scene list
-			self.ui_clearTreeWidget( self.sceneTree )
+			self.ui_clearTreeWidget(self.sceneTree)
 
 			# get a clean project path
 			projectItem = self.projectTree.selectedItems()[0]
-			projDir = projectItem.text( 1 ).strip()
+			projDir = projectItem.text(1).strip()
 
 			# get the checked file types from the filter list
 			fileTypes = self.ui_getFileTypes()			
 			selectedTypes = [ fileTypes[action.text()] for action in self.filtersMenu.actions() if action.isChecked() ]
 
 			# walk the project and display all files of the checked types
-			for root, dirs, files in os.walk( projDir ):
+			for root, dirs, files in os.walk(projDir):
 				for file in files:
 					filename, ext = os.path.splitext(file)
 					if ext in selectedTypes:
-						filePath = os.path.join( root, file )
-						fileName = os.path.basename( filePath )
-						relativePath = filePath.replace( projDir, '' )
+						filePath = os.path.join(root, file)
+						fileName = os.path.basename(filePath)
+						relativePath = filePath.replace(projDir, '')
 
 						# create the file item
 						item = QTreeWidgetItem()
-						item.setText( 0, fileName )
-						item.setText( 1, relativePath )
-						item.setSizeHint( 0, QSize(200, 25) )
-						item.setForeground(1 , QBrush( QColor('#575757') ) )
+						item.setText(0, fileName)
+						item.setText(1, relativePath)
+						item.setSizeHint(0, QSize(200, 25))
+						item.setForeground(1 , QBrush(QColor('#575757')))
 
 						# add the item to the scene tree
-						self.sceneTree.addTopLevelItem( item )
+						self.sceneTree.addTopLevelItem(item)
 
 						# sort the scene tree
-						self.sceneTree.sortItems( 0, Qt.AscendingOrder )
+						self.sceneTree.sortItems(0, Qt.AscendingOrder)
 
 
 	def scenes_getSelectedPath(self):
@@ -825,12 +809,11 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		if self.sceneTree.selectedItems():
 			projectItem = self.projectTree.selectedItems()[0]
-			projDir = projectItem.text( 1 ).strip()
+			projDir = projectItem.text(1).strip()
 			sceneItem = self.sceneTree.selectedItems()[0]
-			sceneRelativePath = sceneItem.text( 1 )
+			sceneRelativePath = sceneItem.text(1)
 			scenePath = projDir + sceneRelativePath
 			return scenePath
-		
 		return None
 
 
@@ -842,9 +825,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		scenePath = self.scenes_getSelectedPath()
 		if scenePath:
 			if type == 'ref':
-				lx.eval( "+scene.importReference {%s}" %scenePath )
+				lx.eval("+scene.importReference {%s}" %scenePath)
 			else:
-				lx.eval( "scene.open %s %s" %( scenePath, type ) )
+				lx.eval("scene.open %s %s" %(scenePath, type))
 
 
 	#-----------------------------------------------------------
@@ -856,11 +839,14 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		if self.projectTree.selectedItems():
 			projDir = self.projects_getSelectedPath()
-			if os.path.exists( projDir ):
-				self.explore( projDir )
+			if os.path.exists(projDir):
+				self.explore(projDir)
 			else:
-				self.msg_log(lx.symbol.e_WARNING, [	'Trouble exploring project folder...',
-									'Invalid project path.'] )
+				message = [
+					'Trouble exploring project folder...',
+					'Invalid project path.'
+					]
+				self.msg_log(lx.symbol.e_WARNING, message)
 
 
 	def act_proj_setAsCurrent(self):
@@ -869,13 +855,16 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		if self.projectTree.selectedItems():
 			projDir = self.projects_getSelectedPath()
-			if os.path.exists( projDir ):
-				lx.eval( "projDir.chooseProject %s" %projDir )
-				self.msg_log( lx.symbol.e_INFO, [	'Successfully set current project:', projDir])
+			if os.path.exists(projDir):
+				lx.eval("projDir.chooseProject %s" %projDir)
+				self.msg_log(lx.symbol.e_INFO, ['Successfully set current project:', projDir])
 
 			else:
-				self.msg_log(lx.symbol.e_WARNING, [	'Trouble setting current project...',
-									'Invalid project path.'] )
+				message = [
+					'Trouble setting current project...',
+					'Invalid project path.'
+					]
+				self.msg_log(lx.symbol.e_WARNING, message)
 
 
 	def act_proj_removeSelected(self):
@@ -885,11 +874,11 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		project = self.projects_getSelectedPath()
 
 		if project:
-			confirm = self.input_confirmDialog( 	'Remove Project',
-								['Remove the selected project from the list?'] )
+			confirm = self.input_confirmDialog(	'Remove Project', ['Remove the selected project from the list?'])
 			if confirm == QMessageBox.Yes:
+
 				# start by reading the current list
-				with open(projectListFile, 'r') as f:
+				with open(PROJECTLISTFILE, 'r') as f:
 					lines = [line.strip() for line in f if line.strip()]
 					f.close()
 
@@ -897,9 +886,9 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 				if project in lines:
 					lines.remove(project)
 					# and write the updated list
-					with open(projectListFile, 'w') as f:
+					with open(PROJECTLISTFILE, 'w') as f:
 						for line in lines:
-						    f.write( line + '\n')
+						    f.write(line + '\n')
 						f.close()
 
 				# update the UI
@@ -910,42 +899,60 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		Add an existing project to the project list.
 		'''
-		inputPath = QFileDialog.getExistingDirectory( self, 'Select a project...', '/home' )
+		inputPath = QFileDialog.getExistingDirectory(self, 'Select a project...', '/home')
+		if os.path.exists(inputPath):
 
-		if '.luxproject' in [file for file in os.listdir(inputPath)]:
-			f = open(os.path.join( inputPath, '.luxproject') )
-			lines = f.readlines()
-			if lines[0].strip() == '#LXProject#':
-				self.write_projectListFile( inputPath )
-				self.projects_getExisting()
-				return
+			# look for a '.luxproject' file
+			if '.luxproject' in [file for file in os.listdir(inputPath)]:
+				f = open(os.path.join(inputPath, '.luxproject'))
+				lines = f.readlines()
+
+				# check if the '.luxproject' file is legit
+				if lines[0].strip() == '#LXProject#':
+					self.write_projectListFile(inputPath)
+					self.projects_getExisting()
+					return
 
 		message = [ 'The specified directory is not a valid Modo project.']
-		self.msg_box( 'Add Existing Project...', message) 
+		self.msg_box('Add Existing Project...', message) 
 
 
 	def act_scn_openSelected(self):
-		'''  '''
-		self.scenes_openOrImport( 'normal')
+		'''
+		Open the selected Modo-compatible file in the current instance of Modo 
+		'''
+		self.scenes_openOrImport('normal')
 
 
 	def act_scn_importSelected(self):
-		''' '''
-		self.scenes_openOrImport( 'import')
+		'''
+		Import the selected Modo-compatible file into the current instance of Modo 
+		'''
+		self.scenes_openOrImport('import')
 
 
 	def act_scn_importSelectedAsRef(self):
-		''' '''
-		self.scenes_openOrImport( 'ref')
+		'''
+		Import the selected Modo-compatible file as referenced into the current instance of Modo 
+		'''
+		self.scenes_openOrImport('ref')
 
 
 	def act_scn_openFolder(self):
 		'''
-		Open the folder containing the selected scene
+		Open the folder containing the selected scene.
 		'''
 		scenePath = self.scenes_getSelectedPath()
 		if scenePath:
-			self.explore( os.path.dirname( scenePath ) )
+			self.explore(os.path.dirname(scenePath))
+
+
+	def act_launchDocs(self):
+		'''
+		Open the documentation in a web browser.
+		'''
+		self.explore("https://github.com/tcrowson/Modo_ProjectManager/wiki")
+
 
 
 	#-----------------------------------------------------------
@@ -955,39 +962,37 @@ class ProjectManager_Actual( QMainWindow, pmUI.Ui_projectManager ):
 		'''
 		Contextual menu for the Project list.
 		'''
-		# Create the menu object.
+		# Create the menu object
 		menu = QMenu()
 
-		# The CSS from Designer isn't being respect, so we'll force it
+		# The CSS from Designer isn't being respect, so we'll force it.
 		menu.setStyleSheet('QMenu::item:selected{color: #f89a2b;background: #545454;}')
 
 		# Add items
-		setAsCurrent = menu.addAction( 'Set Selected As Current', self.act_proj_setAsCurrent )
-		explore = menu.addAction( 'Open Project Folder',  self.act_proj_explore)
-		addExisting = menu.addAction( 'Add Existing Project to List...', self.act_proj_addExisting )
-		remove = menu.addAction( 'Remove Selected', self.act_proj_removeSelected )
+		setAsCurrent = menu.addAction('Set Selected As Current', self.act_proj_setAsCurrent)
+		explore = menu.addAction('Open Project Folder',  self.act_proj_explore)
+		addExisting = menu.addAction('Add Existing Project to List...', self.act_proj_addExisting)
+		remove = menu.addAction('Remove Selected', self.act_proj_removeSelected)
 		
-		# Show the menu.
-		action = menu.exec_( QCursor.pos() )
+		# Show the menu
+		action = menu.exec_(QCursor.pos())
 
 
 	def contextMenu_sceneList(self):
 		'''
 		Contextual menu for the Scene list.
 		'''
-		# Create the menu object.
+		# Create the menu object
 		menu = QMenu()
 
-		# The CSS from Designer isn't being respect, so we'll force it
+		# The CSS from Designer isn't being respect, so we'll force it.
 		menu.setStyleSheet('QMenu::item:selected{color: #f89a2b;background: #545454;}')
 
 		# Add items
-		openScene = menu.addAction( 'Open Selected', self.act_scn_openSelected )
-		importScene = menu.addAction( 'Import Selected', self.act_scn_importSelected )
-		importAsRef = menu.addAction('Import Selected As Referenced', self.act_scn_importSelectedAsRef )
-		explore = menu.addAction( 'Open Scene Folder', self.act_scn_openFolder)
+		openScene = menu.addAction('Open Selected', self.act_scn_openSelected)
+		importScene = menu.addAction('Import Selected', self.act_scn_importSelected)
+		importAsRef = menu.addAction('Import Selected As Referenced', self.act_scn_importSelectedAsRef)
+		explore = menu.addAction('Open Scene Folder', self.act_scn_openFolder)
 
-		# Show the menu.
-		action = menu.exec_( QCursor.pos() )
-
-
+		# Show the menu
+		action = menu.exec_(QCursor.pos())

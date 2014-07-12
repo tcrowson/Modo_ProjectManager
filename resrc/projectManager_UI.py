@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'projectManager.ui'
+# Form implementation generated from reading ui file 'projectmanager.ui'
 #
-# Created: Thu Jul 10 16:07:47 2014
+# Created: Sat Jul 12 16:55:14 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -806,7 +806,6 @@ class Ui_projectManager(object):
         self.menuScenes.addAction(self.act_importSelectedAsRef)
         self.menuScenes.addAction(self.act_exploreSceneFolder)
         self.menuHelp.addAction(self.act_docs)
-        self.menuHelp.addAction(self.act_about)
         self.menuBar.addAction(self.menuFile.menuAction())
         self.menuBar.addAction(self.menuScenes.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())

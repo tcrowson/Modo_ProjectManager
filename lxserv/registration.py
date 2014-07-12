@@ -1,17 +1,8 @@
-#------------------------------------------------------------------------------
-# PROJECT MANAGER, Tim Crowson, July 2014
-#------------------------------------------------------------------------------
-#
-# WORK IN PROGRESS
-#
-# 
-#   Currently the two dialog options for prividing feedback to the user cause problems:
-# - The standard Modo dialog system causes a focus problem, effectively locking Modo out (On Ubuntu).
-# - The QMessageBox class causes Modo to crash when run more than once from inside a blessed cmd.
-#
+# PROJECT MANAGER, Tim Crowson, June 2014
+#----------------------------------------------------------------------------------------------------------------------
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 # IMPORTS
 
 import os
@@ -25,11 +16,11 @@ import lxu.select
 
 from PySide.QtGui import QMessageBox, QGridLayout
 
-import projectManager as PM
+import projectmanager as pm
 
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 # HELPERS
 
 
@@ -59,7 +50,7 @@ def explore(filename):
 
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 class ShowProjectManager ( lxu.command.BasicCommand ):
 	'''
 	Modo Command to display the Project Manager in a new window.
@@ -78,13 +69,11 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 class ExploreProjectFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current project directory.
 	Logs and displays a warning if no project is set.
-	
-	Modo already has a native command for this, so this custom one may be retired soon.
 	'''
 
 	def __init__(self):
@@ -111,7 +100,7 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 class ExploreSceneFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current scene's directory.
@@ -140,7 +129,7 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 			
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 class ProjectManager_CustomView(lxifc.CustomView):
 	''' '''
 	def __init__ (self):
@@ -164,7 +153,7 @@ class ProjectManager_CustomView(lxifc.CustomView):
 		if parentWidget != None:
 			layout = QGridLayout()
 			layout.setContentsMargins( 2,2,2,2 )
-			self.form = PM.ProjectManager_Actual()
+			self.form = pm.ProjectManager_Actual()
 			layout.addWidget( self.form )
 			parentWidget.setLayout( layout )
 			return True
@@ -172,7 +161,7 @@ class ProjectManager_CustomView(lxifc.CustomView):
 		return False
 
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------------
 # BLESS THIS MESS!
 lx.bless( ShowProjectManager, "project.manager" )
 lx.bless( ExploreProjectFolder, "project.exploreCurrent" )

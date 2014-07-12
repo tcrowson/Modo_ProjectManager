@@ -1357,7 +1357,6 @@ min-width: 100px;
      <string>Help</string>
     </property>
     <addaction name="act_docs"/>
-    <addaction name="act_about"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuScenes"/>
