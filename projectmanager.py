@@ -397,7 +397,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def msg_log(self, type, child):
 		'''
-		Convenience function for intercepting and logging messages.
+		Log a message to Modo's Event Log.
 		Arg 1: the message type <lx.symbol>
 		Arg 2: the message <list>
 		'''
