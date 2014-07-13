@@ -326,10 +326,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		Toggle the enable state of the template-related widgets and buttons.
 		'''
-		if self.createFoldersCheckBox.isChecked():
-			self.templateOptions.setEnabled(True)
-		else:
-			self.templateOptions.setEnabled(False)
+		self.templateOptions.setEnabled(self.createFoldersCheckBox.isChecked())
 
 
 	def ui_togglePaths(self):
