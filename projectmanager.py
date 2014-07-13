@@ -407,6 +407,8 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		Generic Qt info dialog.
 		Arg 1: the window title <string>
 		Arg 2: the message <list>
+		
+		Will eventually replace this with a native Modo dialog.
 		'''
 		box = QMessageBox()
 		box.setWindowTitle(title)
