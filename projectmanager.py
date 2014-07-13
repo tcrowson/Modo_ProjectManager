@@ -490,7 +490,12 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def templates_getExisting(self):
 		'''
-		Update the entries in the template list.
+		Updates the entries in the template list.
+		
+		Currently this is a 'dumb' system in that it loads any XML file
+		in the templates directory. This will be enhanced later to exlcude
+		invalid XML files.
+		
 		'''
 		# start by clearing the list
 		self.templateCbx.clear()
