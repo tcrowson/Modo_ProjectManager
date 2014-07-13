@@ -428,6 +428,9 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		Write a generic '.luxproject' system file to the specified path.
 		Arg 1: the path to the file <string>.
+		
+		The associations defined by this file are deliberately empty for now,
+		forcing Modo's file requesters to default to the project root.
 		'''
 		contents = 	[ 	
 			'#LXProject#',
