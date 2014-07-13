@@ -493,9 +493,8 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		Updates the entries in the template list.
 		
 		Currently this is a 'dumb' system in that it loads any XML file
-		in the templates directory. This will be enhanced later to exlcude
+		in the templates directory. This will be enhanced to exlcude
 		invalid XML files.
-		
 		'''
 		# start by clearing the list
 		self.templateCbx.clear()
@@ -518,6 +517,11 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 	def template_load(self):
 		'''
 		Load the contents of a template into the folder tree.
+		
+		Currently this is a 'dumb' system in that it loads any XML file
+		found in the templates directory regardless of whether it is
+		compatible with the kit. This will be enhanced to exclude
+		invalid XML files.
 		'''
 		if self.templateCbx.currentText() != "---  Choose a Template  ---":
 			
@@ -532,9 +536,8 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 					__build(child, element)
 				item.setExpanded(True)
 
-
+			# identify the corresponding XML file on disk, parse it, and configure the structure tree
 			templateName = self.templateCbx.currentText()
-
 			for file in os.listdir(TEMPLATESPATH):
 				name, ext = os.path.splitext (file)
 				templateFile = os.path.join(TEMPLATESPATH, file)
@@ -603,7 +606,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			"Are you sure you want to reset the structure tree?",
 			"This will erase the the tree's contents..."
 			]
-		confirm = self.input_confirmDialog(	'Reset Structure Tree', message)
+		confirm = self.input_confirmDialog('Reset Structure Tree', message)
 		if confirm == QMessageBox.Yes:
 			self.ui_clearTreeWidget(self.folderTree)
 
@@ -612,7 +615,6 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		Write the contents of the folder tree to an XML file.
 		'''
-
 		def __buildTemplate(item, root):
 			for row in range(item.childCount()):
 				child = item.child(row)
@@ -742,7 +744,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def project_create(self):
 		'''
-		Create a Modo project at the destination specified by the user.
+		Create a Modo project at the destination specified by the user in the Root Path field.
 		Optionally create the directory structure defined in the Folder Tree.
 		'''
 		inputPath = self.newProjectPath.text()
@@ -767,7 +769,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			self.msg_box('Project Manager', message)
 
 			# Set this new project as the current project in Modo.
-			# If this not done AFTER displaying the message box above, Modo will crash (on Ubuntu 12.0.4).
+			# If this not done AFTER displaying the message box above, Modo will crash (Ubuntu 12.0.4).
 			lx.eval("projDir.chooseProject %s" %inputPath)
 
 
@@ -777,6 +779,10 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 	def scenes_getAll(self):
 		'''
 		Search the selected project for 3D scenes or files and display them in the scene list.
+		
+		This is currently an automatic process over which the user has no control. If this becomes
+		a substantial performance concern, we'll implement an alternative workflow, perhaps as
+		an option which the user can enable or disable.
 		'''
 		if self.projectTree.selectedItems():
 
@@ -789,7 +795,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 			# get the checked file types from the filter list
 			fileTypes = self.ui_getFileTypes()			
-			selectedTypes = [ fileTypes[action.text()] for action in self.filtersMenu.actions() if action.isChecked() ]
+			selectedTypes = [fileTypes[action.text()] for action in self.filtersMenu.actions() if action.isChecked()]
 
 			# walk the project and display all files of the checked types
 			for root, dirs, files in os.walk(projDir):
@@ -818,23 +824,24 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		Return the path to the selected scene.
 		'''
+		scenePath = None
 		if self.sceneTree.selectedItems():
 			projectItem = self.projectTree.selectedItems()[0]
 			projDir = projectItem.text(1).strip()
 			sceneItem = self.sceneTree.selectedItems()[0]
 			sceneRelativePath = sceneItem.text(1)
-			scenePath = projDir + sceneRelativePath
-			return scenePath
-		return None
+			if os.path.exists(projDir + sceneRelativePath):
+				scenePath = projDir + sceneRelativePath
+		return scenePath
 
 
 	def scenes_openOrImport(self, type):
 		'''
-		Open or Import the target scene file.
+		Open or Import the selected 3D file.
 		Arg 1: the type of operation <string> ('ref' | 'normal' | 'open')
 		'''
 		scenePath = self.scenes_getSelectedPath()
-		if scenePath:
+		if scenePath is not None:
 			if type == 'ref':
 				lx.eval("+scene.importReference {%s}" %scenePath)
 			else:
