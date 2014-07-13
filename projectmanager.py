@@ -345,9 +345,11 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def input_stringDialog(self, title, text):
 		'''
-		Generic string input dialog.
+		Generic Qt string input dialog.
 		Arg 1: the window title <string> 
 		Arg 2: the field label <string>
+		
+		This might get replaced by a native Modo dialog
 		'''
 		dialog = QInputDialog()
 		dialog.setWindowTitle(title)
@@ -361,9 +363,11 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def input_confirmDialog(self, title, text):
 		'''
-		Generic confirmation request.
+		Generic Qt confirmation request.
 		Arg 1: the window title <string>  
 		Arg 2: the question <list>
+		
+		This might get replaced by a native Modo dialog
 		'''
 		box = QMessageBox()
 		box.setWindowTitle(title)
@@ -408,7 +412,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		Arg 1: the window title <string>
 		Arg 2: the message <list>
 		
-		Will eventually replace this with a native Modo dialog.
+		This will eventually be replaced with a native Modo dialog.
 		'''
 		box = QMessageBox()
 		box.setWindowTitle(title)
