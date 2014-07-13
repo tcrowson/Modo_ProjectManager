@@ -443,10 +443,10 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			f.close()
 
 
-	def write_projectListFile(self, path):
+	def write_projectListFile(self, projectPath):
 		'''
 		Open the Project List File and append the specified path.
-		Arg 1: the path to the file <string>.
+		Arg 1: the project path <string>.
 		'''
 		# read the lines
 		with open(PROJECTLISTFILE, 'r') as f:
@@ -458,7 +458,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			with open(PROJECTLISTFILE, 'w') as f:
 				for line in lines:
 				    f.write(line + '\n')
-				f.write(path + '\n')
+				f.write(projectPath + '\n')
 				f.close()
 
 
