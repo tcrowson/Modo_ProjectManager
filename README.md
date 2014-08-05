@@ -20,7 +20,6 @@ Project Manager Kit for Modo 801
   * [Create the Project](https://github.com/tcrowson/ProjectManager/wiki#create-the-project)
 
 
-***
 
 #Overview
 ### What This Is
