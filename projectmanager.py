@@ -343,7 +343,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		state = self.togglePathsCheckBox.isChecked()
 		self.projectTree.setColumnHidden(1,  not state)
 		self.sceneTree.setColumnHidden(1, not state)
-		self.projectTree.setColumnWidth(0, 200)
+		self.projectTree.setColumnWidth(0, 150)
 		self.sceneTree.setColumnWidth(0, 200)
 
 
