@@ -209,6 +209,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		self.delFolderBtn.released.connect(self.template_removeFolder)
 		self.resetTreeBtn.released.connect(self.template_forceResetTree)
 		self.saveTemplateBtn.released.connect(self.template_save)
+		self.saveTemplateAsBtn.released.connect(self.template_saveAs)
 
 		# widgets
 		self.togglePathsCheckBox.stateChanged.connect(self.ui_togglePaths)
@@ -248,16 +249,22 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		self.projectTree.setColumnWidth(0, 200)
 		self.sceneTree.setColumnWidth(0, 200)
 		self.ui_clearTreeWidget(self.folderTree)
-		self.templates_getExisting()
+		self.ui_getFileTypeFilters()
+		self.ui_toggleTemplates()
+		self.projectTree.setColumnHidden(1, True)
+		self.sceneTree.setColumnHidden(1, True)
+
 		self.newTemplateBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/newTemplate.png')))
 		self.addFolderBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/addFolder.png')))
 		self.delFolderBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/removeFolder.png')))
 		self.resetTreeBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/reset.png')))
 		self.saveTemplateBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/save.png')))
-		self.ui_fileTypeFiltersMenu()
-		self.ui_toggleTemplates()
-		self.projectTree.setColumnHidden(1, True)
-		self.sceneTree.setColumnHidden(1, True)
+		self.saveTemplateAsBtn.setIcon(QIcon(os.path.join(RESRCPATH, 'icons/saveAs.png')))
+
+		self.templates_getExisting()
+		if self.templateCbx.findText('Modo Default'):
+			self.templateCbx.setCurrentIndex(self.templateCbx.findText('Modo Default'))
+			self.template_load()
 
 
 	def ui_clearTreeWidget(self, treewidget):
@@ -275,7 +282,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			i -= 1
 
 
-	def ui_fileTypeFiltersMenu(self):
+	def ui_getFileTypeFilters(self):
 		'''
 		Build and display the filetype filters menu.
 
@@ -463,7 +470,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			f.close()
 
 		# if the path isn't already in the list, add it
-		if not path in lines:
+		if not projectPath in lines:
 			with open(PROJECTLISTFILE, 'w') as f:
 				for line in lines:
 				    f.write(line + '\n')
@@ -485,6 +492,47 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			self.write_directory(child, folderPath)
 
 
+	def write_templateFile(self, template):
+		'''
+		Write the contents of the folder tree to an XML file.
+		'''
+
+		def __buildTemplate(item, root):
+			for row in range(item.childCount()):
+				child = item.child(row)
+				element = etree.SubElement(root, 'folder', text=child.text(0))
+				__buildTemplate(child, element)
+
+
+		# if the template is new, strip the 'not saved' indicator
+		if template.endswith(' *'):
+			template = template[:-2]
+
+		# serialize the template to XML
+		from xml.etree import cElementTree as etree
+		root = etree.Element('root')
+		root.attrib['templateName'] = template
+		__buildTemplate(self.folderTree.invisibleRootItem(), root)
+
+		# Write the file.
+		templateFile = os.path.join(TEMPLATESPATH, '%s.xml' %template)
+		tree = etree.ElementTree(root)
+		tree.write(templateFile)
+
+		# clean it up
+		CleanXML().cleanWriteXML(templateFile)
+
+		# refresh the template list
+		self.templates_getExisting()
+
+		# select and reload the saved template
+		self.templateCbx.setCurrentIndex(self.templateCbx.findText(template))
+		self.template_load()
+
+		# report a success to the log
+		self.msg_log(lx.symbol.e_INFO, ['Structure Template saved:', template])
+
+
 	#-----------------------------------------------------------
 
 
@@ -498,9 +546,6 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		# start by clearing the list
 		self.templateCbx.clear()
-
-		# add an instruction entry
-		self.templateCbx.addItem("---  Choose a Template  ---")
 
 		# repopulate based on contents of the templates directory
 		templateList = []
@@ -523,28 +568,27 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		compatible with the kit. This will be enhanced to exclude
 		invalid XML files.
 		'''
-		if self.templateCbx.currentText() != "---  Choose a Template  ---":
-			
-			# start by clearing the current tree
-			self.template_resetTree()
 
-			def __build(item, root):
-				for element in root.getchildren():
-					child = QTreeWidgetItem(item, [element.attrib['text']])
-					child.setFlags(child.flags() | Qt.ItemIsEditable)
-					self.template_stylizeNewFolder(child)
-					__build(child, element)
-				item.setExpanded(True)
+		# start by clearing the current tree
+		self.template_resetTree()
 
-			# identify the corresponding XML file on disk, parse it, and configure the structure tree
-			templateName = self.templateCbx.currentText()
-			for file in os.listdir(TEMPLATESPATH):
-				name, ext = os.path.splitext (file)
-				templateFile = os.path.join(TEMPLATESPATH, file)
-				if name == templateName and ext == '.xml':
-					xmlTree = tree.parse(templateFile)
-					root = xmlTree.getroot()
-					__build(self.folderTree.invisibleRootItem(), root)
+		def __build(item, root):
+			for element in root.getchildren():
+				child = QTreeWidgetItem(item, [element.attrib['text']])
+				child.setFlags(child.flags() | Qt.ItemIsEditable)
+				self.template_stylizeNewFolder(child)
+				__build(child, element)
+			item.setExpanded(True)
+
+		# identify the corresponding XML file on disk, parse it, and configure the structure tree
+		templateName = self.templateCbx.currentText()
+		for file in os.listdir(TEMPLATESPATH):
+			name, ext = os.path.splitext (file)
+			templateFile = os.path.join(TEMPLATESPATH, file)
+			if name == templateName and ext == '.xml':
+				xmlTree = tree.parse(templateFile)
+				root = xmlTree.getroot()
+				__build(self.folderTree.invisibleRootItem(), root)
 
 
 	def template_new(self):
@@ -552,7 +596,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		Create a new blank template, but don't write anything to disk.
 		'''
 		# request a template name
-		name = self.input_stringDialog('New Template', 'Template name?')
+		name = self.input_stringDialog('New Template...', 'Template name?')
 
 		if name:
 			# clear the tree
@@ -570,7 +614,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		'''
 		Add a new folder to the structure tree.
 		'''
-		if self.folderTree.topLevelItemCount() == 0 and self.templateCbx.currentText() == "---  Choose a Template  ---":
+		if self.folderTree.topLevelItemCount() == 0:
 			self.template_new()
 		else:
 			newItem = QTreeWidgetItem()
@@ -613,46 +657,20 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 
 	def template_save(self):
 		'''
-		Write the contents of the folder tree to an XML file.
+		Save the current template
 		'''
-		def __buildTemplate(item, root):
-			for row in range(item.childCount()):
-				child = item.child(row)
-				element = etree.SubElement(root, 'folder', text=child.text(0))
-				__buildTemplate(child, element)
-
 		# get the current template
-		template = self.templateCbx.currentText()
+		self.write_templateFile(self.templateCbx.currentText())
 
-		if template != '---  Choose a Template  ---':
 
-			# if the template is new, strip the 'not saved' indicator
-			if template.endswith(' *'):
-				template = template[:-2]
-
-			# serialize the template to XML
-			from xml.etree import cElementTree as etree
-			root = etree.Element('root')
-			root.attrib['templateName'] = template
-			__buildTemplate(self.folderTree.invisibleRootItem(), root)
-
-			# Write the file.
-			templateFile = os.path.join(TEMPLATESPATH, '%s.xml' %template)
-			tree = etree.ElementTree(root)
-			tree.write(templateFile)
-
-			# clean it up
-			CleanXML().cleanWriteXML(templateFile)
-
-			# refresh the template list
-			self.templates_getExisting()
-
-			# select and reload the saved template
-			self.templateCbx.setCurrentIndex(self.templateCbx.findText(template))
-			self.template_load()
-
-			# report a success to the log
-			self.msg_log(lx.symbol.e_INFO, ['Structure Template saved:', template])
+	def template_saveAs(self):
+		'''
+		Write the contents of the folder tree to an XML file, with a user-specified name.
+		'''
+		# request a template name
+		name = self.input_stringDialog('Save Template As...', 'Template name?')
+		if name:
+			self.write_templateFile(name)
 
 
 	def template_beginItemEdit(self):
@@ -750,27 +768,31 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		inputPath = self.newProjectPath.text()
 		if os.path.exists(inputPath):
 
-			# write the system file
-			self.write_genericSysFile(inputPath)
+			message = [ "Create the following project?", inputPath ]
+			confirm = self.input_confirmDialog('Create New Project', message)
+			if confirm == QMessageBox.Yes:
 
-			# create any subdirectories
-			if self.createFoldersCheckBox.isChecked():
-				self.write_directory(self.folderTree.invisibleRootItem(), str(inputPath))
+				# write the system file
+				self.write_genericSysFile(inputPath)
 
-			# update the project list file
-			self.write_projectListFile(inputPath)
+				# create any subdirectories
+				if self.createFoldersCheckBox.isChecked():
+					self.write_directory(self.folderTree.invisibleRootItem(), str(inputPath))
 
-			# update the project list in the UI
-			self.projects_getExisting()
+				# update the project list file
+				self.write_projectListFile(inputPath)
 
-			# log and inform
-			message = ['The following project was created:', str(inputPath)]
-			self.msg_log(lx.symbol.e_INFO, message)
-			self.msg_box('Project Manager', message)
+				# update the project list in the UI
+				self.projects_getExisting()
 
-			# Set this new project as the current project in Modo.
-			# If this not done AFTER displaying the message box above, Modo will crash (Ubuntu 12.0.4).
-			lx.eval("projDir.chooseProject %s" %inputPath)
+				# log and inform
+				message = ['A new project was created:', str(inputPath)]
+				self.msg_log(lx.symbol.e_INFO, message)
+				self.msg_box('Project Manager', message)
+
+				# Set this new project as the current project in Modo.
+				# If this not done AFTER displaying the message box above, Modo will crash (Ubuntu 12.0.4).
+				lx.eval("projDir.chooseProject %s" %inputPath)
 
 
 	#-----------------------------------------------------------
@@ -875,7 +897,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			projDir = self.projects_getSelectedPath()
 			if os.path.exists(projDir):
 				lx.eval("projDir.chooseProject %s" %projDir)
-				self.msg_log(lx.symbol.e_INFO, ['Successfully set current project:', projDir])
+				self.msg_log(lx.symbol.e_INFO, ['Set current project:', projDir])
 
 			else:
 				message = [
@@ -892,7 +914,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		project = self.projects_getSelectedPath()
 
 		if project:
-			confirm = self.input_confirmDialog(	'Remove Project', ['Remove the selected project from the list?'])
+			confirm = self.input_confirmDialog(	'Remove Project...', ['Remove the selected project from the list?'])
 			if confirm == QMessageBox.Yes:
 
 				# start by reading the current list

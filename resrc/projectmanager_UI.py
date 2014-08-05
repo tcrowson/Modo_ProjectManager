@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'projectmanager.ui'
 #
-# Created: Sat Jul 12 16:55:14 2014
+# Created: Tue Aug  5 11:22:01 2014
 #      by: pyside-uic 0.2.13 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -731,6 +731,20 @@ class Ui_projectManager(object):
         self.saveTemplateBtn.setIconSize(QtCore.QSize(26, 26))
         self.saveTemplateBtn.setObjectName("saveTemplateBtn")
         self.verticalLayout.addWidget(self.saveTemplateBtn)
+        self.saveTemplateAsBtn = QtGui.QPushButton(self.templateOptions)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.saveTemplateAsBtn.sizePolicy().hasHeightForWidth())
+        self.saveTemplateAsBtn.setSizePolicy(sizePolicy)
+        self.saveTemplateAsBtn.setMaximumSize(QtCore.QSize(32, 32))
+        self.saveTemplateAsBtn.setText("")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap("icons/saveAs.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.saveTemplateAsBtn.setIcon(icon5)
+        self.saveTemplateAsBtn.setIconSize(QtCore.QSize(26, 26))
+        self.saveTemplateAsBtn.setObjectName("saveTemplateAsBtn")
+        self.verticalLayout.addWidget(self.saveTemplateAsBtn)
         spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem3)
         self.gridLayout.addLayout(self.verticalLayout, 1, 2, 1, 1)
@@ -850,10 +864,12 @@ class Ui_projectManager(object):
         self.folderTree.topLevelItem(2).child(0).child(0).setText(0, QtGui.QApplication.translate("projectManager", "New Subitem", None, QtGui.QApplication.UnicodeUTF8))
         self.folderTree.setSortingEnabled(__sortingEnabled)
         self.addFolderBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Add a new folder to the structure tree", None, QtGui.QApplication.UnicodeUTF8))
-        self.delFolderBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Remove the selected folder from the structure tree", None, QtGui.QApplication.UnicodeUTF8))
+        self.delFolderBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Remove the selected folders from the structure tree", None, QtGui.QApplication.UnicodeUTF8))
         self.resetTreeBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Erase the structure tree", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveTemplateBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Save the template", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveTemplateBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Save the current template", None, QtGui.QApplication.UnicodeUTF8))
         self.saveTemplateBtn.setShortcut(QtGui.QApplication.translate("projectManager", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveTemplateAsBtn.setToolTip(QtGui.QApplication.translate("projectManager", "Save the current template as...", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveTemplateAsBtn.setShortcut(QtGui.QApplication.translate("projectManager", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
         self.folderTemplateLabel.setText(QtGui.QApplication.translate("projectManager", "Template", None, QtGui.QApplication.UnicodeUTF8))
         self.scenesRootLabel_2.setText(QtGui.QApplication.translate("projectManager", "Structure", None, QtGui.QApplication.UnicodeUTF8))
         self.createProjectBtn.setToolTip(QtGui.QApplication.translate("projectManager", "If you need a tooltip for this...", None, QtGui.QApplication.UnicodeUTF8))
