@@ -2,9 +2,6 @@
 #----------------------------------------------------------------------------------------------------------------------
 
 
-#----------------------------------------------------------------------------------------------------------------------
-# IMPORTS
-
 import os
 import sys
 import subprocess
@@ -20,33 +17,15 @@ import projectmanager as pm
 
 
 
-#----------------------------------------------------------------------------------------------------------------------
-# HELPERS
-
-
-def msg_box(title, text):
+def os_startFile(filename):
 	'''
-	Generic Qt info dialog.
-	For some reason this cannot be called twice in a row without crashing Modo
-	'''
-	box = QMessageBox()
-	box.setWindowTitle(title)
-	text = '\n'.join(text)
-	box.setContentsMargins( 10,10,30,10 )
-	box.setText(text)
-	box.exec_()
-
-
-def explore(filename):
-	'''
-	Platform-respective function for opening a file
+	Platform-respective function for running a file.
 	'''
 	if sys.platform == "win32":
 		os.startfile( filename )
 	else:
 		opener ="open" if sys.platform == "darwin" else "xdg-open"
 		subprocess.call( [opener, filename] )
-
 
 
 
@@ -60,7 +39,6 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 		lxu.command.BasicCommand.__init__(self)
 
 	def cmd_Interact(self):
-		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
@@ -68,67 +46,45 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 		lx.eval("layout.createOrClose viewCookie ProjectManagerLayout width:750 height:500 class:normal title:{Project Manager}")
 
 
-
 #----------------------------------------------------------------------------------------------------------------------
 class ExploreProjectFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current project directory.
-	Logs and displays a warning if no project is set.
 	'''
-
 	def __init__(self):
 		lxu.command.BasicCommand.__init__(self)
 		self.fileServ = lx.service.File()
 
 	def cmd_Interact(self):
-		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
-		''' Explore the current project directory '''
-		try:
-			projDir = self.fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
-			explore(projDir)
-		except:
-			pass
-			# The following crashes Modo if run twice in a row
-			# message = [ 'Trouble exploring project folder.',
-			# 			'No project has been set.',
-			# 			'Please set the active project.']
-			# msg_box( 'Warning...', message )
-
-
+		'''
+		Explore the current project directory
+		'''
+		projDir = self.fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
+		os_startFile(projDir)
 
 
 #----------------------------------------------------------------------------------------------------------------------
 class ExploreSceneFolder (lxu.command.BasicCommand):
 	'''
 	Modo Command to explore the current scene's directory.
-	Logs and displays a warning if no scene is open.
 	'''
-
 	def __init__(self):
 		lxu.command.BasicCommand.__init__(self)
 
 	def cmd_Interact(self):
-		''' '''
 		pass
 
 	def basic_Execute(self, msg, flags):
-		''' Explore the current project directory '''
-		
+		'''
+		Explore the current project directory
+		'''
 		scene = lxu.select.SceneSelection().current().Filename()
-		try:
-			explore( os.path.dirname( scene ) )
-		except:
-			pass
-			# The following crashes Modo if run twice in a row
-			# message = [ 'Failed to explore scene directory...',
-			# 			'Current scene has never been saved.']
-			# msg_box( 'Warning...', message )
+		os_startFile( os.path.dirname( scene ) )
+
 			
-
-
 #----------------------------------------------------------------------------------------------------------------------
 class ProjectManager_CustomView(lxifc.CustomView):
 	''' '''

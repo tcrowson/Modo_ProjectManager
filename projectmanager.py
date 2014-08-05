@@ -2,25 +2,6 @@
 # PROJECT MANAGER, Tim Crowson, July 2014
 #------------------------------------------------------------------------------
 
-#
-# WORK IN PROGRESS
-#
-
-# TODO LIST:
-# - Implement some sort of dirty system to indicate when a template has changed.
-# - Implement filetype associations within the .luxproject file.
-# - Refine logic when switching between templates.
-# - Implement a feedback system for informing the user when blessed commands fail...
-#	Currently the two dialog options available cause problems:
-#		- The standard Modo dialog system causes a focus problem,
-#			effectively locking Modo out (On Ubuntu)
-#		- The QMessageBox class causes Modo to crash when run more than
-#		  	once from inside a blessed cmd (see registration.py)
-#
-
-
-#------------------------------------------------------------------------------
-# IMPORTS
 
 import os
 import sys
@@ -42,9 +23,7 @@ import xml.etree.ElementTree as tree
 # PATHS
 
 # kit folder
-FILESERVICE = lx.service.File()
-SCRIPTSPATH = FILESERVICE.FileSystemPath(lx.symbol.sSYSTEM_PATH_SCRIPTS)
-KITPATH = os.path.join(SCRIPTSPATH,  'ProjectManager')
+KITPATH = os.path.dirname(__file__)
 
 # data folder
 DATAPATH = os.path.join(KITPATH, 'data')
@@ -62,6 +41,11 @@ TEMPLATESPATH = os.path.join(DATAPATH, 'templates')
 
 #------------------------------------------------------------------------------
 # IMPORT THE UI
+# Because PySide for Modo does not yet contain the pysideuic module nor the
+# QtUiTools class, we cannot dynamically load the .ui files directly.
+# Instead we must convert each .ui file to a Python module, using pyside-uic,
+# and pass those to our classe below.
+
 sys.path.append(RESRCPATH)
 import projectmanager_UI as pmUI
 
