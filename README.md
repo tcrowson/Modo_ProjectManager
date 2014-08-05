@@ -6,7 +6,7 @@ Project Manager Kit for Modo 801
 * This is a work in progress!
 * This is for Modo 801 Linux only, as Modo does not support Qt on Windows and Mac.
 
-
+***
 
 * [Overview](https://github.com/tcrowson/ProjectManager/wiki#overview)
   * [What This Is](https://github.com/tcrowson/ProjectManager/wiki#what-this-is)
