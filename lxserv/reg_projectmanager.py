@@ -1,3 +1,4 @@
+
 # PROJECT MANAGER, Tim Crowson, June 2014
 #----------------------------------------------------------------------------------------------------------------------
 
@@ -11,7 +12,8 @@ import lxu
 import lxifc
 import lxu.select
 
-from PySide.QtGui import QMessageBox, QGridLayout
+from PySide.QtGui import *
+from PySide.QtCore import *
 
 import projectmanager as pm
 
@@ -27,6 +29,14 @@ def os_startFile(filename):
 		opener ="open" if sys.platform == "darwin" else "xdg-open"
 		subprocess.call( [opener, filename] )
 
+def messageBox(title, text):
+	'''
+	Generic warning
+	'''
+	box = QMessageBox()
+	box.setWindowTitle(title)
+	box.setText(text)
+	box.exec_()
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -34,7 +44,6 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 	'''
 	Modo Command to display the Project Manager in a new window.
 	'''
-
 	def __init__(self):
 		lxu.command.BasicCommand.__init__(self)
 
@@ -62,9 +71,11 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 		'''
 		Explore the current project directory
 		'''
-		projDir = self.fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
-		os_startFile(projDir)
-
+		try:
+			projDir = self.fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
+			os_startFile(projDir)
+		except:
+			messageBox('Explore Project Folder', 'No project set. Please choose a project first.')
 
 #----------------------------------------------------------------------------------------------------------------------
 class ExploreSceneFolder (lxu.command.BasicCommand):
@@ -81,8 +92,11 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 		'''
 		Explore the current project directory
 		'''
-		scene = lxu.select.SceneSelection().current().Filename()
-		os_startFile( os.path.dirname( scene ) )
+		try:
+			scene = lxu.select.SceneSelection().current().Filename()
+			os_startFile( os.path.dirname( scene ) )
+		except:
+			messageBox('Explore Scene Folder', 'No scene open. Please open a scene first.')
 
 			
 #----------------------------------------------------------------------------------------------------------------------
