@@ -7,17 +7,17 @@ Project Manager Kit for Modo 801
 * This is for Modo 801 Linux only, as Modo does not support Qt on Windows and Mac.
 
 ***
-* [Installation](https://github.com/tcrowson/ProjectManager/wiki#installation)
-* [Overview](https://github.com/tcrowson/ProjectManager/wiki#overview)
-  * [What This Is](https://github.com/tcrowson/ProjectManager/wiki#what-this-is)
-  * [What This Is Not](https://github.com/tcrowson/ProjectManager/wiki#what-this-is-not)
-* [Existing Projects](https://github.com/tcrowson/ProjectManager/wiki#existing-projects)
-  * [The Projects List](https://github.com/tcrowson/ProjectManager/wiki#the-projects-list)
-  * [The Scenes List](https://github.com/tcrowson/ProjectManager/wiki#the-scenes-list)
-* [New Project](https://github.com/tcrowson/ProjectManager/wiki#new-project)
-  * [Set the Project Root](https://github.com/tcrowson/ProjectManager/wiki#set-the-project-root)
-  * [Create Folders](https://github.com/tcrowson/ProjectManager/wiki#create-folders)
-  * [Create the Project](https://github.com/tcrowson/ProjectManager/wiki#create-the-project)
+* [Installation](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#installation)
+* [Overview](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#overview)
+  * [What This Is](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#what-this-is)
+  * [What This Is Not](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#what-this-is-not)
+* [Existing Projects](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#existing-projects)
+  * [The Projects List](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.mdi#the-projects-list)
+  * [The Scenes List](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#the-scenes-list)
+* [New Project](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#new-project)
+  * [Set the Project Root](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#set-the-project-root)
+  * [Create Folders](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#create-folders)
+  * [Create the Project](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#create-the-project)
 
 ***
 
