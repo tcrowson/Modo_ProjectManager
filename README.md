@@ -24,7 +24,7 @@ Project Manager Kit for Modo 801
 ### Installation
 ProjectManager is only available for Modo 801 on Linux, since its Windows and Mac versions do not yet offer PySide-based Custom Viewports.
 
-1. Download [ProjectManager](http://www.timcrowson.com/downloads/projectanager/tc_ProjectManager.zip)
+1. Download [ProjectManager](http://www.timcrowson.com/downloads/projectmanager/tc_ProjectManager.zip)
 2. Place the kit in your Modo User Scripts or Configs directory
 3. Restart Modo
 
