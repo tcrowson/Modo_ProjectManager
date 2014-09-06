@@ -52,7 +52,7 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 
 	def basic_Execute(self, msg, flags):
 		''' Show the Project Manager '''
-		lx.eval("layout.createOrClose viewCookie ProjectManagerLayout width:750 height:500 class:normal title:{Project Manager}")
+		lx.eval("layout.createOrClose pmCookie ProjectManagerLayout width:750 height:500 class:normal title:{Project Manager}")
 
 
 #----------------------------------------------------------------------------------------------------------------------
