@@ -31,7 +31,7 @@ def os_startFile(filename):
 
 def messageBox(title, text):
 	'''
-	Generic warning
+	Generic Qt-based message box
 	'''
 	box = QMessageBox()
 	box.setWindowTitle(title)
@@ -122,7 +122,7 @@ class ProjectManager_CustomView(lxifc.CustomView):
 		# Check that it suceeds
 		if parentWidget != None:
 			layout = QGridLayout()
-			layout.setContentsMargins( 2,2,2,2 )
+			layout.setContentsMargins( 0,0,0,0 )
 			self.form = pm.ProjectManager_Actual()
 			layout.addWidget( self.form )
 			parentWidget.setLayout( layout )
