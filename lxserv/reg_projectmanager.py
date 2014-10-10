@@ -12,8 +12,7 @@ import lxu
 import lxifc
 import lxu.select
 
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PySide.QtGui import QGridLayout, QMessageBox
 
 import projectmanager as pm
 

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# PROJECT MANAGER, Tim Crowson, July 2014
+# PROJECT MANAGER, Tim Crowson, October 2014
 #------------------------------------------------------------------------------
 
 
@@ -8,10 +8,9 @@ import sys
 import subprocess
 
 import lx
-import lxu
-import lxifc
-import lxu.select
+import lxtd
 
+import pysideuic
 from PySide.QtGui import *
 from PySide.QtCore import *
 
@@ -21,33 +20,44 @@ import xml.etree.ElementTree as tree
 
 #------------------------------------------------------------------------------
 # PATHS
-
-# kit folder
 KITPATH = os.path.dirname(__file__)
-
-# data folder
 DATAPATH = os.path.join(KITPATH, 'data')
-
-# resource folder
 RESRCPATH = os.path.join(KITPATH, 'resrc')
-
-# project list file
+UIPATH = os.path.join(RESRCPATH, 'projectmanager.ui' )
 PROJECTLISTFILE = os.path.join(DATAPATH, 'projects.projlist')
-
-# templates folder
 TEMPLATESPATH = os.path.join(DATAPATH, 'templates')
 
 
 
 #------------------------------------------------------------------------------
-# IMPORT THE UI
-# Because PySide for Modo does not yet contain the pysideuic module nor the
-# QtUiTools class, we cannot dynamically load the .ui files directly.
-# Instead we must convert each .ui file to a Python module, using pyside-uic,
-# and pass those to our classe below.
 
-sys.path.append(RESRCPATH)
-import projectmanager_UI as pmUI
+def loadUiType(uiFile):
+	"""
+	PySide lacks the "loadUiType" command, so we have to convert the ui file to py code in-memory first
+	and then execute it in a special frame to retrieve the form_class.
+	Original function by Nathan Horne (http://nathanhorne.com).
+	"""
+
+	import xml.etree.ElementTree as xml
+	from cStringIO import StringIO
+
+	parsed = xml.parse(uiFile)
+	widget_class = parsed.find('widget').get('class')
+	form_class = parsed.find('class').text
+
+	with open(uiFile, 'r') as f:
+		o = StringIO()
+		frame = {}
+		
+		pysideuic.compileUi(f, o, indent=0)
+		pyc = compile(o.getvalue(), '<string>', 'exec')
+		exec pyc in frame
+		
+		#Fetch the base_class and form class based on their type in the xml from designer
+		form_class = frame['Ui_%s'%form_class]
+		base_class = eval('%s'%widget_class)
+	return form_class, base_class
+
 
 
 
@@ -55,7 +65,6 @@ import projectmanager_UI as pmUI
 class Log:
 	'''
 	Provide an easy way for logging messages into choosen log subsystem.
-
 	Original class by Lukasz Pazera: https://gist.github.com/lukpazera/10017005
 	'''
 	def __init__ (self):
@@ -169,17 +178,16 @@ class ShiftSelectMenu(QObject):
 
 #------------------------------------------------------------------------------
 
-class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
+form_class, base_class = loadUiType(UIPATH)
+class ProjectManager_Actual(form_class, base_class):
 	'''
 	Project Manager Class.
 	'''
-
-	def __init__(self, parent=None, selected=[], flag=0, *args):
+	def __init__(self, parent=None):
 		QMainWindow.__init__(self, parent)
 		self.setupUi(self) # boilerplate
 		self.ui_setConnections()
 		self.ui_customize()
-
 
 	def ui_setConnections(self):
 		'''
@@ -395,22 +403,6 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		log = Log()
 		if log.set('scripts'):
 			log.Out(type, '   === Project Manager ===', child)
-
-
-	def msg_box(self, title, text):
-		'''
-		Generic Qt info dialog.
-		Arg 1: the window title <string>
-		Arg 2: the message <list>
-		
-		This will eventually be replaced with a native Modo dialog.
-		'''
-		box = QMessageBox()
-		box.setWindowTitle(title)
-		box.setContentsMargins(10,10,30,10)
-		box.setText('\n'.join(text))
-		box.exec_()
-
 
 	#-----------------------------------------------------------
 
@@ -772,11 +764,11 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 				# log and inform
 				message = ['A new project was created:', str(inputPath)]
 				self.msg_log(lx.symbol.e_INFO, message)
-				self.msg_box('Project Manager', message)
+				lxtd.dialogs.alert('Project Manager', '\n'.join(message), dtype='info')
 
 				# Set this new project as the current project in Modo.
 				# If this not done AFTER displaying the message box above, Modo will crash (Ubuntu 12.0.4).
-				lx.eval("projDir.chooseProject %s" %inputPath)
+				lx.eval('projDir.chooseProject "%s"' %inputPath)
 
 
 	#-----------------------------------------------------------
@@ -851,7 +843,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 			if type == 'ref':
 				lx.eval("+scene.importReference {%s}" %scenePath)
 			else:
-				lx.eval("scene.open %s %s" %(scenePath, type))
+				lx.eval('scene.open "%s" %s' %(scenePath, type))
 
 
 	#-----------------------------------------------------------
@@ -880,7 +872,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 		if self.projectTree.selectedItems():
 			projDir = self.projects_getSelectedPath()
 			if os.path.exists(projDir):
-				lx.eval("projDir.chooseProject %s" %projDir)
+				lx.eval('projDir.chooseProject "%s"' %projDir)
 				self.msg_log(lx.symbol.e_INFO, ['Set current project:', projDir])
 
 			else:
@@ -938,7 +930,7 @@ class ProjectManager_Actual(QMainWindow, pmUI.Ui_projectManager):
 					return
 
 		message = [ 'The specified directory is not a valid Modo project.']
-		self.msg_box('Add Existing Project...', message) 
+		lxtd.dialogs.alert('Add Existing Project...', '\n'.join(message), 'warning') 
 
 
 	def act_scn_openSelected(self):
