@@ -1,10 +1,5 @@
-Project Manager Kit for Modo 801
+Project Manager Kit for Modo 901
 ==============
-
-
-***IMPORTANT:***
-* This is a work in progress!
-* This is for Modo 801 Linux only, as Modo does not support Qt on Windows and Mac.
 
 ***
 * [Installation](https://github.com/tcrowson/Modo_ProjectManager/blob/master/README.md#installation)
