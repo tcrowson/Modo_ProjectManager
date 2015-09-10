@@ -1,5 +1,5 @@
 
-# PROJECT MANAGER, Tim Crowson, June 2014
+# MODO PROJECT MANAGER, Tim Crowson
 #----------------------------------------------------------------------------------------------------------------------
 
 
@@ -9,14 +9,13 @@ import subprocess
 
 import lx
 import lxu
+import modo
 import lxifc
 import lxu.select
 
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PySide.QtGui import QGridLayout, QMessageBox
 
-import projectmanager as pm
-
+import projectmanager
 
 
 def os_startFile(filename):
@@ -28,15 +27,6 @@ def os_startFile(filename):
 	else:
 		opener ="open" if sys.platform == "darwin" else "xdg-open"
 		subprocess.call( [opener, filename] )
-
-def messageBox(title, text):
-	'''
-	Generic Qt-based message box
-	'''
-	box = QMessageBox()
-	box.setWindowTitle(title)
-	box.setText(text)
-	box.exec_()
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -52,7 +42,7 @@ class ShowProjectManager ( lxu.command.BasicCommand ):
 
 	def basic_Execute(self, msg, flags):
 		''' Show the Project Manager '''
-		lx.eval("layout.createOrClose pmCookie ProjectManagerLayout width:750 height:500 class:normal title:{Project Manager}")
+		lx.eval("layout.createOrClose pmCookie ProjectManagerLayout width:900 height:600 class:normal title:{Project Manager (%s)}" %projectmanager.version)
 
 
 #----------------------------------------------------------------------------------------------------------------------
@@ -75,7 +65,8 @@ class ExploreProjectFolder (lxu.command.BasicCommand):
 			projDir = self.fileServ.FileSystemPath( lx.symbol.sSYSTEM_PATH_PROJECT )
 			os_startFile(projDir)
 		except:
-			messageBox('Explore Project Folder', 'No project set. Please choose a project first.')
+			modo.dialogs.alert('Explore Project Folder', 'No project set. Please choose a project first.', 'warning')
+
 
 #----------------------------------------------------------------------------------------------------------------------
 class ExploreSceneFolder (lxu.command.BasicCommand):
@@ -96,7 +87,7 @@ class ExploreSceneFolder (lxu.command.BasicCommand):
 			scene = lxu.select.SceneSelection().current().Filename()
 			os_startFile( os.path.dirname( scene ) )
 		except:
-			messageBox('Explore Scene Folder', 'No scene open. Please open a scene first.')
+			modo.dialogs.alert('Explore Scene Folder', 'No scene open. Please open a scene first.', 'warning')
 
 			
 #----------------------------------------------------------------------------------------------------------------------
@@ -110,22 +101,22 @@ class ProjectManager_CustomView(lxifc.CustomView):
 		if pane == None:
 			return False
 
-		custPane = lx.object.CustomPane( pane )
+		custPane = lx.object.CustomPane(pane)
 
 		if custPane.test() == False:
 			return False
 
 		# Get the parent QWidget
 		parent = custPane.GetParent()
-		parentWidget = lx.getQWidget( parent )
+		parentWidget = lx.getQWidget(parent)
 
 		# Check that it suceeds
 		if parentWidget != None:
 			layout = QGridLayout()
-			layout.setContentsMargins( 0,0,0,0 )
-			self.form = pm.ProjectManager_Actual()
-			layout.addWidget( self.form )
-			parentWidget.setLayout( layout )
+			layout.setContentsMargins(1,1,1,1)
+			self.form = projectmanager.ProjectManager()
+			layout.addWidget(self.form)
+			parentWidget.setLayout(layout)
 			return True
 
 		return False
@@ -133,7 +124,7 @@ class ProjectManager_CustomView(lxifc.CustomView):
 
 #----------------------------------------------------------------------------------------------------------------------
 # BLESS THIS MESS!
-lx.bless( ShowProjectManager, "project.manager" )
-lx.bless( ExploreProjectFolder, "project.exploreCurrent" )
-lx.bless( ExploreSceneFolder, "project.exploreSceneFolder" )
+lx.bless( ShowProjectManager, "pm.open" )
+lx.bless( ExploreProjectFolder, "pm.exploreCurrent" )
+lx.bless( ExploreSceneFolder, "pm.exploreSceneFolder" )
 lx.bless( ProjectManager_CustomView, "ProjectManager" )
